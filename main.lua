@@ -1,7 +1,9 @@
 
 log = ""
 
-canvas = love.graphics.newCanvas()
+canvas = love.graphics.newCanvas(1000,1000)
+lastx = nil
+lasty = nil
 
 function love.load()
   love.graphics.setBackgroundColor(255,255,255)
@@ -13,13 +15,25 @@ function love.keypressed(key)
 end
 
 function love.mousepressed(x, y, button)
-  if button == "l" then
+    
+end
+
+function love.update(dt)
+  if love.mouse.isDown(1) then
     canvas:renderTo(function ()
-        love.graphics.setcolor(0,0,0)
-        love.graphics.circle("fill", x, y, 5)
-        end)
+        love.graphics.setColor(0,0,0)
+        love.graphics.setLineWidth(5)
+        if lastx == nil then
+          lastx = love.mouse.getX()
+          lasty = love.mouse.getY()
+        end
+        love.graphics.line(lastx, lasty, love.mouse.getX(), love.mouse.getY())
+        lastx = love.mouse.getX()
+        lasty = love.mouse.getY()
+    end)
   end
 end
+
 
 function love.draw()
   love.graphics.setColor(0,0,0)
