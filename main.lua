@@ -1,6 +1,8 @@
 
 log = ""
 
+canvas = love.graphics.newCanvas()
+
 function love.load()
   love.graphics.setBackgroundColor(255,255,255)
 end
@@ -8,6 +10,15 @@ end
 
 function love.keypressed(key)
   log = log.." "..key
+end
+
+function love.mousepressed(x, y, button)
+  if button == "l" then
+    canvas:renderTo(function ()
+        love.graphics.setcolor(0,0,0)
+        love.graphics.circle("fill", x, y, 5)
+        end)
+  end
 end
 
 function love.draw()
