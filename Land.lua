@@ -9,10 +9,10 @@ function Land.isBlocked(x, y)
   if not l.landImage then
     return false
   end
-  if x < 0 or x > l.landImage.getWidth() or y < 0 or y > l.landImage.getHeight() then
+  if x < 0 or x > l.landImage:getWidth() or y < 0 or y > l.landImage:getHeight() then
     return true
   end
-  r,g,b,a = l.landImage.getPixel(x, y)
+  r,g,b,a = l.landImage:getPixel(x, y)
   return a ~= 0
 end
 

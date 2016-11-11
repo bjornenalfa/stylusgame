@@ -6,7 +6,7 @@ require "Stylus"
 function love.load()
   love.graphics.setBackgroundColor(255,255,255)
   
-  Player.new("p1", 0, 0, {255, 0, 0}, 1)
+  Player.new("p1", 300, 300, {255, 0, 0}, 1)
 end
 
 function love.keypressed(key)

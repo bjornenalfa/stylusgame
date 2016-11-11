@@ -53,11 +53,15 @@ function Player:update(dt)
   aimingX, magX = Input.hasInput(Input.AIM_X, self)
   aimingY, magY = Input.hasInput(Input.AIM_Y, self)
   if aimingX or aimingY then
+    magX = magX or 0
+    magY = magY or 0
     self.orientation = math.atan2(magY, magX)
   end
   
-  self.x = self.x + self.vx * dt
-  self.y = self.y + self.vy * dt
+  if not Land.isBlocked(self.x + self.vx * dt, self.y + self.vy * dt) then
+    self.x = self.x + self.vx * dt
+    self.y = self.y + self.vy * dt
+  end
 end
 
 function Player.drawAll()
@@ -65,6 +69,8 @@ function Player.drawAll()
   for _,p in pairs(Player.list) do
     love.graphics.setColor(p.color)
     love.graphics.circle("fill", p.x, p.y, p.size)
+    love.graphics.setColor(0,0,0,255)
+    love.graphics.line(p.x, p.y, p.x + math.cos(p.orientation)*p.size, p.y + math.sin(p.orientation)*p.size)
   end
   love.graphics.setColor(prevR, prevG, prevB, prevA)
 end
