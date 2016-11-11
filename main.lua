@@ -14,6 +14,6 @@ function love.draw()
   love.graphics.setColor(0,0,0)
   love.graphics.print(log, 0, 0)
   if love.mouse.isDown() then
-    love.graphics.print("mouse down")
+    love.graphics.print("mouse down", 0, 20)
   end
 end
