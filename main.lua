@@ -4,7 +4,7 @@ require "Stylus"
 function love.load()
   love.graphics.setBackgroundColor(255,255,255)
   
-  Player.new("p1", 0, 0, nil, 999)
+  Player.new("p1", 0, 0, {255, 0, 0}, 1)
 end
 
 function love.keypressed(key)
@@ -17,6 +17,7 @@ end
 
 function love.update(dt)
   Stylus.update(dt)
+  Player.updateAll(dt)
 end
 
 
