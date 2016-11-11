@@ -38,5 +38,6 @@ function love.draw()
       love.graphics.print("mouse"..i.." down", 0, 80)
     end
   end
-  
+  love.graphics.setColor(255,255,255)
+  love.graphics.draw(canvas)
 end
