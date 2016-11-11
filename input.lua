@@ -2,6 +2,8 @@ Input = {}
 
 Input.MOVE_X = {keyboard={}, gamepad={}, axisIf={{"leftx", function(i) return math.abs(i) > 0.2 end}}}
 Input.MOVE_Y = {keyboard={}, gamepad={}, axisIf={{"lefty", function(i) return math.abs(i) > 0.2 end}}}
+Input.AIM_X = {keyboard={}, gamepad={}, axisIf={{"rightx", function(i) return math.abs(i) > 0.1 end}}}
+Input.AIM_Y = {keyboard={}, gamepad={}, axisIf={{"righty", function(i) return math.abs(i) > 0.1 end}}}
 
 -- Returns whether the keyboard or the current player's gamepad has a specific input
 function Input.hasInput(inputs, player)

@@ -50,6 +50,12 @@ function Player:update(dt)
     self.vy = 0
   end
   
+  aimingX, magX = Input.hasInput(Input.AIM_X, self)
+  aimingY, magY = Input.hasInput(Input.AIM_Y, self)
+  if aimingX or aimingY then
+    self.orientation = math.atan2(magY, magX)
+  end
+  
   self.x = self.x + self.vx * dt
   self.y = self.y + self.vy * dt
 end
