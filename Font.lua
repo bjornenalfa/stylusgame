@@ -1,5 +1,5 @@
-font = {}
-local f = font
+Font = {}
+local f = Font
 
 f.x10 = love.graphics.newFont(10)
 f.normal = love.graphics.newFont()
