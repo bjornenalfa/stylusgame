@@ -1,9 +1,9 @@
-explosions = {}
-local e = explosions
+Explosions = {}
+local e = Explosions
 
 e.explosions = {}
 
-function explosions.new(x, y, time, radius, playSound)
+function Explosions.new(x, y, time, radius, playSound)
   if playSound then
     Sound.play(sound["explosion"..math.random(1,3)])
   end
@@ -20,7 +20,7 @@ function explosions.new(x, y, time, radius, playSound)
 end
 
 frames = 6
-function explosions.update(dt)
+function Explosions.update(dt)
   toRemove = {}
   for _,v in pairs(e.explosions) do
     v.t = v.t + dt
@@ -35,14 +35,14 @@ function explosions.update(dt)
   end
 end
 
-function explosions.drawShake()
+function Explosions.drawShake()
   love.graphics.setColor(255,255,255)
   for _,v in pairs(e.explosions) do
     love.graphics.translate(math.random(-5,5), math.random(-5,5))
   end
 end
 
-function explosions.draw()
+function Explosions.draw()
   love.graphics.setColor(255,255,255)
   for _,v in pairs(e.explosions) do
     img = Image["planetexplosion"..v.frame]
