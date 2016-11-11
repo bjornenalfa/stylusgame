@@ -1,4 +1,7 @@
+require "input"
+
 Player = {}
+Player.__index = Player
 
 Player.list = {}
 
@@ -16,8 +19,10 @@ function Player.new(name, x, y, color, joystick)
     y=y,
     vx=0,
     vy=0,
-    size=100,
-    color=color
+    size=30,
+    color=color,
+    velocity=600,
+    orientation=0
   }
   setmetatable(new, Player)
   Player.list[name] = new
@@ -25,23 +30,35 @@ function Player.new(name, x, y, color, joystick)
 end
 
 function Player.updateAll(dt)
-  for _,p in pairs(Player) do
+  for _,p in pairs(Player.list) do
     p:update(dt)
   end
 end
 
 function Player:update(dt)
   chkx, dx = Input.hasInput(Input.MOVE_X, self)
-  if chkx then self.vx = dx else self.vx = 0 end
+  if chkx then
+    self.vx = dx * self.velocity
+  else 
+    self.vx = 0
+  end
+  
   chky, dy = Input.hasInput(Input.MOVE_Y, self)
-  if chky then self.vy = dy else self.vy = 0 end
+  if chky then
+    self.vy = dy * self.velocity
+  else 
+    self.vy = 0
+  end
   
   self.x = self.x + self.vx * dt
   self.y = self.y + self.vy * dt
 end
 
 function Player.drawAll()
+  local prevR, prevG, prevB, prevA = love.graphics.getColor()
   for _,p in pairs(Player.list) do
+    love.graphics.setColor(p.color)
     love.graphics.circle("fill", p.x, p.y, p.size)
   end
+  love.graphics.setColor(prevR, prevG, prevB, prevA)
 end
