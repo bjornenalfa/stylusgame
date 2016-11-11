@@ -1,5 +1,5 @@
-sound = {}
-local s = sound
+Sound = {}
+local s = Sound
 
 -- for long sound tracks
 function s.addSound(name, ext)

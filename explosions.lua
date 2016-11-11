@@ -5,7 +5,7 @@ e.explosions = {}
 
 function explosions.new(x, y, time, radius, playSound)
   if playSound then
-    sound.play(sound["explosion"..math.random(1,3)])
+    Sound.play(sound["explosion"..math.random(1,3)])
   end
   newEx = {
     x = x,
