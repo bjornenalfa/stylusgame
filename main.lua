@@ -1,3 +1,5 @@
+
+require "Land"
 require "player"
 require "Stylus"
 
