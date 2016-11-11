@@ -2,7 +2,7 @@ Player = {}
 
 Player.list = {}
 
-function Player.new(name, x, y, color)
+function Player.new(name, x, y, color, joystick)
   if love.joystick.getJoystickCount() > 0 then
     joysticks = love.joystick.getJoysticks()
     joystick = joysticks[math.min(#joysticks,joystick)]
@@ -16,6 +16,7 @@ function Player.new(name, x, y, color)
     y=y,
     vx=0,
     vy=0,
+    size=100,
     color=color
   }
   setmetatable(new, Player)
@@ -34,8 +35,13 @@ function Player:update(dt)
   if chkx then self.vx = dx else self.vx = 0 end
   chky, dy = Input.hasInput(Input.MOVE_Y, self)
   if chky then self.vy = dy else self.vy = 0 end
+  
+  self.x = self.x + self.vx * dt
+  self.y = self.y + self.vy * dt
 end
 
-function Player:draw()
-  love.graphics.circle("fill", self.x, self.y, self.size)
+function Player.drawAll()
+  for _,p in pairs(Player.list) do
+    love.graphics.circle("fill", p.x, p.y, p.size)
+  end
 end

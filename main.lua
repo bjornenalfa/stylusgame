@@ -4,7 +4,7 @@ require "Stylus"
 function love.load()
   love.graphics.setBackgroundColor(255,255,255)
   
-  Player.new("p1", 0, 0, nil)
+  Player.new("p1", 0, 0, nil, 999)
 end
 
 function love.keypressed(key)
@@ -22,4 +22,5 @@ end
 
 function love.draw()
   Stylus.draw()
+  Player.drawAll()
 end
