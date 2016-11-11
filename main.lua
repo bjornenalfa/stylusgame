@@ -1,8 +1,12 @@
+
 require "Land"
+require "player"
 require "Stylus"
 
 function love.load()
   love.graphics.setBackgroundColor(255,255,255)
+  
+  Player.new("p1", 0, 0, nil, 999)
 end
 
 function love.keypressed(key)
@@ -10,7 +14,7 @@ function love.keypressed(key)
 end
 
 function love.mousepressed(x, y, button)
-    
+  
 end
 
 function love.update(dt)
@@ -20,4 +24,5 @@ end
 
 function love.draw()
   Stylus.draw()
+  Player.drawAll()
 end
