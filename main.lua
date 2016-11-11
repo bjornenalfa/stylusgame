@@ -19,6 +19,7 @@ end
 
 function love.update(dt)
   Stylus.update(dt)
+  Land.update(dt)
   Player.updateAll(dt)
 end
 

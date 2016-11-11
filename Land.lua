@@ -21,12 +21,16 @@ l.gct = 0 -- garbage collect timer
 
 function Land.update(dt)
   l.nt = l.nt + dt
-  l.gct = l.gct + dt
   if l.nt > 0.2 then
     l.nt = 0
     if Stylus.drawn then
       Stylus.drawn = false
       l.landImage = Stylus.canvas:newImageData()
+      l.gct = l.gct + 1
     end
+  end
+  if l.gct > 50 then
+    l.gct = 0
+    collectgarbage()
   end
 end

@@ -41,4 +41,6 @@ end
 function s.draw()
   love.graphics.setColor(255,255,255)
   love.graphics.draw(s.canvas)
+  love.graphics.setColor(0,0,0)
+  love.graphics.print(tostring(Land.isBlocked(love.mouse.getX(), love.mouse.getY())), 100, 0)
 end
