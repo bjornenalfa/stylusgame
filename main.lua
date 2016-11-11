@@ -1,6 +1,6 @@
 
 require "Land"
-require "player"
+require "Player"
 require "Stylus"
 
 function love.load()
