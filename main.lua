@@ -1,3 +1,4 @@
+require "player"
 
 log = ""
 
@@ -7,6 +8,8 @@ lasty = nil
 
 function love.load()
   love.graphics.setBackgroundColor(255,255,255)
+  
+  Player.new("p1", 0, 0, nil)
 end
 
 
@@ -15,7 +18,7 @@ function love.keypressed(key)
 end
 
 function love.mousepressed(x, y, button)
-    
+  
 end
 
 function love.update(dt)
