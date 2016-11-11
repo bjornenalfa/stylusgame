@@ -2,11 +2,14 @@ Stylus = {}
 local s = Stylus
 
 s.canvas = love.graphics.newCanvas(2048, 2048)
+Land.landImage = s.canvas:newImageData()
 
 s.cont = false
 s.contTimer = 0
 s.lastx = 0
 s.lasty = 0
+
+s.drawn = false
 
 function s.update(dt)
   if love.mouse.isDown(1) then
@@ -17,6 +20,8 @@ function s.update(dt)
         s.cont = true
         s.lastx = love.mouse.getX()
         s.lasty = love.mouse.getY()
+      else
+        s.drawn = true
       end
       love.graphics.line(s.lastx, s.lasty, love.mouse.getX(), love.mouse.getY())
       s.lastx = love.mouse.getX()

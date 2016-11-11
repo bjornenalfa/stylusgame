@@ -1,3 +1,4 @@
+require "Land"
 require "Stylus"
 
 function love.load()
