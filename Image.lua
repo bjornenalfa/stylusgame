@@ -1,5 +1,5 @@
-image = {}
-local i = image
+Image = {}
+local i = Image
 
 function addImage(name)
   i[name] =  love.graphics.newImage("media/"..name..".png")

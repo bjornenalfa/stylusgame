@@ -45,7 +45,7 @@ end
 function explosions.draw()
   love.graphics.setColor(255,255,255)
   for _,v in pairs(e.explosions) do
-    img = image["planetexplosion"..v.frame]
+    img = Image["planetexplosion"..v.frame]
     w = img:getWidth()
     h = img:getHeight()
     love.graphics.draw(img, v.x, v.y, 0, v.r*2/w, v.r*2/h, w/2, h/2)

@@ -117,7 +117,7 @@ function camera.drawOOB()
     local y = math.min(math.max(0,i.activeEntity.y),Map.height)
     if i.activeEntity.x ~= x or i.activeEntity.y ~= y then
       love.graphics.setColor(255,255,255)
-      love.graphics.draw(image.arrow, x, y, math.atan2(i.activeEntity.y-y, i.activeEntity.x-x), 2, 2, image.arrow:getWidth()/2, image.arrow:getHeight()/2)
+      love.graphics.draw(Image.arrow, x, y, math.atan2(i.activeEntity.y-y, i.activeEntity.x-x), 2, 2, Image.arrow:getWidth()/2, Image.arrow:getHeight()/2)
       distance = math.sqrt((i.activeEntity.x-x)*(i.activeEntity.x-x)+(i.activeEntity.y-y)*(i.activeEntity.y-y))
       love.graphics.setColor(255,0,0)
       love.graphics.print(distance, x, y)
