@@ -43,7 +43,7 @@ function love.draw()
   Camera.draw()
   Map.draw()
   Explosions.drawShake()
-  Stylus.draw()
+  Stylus.drawLand()
   Player.drawAll()
   Explosions.draw()
   Projectile.drawAll()
@@ -57,5 +57,5 @@ function love.draw()
   
   love.graphics.origin() -- reset to screen drawing (UI)
   
-  Stylus.drawCursor() -- should be last
+  Stylus.drawUI() -- should be last
 end

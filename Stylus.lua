@@ -63,18 +63,17 @@ function s.update(dt)
   end
 end
 
-function s.draw()
+function s.drawLand()
   love.graphics.setColor(255,255,255)
   love.graphics.draw(s.canvas)
-  --love.graphics.setColor(0,0,0)
-  --love.graphics.print(tostring(Land.isBlocked(love.mouse.getX(), love.mouse.getY())), 100, 0)
+end
+
+function s.drawUI()
   love.graphics.setColor(128,128,128)
   love.graphics.rectangle("line", love.graphics.getWidth()-5, 40, -20, 102)
   love.graphics.setColor(0,0,0)
   love.graphics.rectangle("fill", love.graphics.getWidth()-6, 41+100, -18, -100*(s.currentInk/s.maxInk)) 
-end
-
-function s.drawCursor()
+  
   love.graphics.setColor(0,0,255)
   love.graphics.circle("fill",love.mouse.getX(), love.mouse.getY(), 1)
   love.graphics.circle("line",love.mouse.getX(), love.mouse.getY(), 4)
