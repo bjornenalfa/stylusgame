@@ -11,6 +11,7 @@ require "Stylus"
 require "Monster"
 require "Zombieduck"
 require "Duckcrab"
+require "Crabduck"
 require "Weapon"
 require "Rocket"
 require "Screenshake"
@@ -29,6 +30,8 @@ function love.load()
   --Camera.trackEntity(pl)
   local mon = Zombieduck.new(150, 150, 10, getImage("hero"))
   local mon2 = Duckcrab.new(200, 200, 10, getImage("hero"))
+  local mon3 = Crabduck.new(400, 200, 10, getImage("hero"))
+  local mon3 = Crabduck.new(200, 500, 10, getImage("hero"))
 end
 
 function love.keypressed(key)

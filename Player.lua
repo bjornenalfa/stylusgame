@@ -21,6 +21,7 @@ function Player.new(name, x, y, color, joystick)
     color=color,
     velocity=120,
     orientation=0,
+
     weapon=Rocket.new()
   }
   setmetatable(new, Player)
@@ -59,14 +60,14 @@ end
 function Player:update(dt)
   chkx, dx = Input.hasInput(Input.MOVE_X, self)
   if chkx then
-    self.vx = dx * self.velocity
+    self.vx = dx * self.velocity * dt
   else 
     self.vx = 0
   end
   
   chky, dy = Input.hasInput(Input.MOVE_Y, self)
   if chky then
-    self.vy = dy * self.velocity
+    self.vy = dy * self.velocity * dt
   else 
     self.vy = 0
   end
@@ -82,20 +83,29 @@ function Player:update(dt)
     self.orientation = math.atan2(magY, magX)
   end
   
-  local x = self.x + self.vx * dt
-  local y = self.y + self.vy * dt
-  local isBlocked = false
+  local vdir = math.atan2(self.vy, self.vx)
+  local vdist = math.sqrt(self.vx*self.vx + self.vy*self.vy)
   
-  for k,v in pairs(COLLISION_POINTS_OFFSETS) do
-    if Land.isBlocked(x + v.x, y + v.y) then
-      isBlocked = true
+  for i = 0, math.pi, math.pi/8 do
+    self.vx = math.cos(vdir+i) * vdist
+    self.vy = math.sin(vdir+i) * vdist
+    
+    local x = self.x + self.vx
+    local y = self.y + self.vy
+    local isBlocked = false
+    
+    for k,v in pairs(COLLISION_POINTS_OFFSETS) do
+      if Land.isBlocked(x + v.x, y + v.y) then
+        isBlocked = true
+        break
+      end
+    end
+    
+    if not isBlocked then
+      self.x = self.x + self.vx
+      self.y = self.y + self.vy
       break
     end
-  end
-  
-  if not isBlocked then
-    self.x = self.x + self.vx * dt
-    self.y = self.y + self.vy * dt
   end
   
   self.weapon:update(dt)
