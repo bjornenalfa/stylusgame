@@ -105,6 +105,27 @@ end
 
 function MachineGun:draw(object)
   love.graphics.print("timeLeft: "..tostring(self.setupTimeLeft) .. " state: " ..tostring(self.setupState .. " moveme. " .. tostring(self.player.movementImpair)), object.x - 150, object.y - 20)
+  local state = self.setupState
+  if state == IS_NOT_SETUP then
+    return
+  end
+  -- draw a sandobstacle to tell the player he/she is in machinegun mode
+  local offset = 20
+  local x = self.player.x + math.cos(self.lockedAngle) * offset
+  local y = self.player.y + math.sin(self.lockedAngle) * offset
+  
+  
+  local img = getImage("weapons/sandbags")
+  local alpha = 255
+  if state == IS_SETTING_UP then
+    alpha = 255 * (self.setupTime - self.setupTimeLeft)
+  elseif state == IS_SETUP then
+    alpha = 255
+  elseif state == IS_TEARING_DOWN then
+    alpha = 255 - 255 * (self.setupTime - self.setupTimeLeft)
+  end
+  love.graphics.setColor(255, 255, 255, alpha)
+  love.graphics.draw(img, x, y, self.lockedAngle, 0.8, 1, img:getWidth()/2, img:getHeight()/2)
 end
 
 MachineGunProjectile = {}
