@@ -5,6 +5,7 @@ require "Camera"
 require "Land"
 require "Map"
 require "Explosions"
+require "Projectile"
 require "Player"
 require "Stylus"
 
