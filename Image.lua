@@ -20,7 +20,7 @@ for i = 1,6 do
   addImage("planetexplosion"..i)
 end
 
-addImage("hen")
+--[[addImage("hen")
 addImage("hen_leg")
 addImage("zombie")
 addImage("zombie2")
@@ -35,4 +35,5 @@ addImage("arrow")
 addImage("grenade")
 addImage("grenade_unarmed")
 addImage("zombie_fist")
-addImage("wall")
+addImage("wall")--]]
+addImage("hero")

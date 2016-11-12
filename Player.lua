@@ -1,5 +1,6 @@
 require "Input"
 require "Projectile"
+require "Image"
 
 Player = {}
 Player.__index = Player
@@ -72,8 +73,7 @@ end
 function Player.drawAll()
   local prevR, prevG, prevB, prevA = love.graphics.getColor()
   for _,p in pairs(Player.list) do
-    love.graphics.setColor(p.color)
-    love.graphics.circle("fill", p.x, p.y, p.size)
+    love.graphics.draw(getImage("hero"), p.x, p.y, p.orientation)
     love.graphics.setColor(0, 0, 0)
     love.graphics.line(p.x, p.y, p.x + math.cos(p.orientation)*p.size, p.y + math.sin(p.orientation)*p.size)
   end
