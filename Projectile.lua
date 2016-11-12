@@ -3,17 +3,14 @@ Projectile.__index = Projectile
 
 Projectile.list = {}
 
-function Projectile.fromTemplate(x, y, angle, template)
+function Projectile.new(x, y, angle, damage, speed)
+  print(angle)
   local new = {
     x=x,
     y=y,
-    vx=math.cos(angle)*template[1],
-    vy=math.sin(angle)*template[1],
-    onDestroy=template[3],
-    onHit=template[4],
-    onUpdate=template[2],
-    dead=false,
-    image=template[5]
+    vx=math.cos(angle)*speed,
+    vy=math.cos(angle)*speed,
+    dead=false
   }
   setmetatable(new, Projectile)
   table.insert(Projectile.list, new)
@@ -26,7 +23,6 @@ function Projectile.updateAll(dt)
   for index,p in pairs(Projectile.list) do
     p:update(dt)
     if p.dead then
-      p:onDestroy()
       table.insert(killed, index)
     end
   end
@@ -35,24 +31,44 @@ function Projectile.updateAll(dt)
   end
 end
 
-function Projectile:update(dt)
+function Projectile:move(dt)
   self.x = self.x + self.vx * dt
   self.y = self.y + self.vy * dt
-  
+end
+
+function Projectile:checkCollisions(dt)
   if Land.isBlocked(self.x, self.y) then
     self:onHit(nil)
+    self.dead=true
   end
   
-  for _,monster in pairs(Monster.list) do
-    if (monster.x - self.x)*(monster.x - self.x)
-      +(monster.y - self.y)*(monster.y - self.y)
-      <(monster.r * monster.r) then
-        self:onHit(monster)
-        break
+  for _,mon in pairs(Monster.list) do
+    local x1 = self.x - self.vx*dt
+    local x2 = self.x
+    local y1 = self.y - self.vy*dt
+    local y2 = self.y
+    x1 = x1 - mon.x
+    x2 = x2 - mon.x
+    y1 = y1 - mon.y
+    y2 = y2 - mon.y
+    local a = x2*x2 + y2*y2
+    local b = 2*(x1*x2+y1*y2)
+    local c = (x1*x1)+(y1*y1)-(mon.r*mon.r)
+    
+    local t1 = (math.sqrt(b*b - (4*a*c)) - b)/(2*a)
+    local t2 = -(math.sqrt(b*b - (4*a*c)) + b)/(2*a)
+    
+    if (0 < t1  and t1 < 1) or (0 < t2 and t2 < 1) then
+      -- We hit the monster, I think...
+      mon:damage(10)
+      self.dead=true
     end
   end
-  
-  self:onUpdate(dt)
+end
+
+function Projectile:update(dt)
+  self:move(dt)
+  self:checkCollisions(dt)
 end
 
 function Projectile.drawAll()
@@ -61,4 +77,11 @@ function Projectile.drawAll()
     love.graphics.setColor(0,0,0)
     love.graphics.circle("fill", p.x, p.y, 3)
   end
+end
+
+function Projectile:onHit(target)
+  if target ~= nil then
+    target:damage(self.damage)
+  end
+  dead=true
 end
