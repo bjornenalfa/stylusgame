@@ -90,6 +90,9 @@ function Monster:damage(damage)
   damage = math.floor(damage+0.5)
   if damage > 0 then
     self.hp = self.hp - damage
+    if self.hp < 0 then
+      self.dead = true
+    end
   end
 end
 
