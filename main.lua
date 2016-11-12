@@ -12,6 +12,9 @@ require "Monster"
 require "Zombieduck"
 require "Weapon"
 require "Rocket"
+require "Screenshake"
+require "Laser"
+require "MachineGun"
 
 function love.load()
   love.graphics.setDefaultFilter("linear", "nearest", 2)
@@ -39,6 +42,7 @@ function love.mousereleased(x, y, button)
 end
 
 function love.update(dt)
+  Screenshake.update(dt)
   Stylus.update(dt)
   Land.update(dt)
   Player.updateAll(dt)
@@ -50,8 +54,9 @@ end
 
 function love.draw()
   Camera.draw()
-  Map.draw()
   Explosions.drawShake()
+  Screenshake.draw()
+  Map.draw()
   Projectile.drawAll()
   Player.drawAll()
   Monster.drawAll()
