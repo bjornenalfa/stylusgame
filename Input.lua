@@ -1,10 +1,14 @@
 Input = {}
 
-Input.MOVE_X = {keyboard={}, gamepad={}, axisIf={{"leftx", function(i) return math.abs(i) > 0.2 end}}}
-Input.MOVE_Y = {keyboard={}, gamepad={}, axisIf={{"lefty", function(i) return math.abs(i) > 0.2 end}}}
+Input.MOVE_X = {keyboard={}, gamepad={}, axisIf={{"leftx", function(i) return true end}}}
+Input.MOVE_Y = {keyboard={}, gamepad={}, axisIf={{"lefty", function(i) return true end}}}
 Input.AIM_X = {keyboard={}, gamepad={}, axisIf={{"rightx", function(i) return true end}}}
 Input.AIM_Y = {keyboard={}, gamepad={}, axisIf={{"righty", function(i) return true end}}}
 Input.FIRE = {keyboard={}, gamepad={}, axisIf={{"triggerright", function(i) return i >= 0.1 end}}}
+Input.ALT_FIRE = {keyboard={}, gamepad={}, axisIf={{"triggerleft", function(i) return i >= 0.1 end}}}
+
+Input.MOVEMENT_SENSITIVITY = 0.2
+Input.AIM_SENSITIVITY = 0.2
 
 -- Returns whether the keyboard or the current player's gamepad has a specific input
 function Input.hasInput(inputs, player)

@@ -16,6 +16,7 @@ function Weapon.new(firingSpeed, projectileTemplate)
   return new
 end
 
+--[[
 Weapon.default=Weapon.new(0.1, {800,
                     (function(this) end),
                     (function(this) end),
@@ -38,7 +39,7 @@ Weapon.laser=Weapon.new(0, {20000,
     function(this, target) end,
     nil
     })
-
+--]]
 function Weapon:fire(fromX, fromY, orientation)
   if (self.cdLeft <= 0) then
     Projectile.fromTemplate(fromX, fromY, orientation, self.projectileTemplate)
