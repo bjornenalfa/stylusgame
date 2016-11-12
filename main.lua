@@ -12,6 +12,7 @@ require "Monster"
 require "Zombieduck"
 require "Duckcrab"
 require "Crabduck"
+require "Crabcannon"
 require "Weapon"
 require "Rocket"
 require "Screenshake"
@@ -32,6 +33,7 @@ function love.load()
   local mon2 = Duckcrab.new(150, 200)
   local mon3 = Crabduck.new(400, 200)
   local mon4 = Crabduck.new(200, 500)
+  local mon5 = Crabcannon.new(400, 400)
 end
 
 function love.keypressed(key)
