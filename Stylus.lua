@@ -10,7 +10,7 @@ s.contTimer = 0
 s.lastx = 0
 s.lasty = 0
 
-s.slashing = true
+s.slashing = false
 s.slashlist = {}
 s.slashPoints = 4
 s.combo = 0

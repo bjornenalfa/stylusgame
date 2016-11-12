@@ -84,9 +84,30 @@ function Player:update(dt)
   local vdir = math.atan2(self.vy, self.vx)
   local vdist = math.sqrt(self.vx*self.vx + self.vy*self.vy)
   
-  for i = 0, math.pi, math.pi/8 do
+  for i = 0, math.pi/2-math.pi/16, math.pi/16 do
+    local vdist = math.cos(i)*vdist
     self.vx = math.cos(vdir+i) * vdist
     self.vy = math.sin(vdir+i) * vdist
+    
+    local x = self.x + self.vx
+    local y = self.y + self.vy
+    local isBlocked = false
+    
+    for k,v in pairs(COLLISION_POINTS_OFFSETS) do
+      if Land.isBlocked(x + v.x, y + v.y) then
+        isBlocked = true
+        break
+      end
+    end
+    
+    if not isBlocked then
+      self.x = self.x + self.vx
+      self.y = self.y + self.vy
+      break
+    end
+    
+    self.vx = math.cos(vdir-i) * vdist
+    self.vy = math.sin(vdir-i) * vdist
     
     local x = self.x + self.vx
     local y = self.y + self.vy
