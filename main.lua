@@ -18,6 +18,8 @@ require "Rocket"
 require "Screenshake"
 require "Laser"
 require "MachineGun"
+require "Pickup"
+require "PickupWeapon"
 
 function love.load()
   love.graphics.setDefaultFilter("linear", "nearest", 2)
@@ -34,6 +36,10 @@ function love.load()
   local mon3 = Crabduck.new(400, 200)
   local mon4 = Crabduck.new(200, 500)
   local mon5 = Crabcannon.new(400, 400)
+  
+  for i = 1, 20 do
+    local pic1 = PickupWeapon.new(math.random(0, Map.width), math.random(0, Map.height))
+  end
 end
 
 function love.keypressed(key)
@@ -56,6 +62,7 @@ function love.update(dt)
   Stylus.update(dt)
   Land.update(dt)
   Player.updateAll(dt)
+  Pickup.updateAll(dt)
   Camera.update(dt)
   Monster.updateAll(dt)
   Projectile.updateAll(dt)
@@ -68,6 +75,7 @@ function love.draw()
   Explosions.drawShake()
   Screenshake.draw()
   Map.draw()
+  Pickup.drawAll()
   Projectile.drawAll()
   Player.drawAll()
   Monster.drawAll()
