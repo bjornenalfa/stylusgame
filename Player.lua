@@ -19,8 +19,9 @@ function Player.new(name, x, y, color, joystick)
     vy=0,
     size=30,
     color=color,
-    velocity=600,
-    orientation=0
+    velocity=450,
+    orientation=0,
+    weapon=Weapon.rocket
   }
   setmetatable(new, Player)
   Player.list[name] = new
@@ -74,8 +75,10 @@ function Player:update(dt)
     self.y = self.y + self.vy * dt
   end
   
+  self.weapon:update(dt)
   if Input.hasInput(Input.FIRE, self) then
-    Projectile.fromTemplate(self.x, self.y, self.orientation, Projectile.templates.bullet)
+    self.weapon:fire(self.x, self.y, self.orientation)
+    --Projectile.fromTemplate(self.x, self.y, self.orientation, Projectile.templates.bullet)
   end
 end
 

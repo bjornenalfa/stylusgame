@@ -8,6 +8,8 @@ require "Explosions"
 require "Projectile"
 require "Player"
 require "Stylus"
+require "Monster"
+require "Weapon"
 
 function love.load()
   Map.load("map01")
@@ -16,6 +18,7 @@ function love.load()
   love.mouse.setVisible(false)
   local pl = Player.new("p1", 300, 300, {255, 0, 0}, 1)
   Camera.trackEntity(pl)
+  local mon = Monster.new(150, 150, 10, getImage("hero"))
 end
 
 function love.keypressed(key)
@@ -34,6 +37,7 @@ function love.update(dt)
   Stylus.update(dt)
   Land.update(dt)
   Player.updateAll(dt)
+  Monster.updateAll(dt)
   Camera.update(dt)
   Projectile.updateAll(dt)
 end
@@ -45,6 +49,7 @@ function love.draw()
   Explosions.drawShake()
   Stylus.drawLand()
   Player.drawAll()
+  Monster.drawAll()
   Explosions.draw()
   Projectile.drawAll()
   
