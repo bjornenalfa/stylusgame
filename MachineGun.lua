@@ -3,6 +3,8 @@ MachineGun.__index = MachineGun
 setmetatable(MachineGun, Weapon)
 
 function MachineGun.new(cooldown, d, speed)
+  cooldown = cooldown or 1
+  d = d or 10
   local new = Weapon.new(cooldown)
   new["damage"] = d
   new["velocity"] = speed
@@ -61,7 +63,6 @@ function MachineGun:update(dt)
   if self.firingTime > 0 and self.fireTime > 0.5 then
     self.firingTime = self.firingTime - dt*10
   end
-  print("firingTime: "..self.firingTime)
   
   if self.setupState == IS_NOT_SETUP then
     -- do nothing
@@ -80,8 +81,8 @@ function MachineGun:update(dt)
   end
 end
 
-function MachineGun:draw()
-  love.graphics.print("firing time: "..tostring(self.firingTime), self.x - 20, self.y - 20)
+function MachineGun:draw(object)
+  love.graphics.print("firing time: "..tostring(self.firingTime), object.x - 20, object.y - 20)
 end
 
 MachineGunProjectile = {}

@@ -23,7 +23,7 @@ function Player.new(name, x, y, color, joystick)
     orientation=0,
     machineGunState = false, --only specific to the machinegun weapon, to hinder movement
 
-    weapon=Rocket.new()
+    weapon=MachineGun.new()
   }
   setmetatable(new, Player)
   Player.list[name] = new
