@@ -45,9 +45,14 @@ function love.draw()
   Player.drawAll()
   Explosions.draw()
   
+  
   love.graphics.origin() -- reset all shakes
   Camera.draw()
   
   Camera.drawOOB()
+  
+  
+  love.graphics.origin() -- reset to screen drawing (UI)
+  
   Stylus.drawCursor() -- should be last
 end
