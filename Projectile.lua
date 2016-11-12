@@ -39,9 +39,7 @@ function Projectile:move(dt)
 end
 
 function Projectile:checkCollisions(dt)
-  if Land.isBlocked(self.x, self.y) then
-    self:onHit(nil)
-  end
+  
   
   for _,mon in pairs(Monster.list) do
     local x1 = self.x - self.vx*dt
@@ -61,14 +59,23 @@ function Projectile:checkCollisions(dt)
     
     if (0 < t1  and t1 < 1) or (0 < t2 and t2 < 1) then
       -- We hit the monster, I think...
-      mon:damage(10)
+      return true, mon
     end
   end
+  
+  if Land.isBlocked(self.x, self.y) then
+    return true, nil
+  end
+  
+  return false
 end
 
 function Projectile:update(dt)
   self:move(dt)
-  self:checkCollisions(dt)
+  hit, target = self:checkCollisions(dt)
+  if hit then
+    self:onHit(target)
+  end
 end
 
 function Projectile.drawAll()

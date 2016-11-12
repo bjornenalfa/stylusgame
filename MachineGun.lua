@@ -73,7 +73,21 @@ function MachineGun:update(dt)
   elseif self.setupState == IS_SETUP or self.setupState == IS_SETTING_UP then
     local playerDir = self.player.orientation
     local lockedDir = self.lockedAngle
-    
+    local allowedDiff = math.pi/4
+    local function mod(a, n)
+      return a - math.floor(a/n) * n
+    end
+    local diff = playerDir - lockedDir
+    diff = (diff + math.pi) % (2*math.pi) - math.pi
+    if diff > 0 then
+      if diff > allowedDiff then
+        self.player.orientation = lockedDir + allowedDiff
+      end
+    else
+      if diff < -allowedDiff then
+        self.player.orientation = lockedDir - allowedDiff
+      end
+    end
   end
   if self.setupState == IS_SETTING_UP or self.setupState == IS_TEARING_DOWN then
     self.player.movementImpair = true
