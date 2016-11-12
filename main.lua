@@ -17,7 +17,7 @@ function love.load()
   love.mouse.setVisible(false)
   local pl = Player.new("p1", 300, 300, {255, 0, 0}, 1)
   Camera.trackEntity(pl)
-  local mon = Monster.new(50, 50, 10, getImage("hero"))
+  local mon = Monster.new(150, 150, 10, getImage("hero"))
 end
 
 function love.keypressed(key)
