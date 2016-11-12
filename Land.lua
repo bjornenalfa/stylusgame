@@ -17,7 +17,7 @@ function Land.isBlocked(x, y)
 end
 
 l.nt = 0 -- new image date grab timer
-l.gct = 0 -- garbage collect timer
+l.gct = 0 -- garbage collect counter
 
 function Land.update(dt)
   l.nt = l.nt + dt

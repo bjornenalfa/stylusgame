@@ -1,8 +1,7 @@
 Stylus = {}
 local s = Stylus
 
-s.canvas = love.graphics.newCanvas(2048, 2048)
-Land.landImage = s.canvas:newImageData()
+s.canvas = nil
 
 s.maxInk = 500
 s.currentInk = s.maxInk
@@ -14,6 +13,11 @@ s.lastx = 0
 s.lasty = 0
 
 s.drawn = false
+
+function s.newMap()
+  s.canvas = love.graphics.newCanvas(Map.width, Map.height)
+  Land.landImage = s.canvas:newImageData()
+end
 
 function s.mousereleased(x, y, button)
   if s.ranOut and button == 1 then

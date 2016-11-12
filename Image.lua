@@ -37,3 +37,4 @@ addImage("grenade_unarmed")
 addImage("zombie_fist")
 addImage("wall")--]]
 addImage("hero")
+addImage("map01")

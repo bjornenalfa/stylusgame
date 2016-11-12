@@ -10,6 +10,8 @@ require "Player"
 require "Stylus"
 
 function love.load()
+  Map.load("map01")
+  Stylus.newMap()
   love.graphics.setBackgroundColor(255,255,255)
   love.mouse.setVisible(false)
   Player.new("p1", 300, 300, {255, 0, 0}, 1)
@@ -37,6 +39,7 @@ end
 
 function love.draw()
   Camera.draw()
+  Map.draw()
   Explosions.drawShake()
   Stylus.draw()
   Player.drawAll()
