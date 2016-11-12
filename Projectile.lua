@@ -11,13 +11,12 @@ function Projectile.fromTemplate(x, y, angle, template)
     vy=math.sin(angle)*template[1],
     onDestroy=template[3],
     onHit=template[4],
+    onUpdate=template[2],
     dead=false,
     image=template[5]
   }
   setmetatable(new, Projectile)
   table.insert(Projectile.list, new)
-  
-  template[2](new)
   
   return new
 end
@@ -52,6 +51,8 @@ function Projectile:update(dt)
         break
     end
   end
+  
+  self:onUpdate(dt)
 end
 
 function Projectile.drawAll()
