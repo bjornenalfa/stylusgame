@@ -1,7 +1,7 @@
 require "Sound"
 require "Image"
 require "Input"
-require "camera2"
+require "Camera2"
 require "Land"
 require "Map"
 require "Explosions"
@@ -16,8 +16,10 @@ function love.load()
   love.graphics.setDefaultFilter("linear", "nearest", 2)
   Map.load("map01")
   Land.newMap()
+  Stylus.newMap()
   love.graphics.setBackgroundColor(255,255,255)
-  love.mouse.setVisible(false)
+  --love.mouse.setVisible(false)
+  love.mouse.setCursor(love.mouse.newCursor(getImage("mouse"):getData(), 10, 10))
   local pl = Player.new("p1", 300, 300, {255, 0, 0}, 1)
   --Camera.trackEntity(pl)
   local mon = Monster.new(150, 150, 10, getImage("hero"))
@@ -39,26 +41,27 @@ function love.update(dt)
   Stylus.update(dt)
   Land.update(dt)
   Player.updateAll(dt)
-  camera.update(dt)
+  Camera.update(dt)
   Monster.updateAll(dt)
   Projectile.updateAll(dt)
 end
 
 
 function love.draw()
-  camera.draw()
+  Camera.draw()
   Map.draw()
   Explosions.drawShake()
   Projectile.drawAll()
   Player.drawAll()
-  Land.draw()
-  Map.drawShadow()
   Monster.drawAll()
+  Map.drawShadow()
+  Stylus.drawBackground()
+  Land.draw()
   Explosions.draw()
   
   
   love.graphics.origin() -- reset all shakes
-  camera.draw()
+  Camera.draw()
   
   --Camera.drawOOB()
   

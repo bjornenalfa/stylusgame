@@ -9,11 +9,13 @@ function Projectile.new(x, y, angle, damage, speed)
     x=x,
     y=y,
     vx=math.cos(angle)*speed,
-    vy=math.cos(angle)*speed,
+    vy=math.sin(angle)*speed,
     dead=false
   }
   setmetatable(new, Projectile)
   table.insert(Projectile.list, new)
+  
+  if new.vx == 0 then print(new.vy) end
   
   return new
 end
@@ -73,10 +75,13 @@ end
 
 function Projectile.drawAll()
   for _,p in pairs(Projectile.list) do
-    --love.graphics.draw(p.image, p.x, p.y, math.atan2(p.vy, p.vx), 1, 1)
-    love.graphics.setColor(0,0,0)
-    love.graphics.circle("fill", p.x, p.y, 3)
+    p:draw()
   end
+end
+
+function Projectile:draw()
+  love.graphics.setColor(0,0,0)
+  love.graphics.circle("fill", self.x, self.y, 3)
 end
 
 function Projectile:onHit(target)

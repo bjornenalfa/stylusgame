@@ -1,12 +1,16 @@
-camera = {}
-local c = camera
+Camera = {}
+local c = Camera
 
 c.x = 0
 c.y = 0
 c.xscale = 2
 c.yscale = 2
 
-function camera.update(dt)
+function Camera.windowToWorld(x, y)
+  return (x)/c.xscale + c.x, (y)/c.yscale + c.y
+end
+
+function Camera.update(dt)
   local player = Player.list["p1"]
   width = love.graphics.getWidth() / c.xscale
   height = love.graphics.getHeight() / c.yscale
@@ -14,7 +18,7 @@ function camera.update(dt)
   c.y = math.max(0, math.min(player.y - height / 2, Map.height - height))
 end
 
-function camera.draw()
+function Camera.draw()
   --love.graphics.translate(math.floor(-c.x), math.floor(-c.y))
   love.graphics.scale(c.xscale, c.yscale)
   --love.graphics.translate(-c.x, -c.y) -- sometimes gives artifacts
