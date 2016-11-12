@@ -7,7 +7,7 @@ function s.new(time, intensity)
   table.insert(s.list, {
       timer = 0,
       time = time,
-      shake = intensity}
+      shake = intensity})
 end
 
 function s.update(dt)
