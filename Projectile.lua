@@ -45,8 +45,8 @@ function Projectile:update(dt)
   end
   
   for _,monster in pairs(Monster.list) do
-    if (monster.x - this.x)*(monster.x - this.x)
-      +(monster.y - this.y)*(monster.y - this.y)
+    if (monster.x - self.x)*(monster.x - self.x)
+      +(monster.y - self.y)*(monster.y - self.y)
       <(monster.r * monster.r) then
         self:onHit(monster)
         break

@@ -27,7 +27,7 @@ Sound.addStaticSound("explosion1", ".wav")
 Weapon.rocket=Weapon.new(1, {600,
                               function(this) end,
                               function(this) Sound.play("explosion1") end,
-                              function(this, target) this.dead=true; if target ~= nil then target:die() end end,
+                              function(this, target) this.dead=true; if target ~= nil then target:damage(100); print(target.hp) end; end,
                               nil
                             })
 
