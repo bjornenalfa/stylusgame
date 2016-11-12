@@ -10,7 +10,10 @@ function Laser.new(cooldown, d)
 end
 
 function Laser:fire(fromX, fromY, orientation)
-  LaserProjectile.new(fromX, fromY, orientation, 10, 0)
+  if self.cdLeft <= 0 then
+    LaserProjectile.new(fromX, fromY, orientation, 10, 0)
+    self.cdLeft = self.firingCooldown
+  end
 end
 
 
@@ -43,11 +46,12 @@ function LaserProjectile:fire()
     y = y + dy
     if Land.isBlocked(x, y) then
       isHit = true
-      stopX = x
-      stopY = y
+      self.stopX = x
+      self.stopY = y
     end
     -- aslo need a check over all monsters
   end
+  Sound.play("laser_shoot")
 end
 
 function LaserProjectile:update(dt)
@@ -60,8 +64,9 @@ end
 function LaserProjectile:draw()
   print("hej")
   love.graphics.setLineWidth(2)
-  love.graphics.setColor(50, 150, 250)
-  love.graphics.line(self.x, self.y, stopX, stopY)
+  
+  love.graphics.setColor(50, 150, 250, 255*self.timeout/LIFETIME)
+  love.graphics.line(self.x, self.y, self.stopX, self.stopY)
   love.graphics.setLineWidth(1)
 end
 

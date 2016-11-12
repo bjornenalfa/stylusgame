@@ -9,7 +9,7 @@ function Weapon.new(firingSpeed, projectileTemplate)
     projectileTemplate=projectileTemplate,
     cdLeft = 0
   }
-  
+  print("test  "..new.firingCooldown)
   setmetatable(new, Weapon)
   table.insert(Weapon.list, new)
   
@@ -48,7 +48,7 @@ function Weapon:fire(fromX, fromY, orientation)
 end
 
 function Weapon:update(dt)
-  print("hi")
+  print("hjsadh")
   if self.cdLeft > 0 then
     self.cdLeft = self.cdLeft - dt
   end
