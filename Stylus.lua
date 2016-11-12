@@ -1,8 +1,6 @@
 Stylus = {}
 local s = Stylus
 
-s.canvas = nil
-
 s.maxInk = 500
 s.currentInk = s.maxInk
 s.ranOut = false
@@ -14,11 +12,6 @@ s.lasty = 0
 
 s.drawn = false
 
-function s.newMap()
-  s.canvas = love.graphics.newCanvas(Map.width, Map.height)
-  Land.landImage = s.canvas:newImageData()
-end
-
 function s.mousereleased(x, y, button)
   if s.ranOut and button == 1 then
     s.ranOut = false
@@ -28,30 +21,31 @@ end
 function s.update(dt)
   s.currentInk = math.min(s.currentInk + dt * 5, s.maxInk)
   if love.mouse.isDown(1) and not s.ranOut then
-    s.canvas:renderTo(function ()
-      local x = love.mouse.getX()
-      local y = love.mouse.getY()
-      if not s.cont then
-        s.cont = true
-        s.lastx = x
-        s.lasty = y
-      else
-        local diff = math.sqrt((s.lastx-x)*(s.lastx-x)+(s.lasty-y)*(s.lasty-y))
-        if diff > s.currentInk then
-          s.cont = false
-          s.ranOut = true
-          return
-        end
-        s.drawn = true
-        s.currentInk = s.currentInk - math.sqrt((s.lastx-x)*(s.lastx-x)+(s.lasty-y)*(s.lasty-y))
+    local x = love.mouse.getX()
+    local y = love.mouse.getY()
+    if not s.cont then
+      s.cont = true
+      s.lastx = x
+      s.lasty = y
+    else
+      local diff = math.sqrt((s.lastx-x)*(s.lastx-x)+(s.lasty-y)*(s.lasty-y))
+      if diff > s.currentInk then
+        s.cont = false
+        s.ranOut = true
+        return
+      end
+      s.drawn = true
+      s.currentInk = s.currentInk - math.sqrt((s.lastx-x)*(s.lastx-x)+(s.lasty-y)*(s.lasty-y))
+      Land.drawBreakable(function ()
         love.graphics.setColor(0,0,0)
         love.graphics.setLineWidth(5)
         love.graphics.line(s.lastx, s.lasty, x, y)
         love.graphics.setLineWidth(1)
-        s.lastx = x
-        s.lasty = y
-      end
-    end)
+      end)
+      s.lastx = x
+      s.lasty = y
+    end
+    
   else
     if s.cont then
       s.contTimer = s.contTimer + dt
@@ -61,11 +55,6 @@ function s.update(dt)
       end
     end
   end
-end
-
-function s.drawLand()
-  love.graphics.setColor(255,255,255)
-  love.graphics.draw(s.canvas)
 end
 
 function s.drawUI()
