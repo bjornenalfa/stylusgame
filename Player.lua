@@ -24,7 +24,6 @@ function Player.new(name, x, y, color, joystick)
     movementImpair = false, --only specific to the machinegun weapon, to hinder movement
 
     weapon=Laser.new()
-    --weapon=MachineGun.new(0.2, 10 , 10)
   }
   new["weapon"].player = new
   setmetatable(new, Player)
