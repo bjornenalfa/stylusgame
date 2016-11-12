@@ -101,7 +101,7 @@ function Player:update(dt)
   self.weapon:update(dt)
   if Input.hasInput(Input.FIRE, self) then
     self.weapon:fire(self.x, self.y, self.orientation)
-    print(self.orientation)
+    --print(self.orientation)
     --Projectile.fromTemplate(self.x, self.y, self.orientation, Projectile.templates.bullet)
   end
 end
