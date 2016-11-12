@@ -3,6 +3,9 @@ MachineGun.__index = MachineGun
 setmetatable(MachineGun, Weapon)
 
 function MachineGun.new(cooldown, d, speed)
+  cooldown = cooldown or 1
+  d = d or 10
+  speed = speed or 10
   local new = Weapon.new(cooldown)
   new["damage"] = d
   new["velocity"] = speed
@@ -12,15 +15,17 @@ function MachineGun.new(cooldown, d, speed)
   new["fireTime"] = 0
   new["setupTime"] = 3
   new["setupTimeLeft"] = new.setupTime
-  new["setupState"] = IS_NOT_SETUP
+  new["setupState"] = 0
+  new["lockedAngle"] = nil
+  assert(new.setupState ~= nil)
   setmetatable(new, MachineGun)
   return new
 end
 
-local IS_NOT_SETUP = 0
-local IS_SETTING_UP = 1
-local IS_SETUP = 2
-local IS_TEARING_DOWN = 3
+IS_NOT_SETUP = 0
+IS_SETTING_UP = 1
+IS_SETUP = 2
+IS_TEARING_DOWN = 3
 
 
 function MachineGun:fire(fromX, fromY, orientation)
@@ -29,7 +34,7 @@ function MachineGun:fire(fromX, fromY, orientation)
       self.firingTime = math.min(self.firingTime + 0.2, self.maxSpread/2)
       local angleOffset = (math.random(-self.firingTime, self.firingTime)/self.maxSpread)*math.pi/18
       MachineGunProjectile.new(fromX, fromY, orientation+angleOffset, self.damage, self.velocity)
-      self.cdLeft = self.firingCooldown / 2
+      self.cdLeft = self.firingCooldown / 10000
       self.fireTime = 0
     elseif self.setupState == IS_NOT_SETUP then
       self.firingTime = math.min(self.firingTime + 0.5, self.maxSpread)
@@ -44,9 +49,10 @@ end
 function MachineGun:altFire(fromX, fromY, orientation)
   -- depending on state, we transition and let update(dt) do the work
   -- the states pretty much only changes how the gun is shot, perhaps
-
+  print("hejsan hoppsan    " .. tostring(self.setupState))
   if self.setupState == IS_NOT_SETUP then
     self.setupState = IS_SETTING_UP
+    self.lockedAngle = self.player.orientation
   elseif self.setupState == IS_SETTING_UP or self.setupState == IS_TEARING_DOWN then
     --do nothing, maybe a screenshake
   elseif self.setupState == IS_SETUP then
@@ -61,14 +67,31 @@ function MachineGun:update(dt)
   if self.firingTime > 0 and self.fireTime > 0.5 then
     self.firingTime = self.firingTime - dt*10
   end
-  print("firingTime: "..self.firingTime)
   
   if self.setupState == IS_NOT_SETUP then
-    -- do nothing
-  elseif self.setupState == IS_SETUP then
-    --do nothing
-  elseif self.setupState == IS_SETTING_UP or self.setupState == IS_TEARING_DOWN then
-    self.setupTimeLeft = self.setupTimeLeft - dx
+    self.player.movementImpair = false
+  elseif self.setupState == IS_SETUP or self.setupState == IS_SETTING_UP then
+    local playerDir = self.player.orientation
+    local lockedDir = self.lockedAngle
+    local allowedDiff = math.pi/4
+    local function mod(a, n)
+      return a - math.floor(a/n) * n
+    end
+    local diff = playerDir - lockedDir
+    diff = (diff + math.pi) % (2*math.pi) - math.pi
+    if diff > 0 then
+      if diff > allowedDiff then
+        self.player.orientation = lockedDir + allowedDiff
+      end
+    else
+      if diff < -allowedDiff then
+        self.player.orientation = lockedDir - allowedDiff
+      end
+    end
+  end
+  if self.setupState == IS_SETTING_UP or self.setupState == IS_TEARING_DOWN then
+    self.player.movementImpair = true
+    self.setupTimeLeft = self.setupTimeLeft - dt
     if self.setupTimeLeft < 0 then
       if self.setupState == IS_SETTING_UP then
         self.setupState = IS_SETUP
@@ -78,6 +101,10 @@ function MachineGun:update(dt)
       self.setupTimeLeft = self.setupTime
     end
   end
+end
+
+function MachineGun:draw(object)
+  love.graphics.print("timeLeft: "..tostring(self.setupTimeLeft) .. " state: " ..tostring(self.setupState .. " moveme. " .. tostring(self.player.movementImpair)), object.x - 150, object.y - 20)
 end
 
 MachineGunProjectile = {}
@@ -107,6 +134,5 @@ end
 
 function MachineGunProjectile:draw()
   love.graphics.setColor(255, 255, 255)
-  love.graphics.draw(self.image, self.x, self.y, self.orientation)--, self.image:getWidth()/2, self.image:getHeight()/2)
-  love.graphics.print("firing time: "..self.firingTime, self.x - 20, self.y - 20)
+  love.graphics.draw(self.image, self.x, self.y, self.angle, 1, 1, self.image:getWidth()/2, self.image:getHeight()/2)
 end

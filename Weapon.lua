@@ -5,6 +5,7 @@ Weapon.list = {}
 
 function Weapon.new(firingSpeed, projectileTemplate) 
   local new = {
+    player = nil,
     firingCooldown=firingSpeed,
     projectileTemplate=projectileTemplate,
     cdLeft = 0
