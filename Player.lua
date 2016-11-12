@@ -21,6 +21,7 @@ function Player.new(name, x, y, color, joystick)
     color=color,
     velocity=120,
     orientation=0,
+    machineGunState = false, --only specific to the machinegun weapon, to hinder movement
 
     weapon=Rocket.new()
   }
@@ -58,26 +59,26 @@ function Player.updateAll(dt)
 end
 
 function Player:update(dt)
-  chkx, dx = Input.hasInput(Input.MOVE_X, self)
-  if chkx then
-    self.vx = dx * self.velocity * dt
-  else 
-    self.vx = 0
+  if not machineGunState then
+    local _, dx = Input.hasInput(Input.MOVE_X, self)
+    dx = dx or 0
+    local _, dy = Input.hasInput(Input.MOVE_Y, self)
+    dy = dy or 0
+    if dx*dx + dy*dy >= Input.MOVEMENT_SENSITIVITY * Input.MOVEMENT_SENSITIVITY then
+      self.vx = dx * self.velocity * dt
+      self.vy = dy * self.velocity * dt
+    else 
+      self.vx = 0
+      self.vy = 0
+    end
   end
-  
-  chky, dy = Input.hasInput(Input.MOVE_Y, self)
-  if chky then
-    self.vy = dy * self.velocity * dt
-  else 
-    self.vy = 0
-  end
-  
+
   local _, magX = Input.hasInput(Input.AIM_X, self)
   magX = magX or 0
   local _, magY = Input.hasInput(Input.AIM_Y, self)
   magY = magY or 0
   local aimSensitivity = 0.2
-  if magX*magX + magY*magY >= aimSensitivity * aimSensitivity then
+  if magX*magX + magY*magY >= Input.AIM_SENSITIVITY * Input.AIM_SENSITIVITY then
     magX = magX or 0
     magY = magY or 0
     self.orientation = math.atan2(magY, magX)
@@ -86,9 +87,30 @@ function Player:update(dt)
   local vdir = math.atan2(self.vy, self.vx)
   local vdist = math.sqrt(self.vx*self.vx + self.vy*self.vy)
   
-  for i = 0, math.pi, math.pi/8 do
+  for i = 0, math.pi/2-math.pi/16, math.pi/16 do
+    local vdist = math.cos(i)*vdist
     self.vx = math.cos(vdir+i) * vdist
     self.vy = math.sin(vdir+i) * vdist
+    
+    local x = self.x + self.vx
+    local y = self.y + self.vy
+    local isBlocked = false
+    
+    for k,v in pairs(COLLISION_POINTS_OFFSETS) do
+      if Land.isBlocked(x + v.x, y + v.y) then
+        isBlocked = true
+        break
+      end
+    end
+    
+    if not isBlocked then
+      self.x = self.x + self.vx
+      self.y = self.y + self.vy
+      break
+    end
+    
+    self.vx = math.cos(vdir-i) * vdist
+    self.vy = math.sin(vdir-i) * vdist
     
     local x = self.x + self.vx
     local y = self.y + self.vy
@@ -111,6 +133,8 @@ function Player:update(dt)
   self.weapon:update(dt)
   if Input.hasInput(Input.FIRE, self) then
     self.weapon:fire(self.x, self.y, self.orientation)
+  elseif Input.hasInput(Input.ALT_FIRE) then
+    if self.weapon.altFire then self.weapon:altFire(self.x, self.y, self.orientation) end
   end
 end
 
@@ -120,7 +144,8 @@ function Player.drawAll()
     love.graphics.setColor(255,255,255,255)
     love.graphics.draw(Image.hero, p.x, p.y, p.orientation, p.size/Image.hero:getWidth(), p.size/Image.hero:getHeight(), p.size, p.size)
     love.graphics.setColor(0, 0, 0)
-    love.graphics.line(p.x, p.y, p.x + math.cos(p.orientation)*p.size, p.y + math.sin(p.orientation)*p.size)
+    --love.graphics.line(p.x, p.y, p.x + math.cos(p.orientation)*p.size, p.y + math.sin(p.orientation)*p.size)
+    p.weapon:draw(p)
     love.graphics.setColor(255,0,0)
     for k,v in pairs(COLLISION_POINTS_OFFSETS) do
       love.graphics.points(p.x+v.x, p.y+v.y)

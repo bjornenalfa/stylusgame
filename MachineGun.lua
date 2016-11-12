@@ -12,19 +12,47 @@ function MachineGun.new(cooldown, d, speed)
   new["fireTime"] = 0
   new["setupTime"] = 3
   new["setupTimeLeft"] = new.setupTime
+  new["setupState"] = IS_NOT_SETUP
   setmetatable(new, MachineGun)
   return new
 end
 
+local IS_NOT_SETUP = 0
+local IS_SETTING_UP = 1
+local IS_SETUP = 2
+local IS_TEARING_DOWN = 3
+
+
 function MachineGun:fire(fromX, fromY, orientation)
   if self.cdLeft <= 0 then
-    self.firingTime = math.min(self.firingTime + 0.5, self.maxSpread)
-    local angleOffset = (math.random(-self.firingTime, self.firingTime) / self.maxSpread) * math.pi/18
-    
-    MachineGunProjectile.new(fromX, fromY, orientation+angleOffset, self.damage, self.velocity)
-    self.cdLeft = self.firingCooldown
-    self.fireTime = 0
+    if self.setupState == IS_SETUP then
+      self.firingTime = math.min(self.firingTime + 0.2, self.maxSpread/2)
+      local angleOffset = (math.random(-self.firingTime, self.firingTime)/self.maxSpread)*math.pi/18
+      MachineGunProjectile.new(fromX, fromY, orientation+angleOffset, self.damage, self.velocity)
+      self.cdLeft = self.firingCooldown / 2
+      self.fireTime = 0
+    elseif self.setupState == IS_NOT_SETUP then
+      self.firingTime = math.min(self.firingTime + 0.5, self.maxSpread)
+      local angleOffset = (math.random(-self.firingTime, self.firingTime)/self.maxSpread)*math.pi/18
+      MachineGunProjectile.new(fromX, fromY, orientation+angleOffset, self.damage, self.velocity)
+      self.cdLeft = self.firingCooldown
+      self.fireTime = 0
+    end
   end    
+end
+
+function MachineGun:altFire(fromX, fromY, orientation)
+  -- depending on state, we transition and let update(dt) do the work
+  -- the states pretty much only changes how the gun is shot, perhaps
+
+  if self.setupState == IS_NOT_SETUP then
+    self.setupState = IS_SETTING_UP
+  elseif self.setupState == IS_SETTING_UP or self.setupState == IS_TEARING_DOWN then
+    --do nothing, maybe a screenshake
+  elseif self.setupState == IS_SETUP then
+    --move out of setup
+    self.setupState = IS_TEARING_DOWN
+  end
 end
 
 function MachineGun:update(dt)
@@ -34,6 +62,22 @@ function MachineGun:update(dt)
     self.firingTime = self.firingTime - dt*10
   end
   print("firingTime: "..self.firingTime)
+  
+  if self.setupState == IS_NOT_SETUP then
+    -- do nothing
+  elseif self.setupState == IS_SETUP then
+    --do nothing
+  elseif self.setupState == IS_SETTING_UP or self.setupState == IS_TEARING_DOWN then
+    self.setupTimeLeft = self.setupTimeLeft - dx
+    if self.setupTimeLeft < 0 then
+      if self.setupState == IS_SETTING_UP then
+        self.setupState = IS_SETUP
+      else
+        self.setupState = IS_NOT_SETUP
+      end
+      self.setupTimeLeft = self.setupTime
+    end
+  end
 end
 
 MachineGunProjectile = {}
@@ -64,4 +108,5 @@ end
 function MachineGunProjectile:draw()
   love.graphics.setColor(255, 255, 255)
   love.graphics.draw(self.image, self.x, self.y, self.orientation)--, self.image:getWidth()/2, self.image:getHeight()/2)
+  love.graphics.print("firing time: "..self.firingTime, self.x - 20, self.y - 20)
 end
