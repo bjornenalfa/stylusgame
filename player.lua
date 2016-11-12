@@ -1,4 +1,3 @@
-require "input"
 
 Player = {}
 Player.__index = Player

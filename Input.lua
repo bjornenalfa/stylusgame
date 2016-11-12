@@ -8,6 +8,7 @@ Input.FIRE = {keyboard={}, gamepad={}, axisIf={{"triggerright", function(i) retu
 
 -- Returns whether the keyboard or the current player's gamepad has a specific input
 function Input.hasInput(inputs, player)
+  player = player or {}
   inputs = inputs or {}
   local stick = player.joystick
   if stick then

@@ -1,6 +1,6 @@
-require("input")
 Camera = {}
 local i = Camera
+local hasInput = Input.hasInput
 
 i.width = love.graphics.getWidth()
 i.height = love.graphics.getHeight()
@@ -113,8 +113,8 @@ end
 
 function Camera.drawOOB()
   if i.currentlyFollowing and i.activeEntity then
-    local x = math.min(math.max(0,i.activeEntity.x),Map.width)
-    local y = math.min(math.max(0,i.activeEntity.y),Map.height)
+    local x = math.min(math.max(0,i.activeEntity.x), Map.width)
+    local y = math.min(math.max(0,i.activeEntity.y), Map.height)
     if i.activeEntity.x ~= x or i.activeEntity.y ~= y then
       love.graphics.setColor(255,255,255)
       love.graphics.draw(Image.arrow, x, y, math.atan2(i.activeEntity.y-y, i.activeEntity.x-x), 2, 2, Image.arrow:getWidth()/2, Image.arrow:getHeight()/2)
