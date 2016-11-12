@@ -28,10 +28,12 @@ function love.load()
   love.mouse.setCursor(love.mouse.newCursor(getImage("mouse_death"):getData(), 10, 10))
   local pl = Player.new("p1", 300, 300, {255, 0, 0}, 1)
   --Camera.trackEntity(pl)
+  --[[
   local mon = Zombieduck.new(150, 150, 10, getImage("hero"))
   local mon2 = Duckcrab.new(200, 200, 10, getImage("hero"))
   local mon3 = Crabduck.new(400, 200, 10, getImage("hero"))
   local mon3 = Crabduck.new(200, 500, 10, getImage("hero"))
+  --]]
 end
 
 function love.keypressed(key)

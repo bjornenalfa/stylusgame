@@ -21,10 +21,11 @@ function Player.new(name, x, y, color, joystick)
     color=color,
     velocity=120,
     orientation=0,
-    machineGunState = false, --only specific to the machinegun weapon, to hinder movement
+    movementImpair = false, --only specific to the machinegun weapon, to hinder movement
 
-    weapon=MachineGun.new()
+    weapon=MachineGun.new(0.2, 10 , 10)
   }
+  new["weapon"].player = new
   setmetatable(new, Player)
   Player.list[name] = new
   return new
@@ -59,7 +60,7 @@ function Player.updateAll(dt)
 end
 
 function Player:update(dt)
-  if not machineGunState then
+  if not self.movementImpair then
     local _, dx = Input.hasInput(Input.MOVE_X, self)
     dx = dx or 0
     local _, dy = Input.hasInput(Input.MOVE_Y, self)
@@ -71,6 +72,10 @@ function Player:update(dt)
       self.vx = 0
       self.vy = 0
     end
+  else
+    --we should not move
+    self.vx = 0
+    self.vy = 0
   end
 
   local _, magX = Input.hasInput(Input.AIM_X, self)
@@ -133,7 +138,7 @@ function Player:update(dt)
   self.weapon:update(dt)
   if Input.hasInput(Input.FIRE, self) then
     self.weapon:fire(self.x, self.y, self.orientation)
-  elseif Input.hasInput(Input.ALT_FIRE) then
+  elseif Input.hasInput(Input.ALT_FIRE, self) then
     if self.weapon.altFire then self.weapon:altFire(self.x, self.y, self.orientation) end
   end
 end
