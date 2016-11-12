@@ -8,6 +8,7 @@ function Laser.new(cooldown, d)
   local new = Weapon.new(cooldown)
   new["image"] = getImage("weapons/laser_gun")
   new["damage"] = d
+  new.image = getImage("weapons/laser_gun")
   setmetatable(new, Laser)
   return new
 end
@@ -47,15 +48,21 @@ function LaserProjectile:fire()
   while not isHit do
     x = x + dx
     y = y + dy
+    local hitMonster = Monster.pointInMonster(x, y)
+    if hitMonster then
+      hitMonster:damage(self.damage)
+      isHit = true
+      break
+    end
     if Land.isBlocked(x, y) then
       isHit = true
-      self.stopX = x
-      self.stopY = y
+      break
     end
-    -- aslo need a check over all monsters
   end
+  self.stopX = x
+  self.stopY = y
   Sound.play("laser_shoot")
-  Screenshake.new(2, 5)
+  Screenshake.new(0.5, 0.5)
 end
 
 function LaserProjectile:update(dt)

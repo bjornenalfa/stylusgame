@@ -120,10 +120,12 @@ function MachineGunProjectile.new(fromX, fromY, orientation, damage, vel)
   return new
 end
 
-function MachineGunProjectile:update(dt)
+function MachineGunProjectile:move(dt)
   local dx = self.vx--math.cos(self.angle) * self.vel
   local dy = self.vy--math.sin(self.angle) * self.vel
-  local steps = 5
+  self.x = self.x + dx
+  self.y = self.y + dy
+  --[[local steps = 5
   for i = 0, steps, 1 do
     self.x = self.x + dx / steps
     self.y = self.y + dy / steps
@@ -131,7 +133,7 @@ function MachineGunProjectile:update(dt)
       self.dead = true
       break
     end
-  end
+  end]]
 end
 
 function MachineGunProjectile:draw()

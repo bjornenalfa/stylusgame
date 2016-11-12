@@ -8,6 +8,7 @@ function Projectile.new(x, y, angle, damage, speed)
     x=x,
     y=y,
     angle = angle,
+    damage = damage,
     vx=math.cos(angle)*speed,
     vy=math.sin(angle)*speed,
     dead=false
@@ -93,5 +94,5 @@ function Projectile:onHit(target)
   if target ~= nil then
     target:damage(self.damage)
   end
-  dead=true
+  self.dead=true
 end
