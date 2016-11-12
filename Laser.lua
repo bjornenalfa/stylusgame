@@ -3,6 +3,8 @@ Laser.__index = Laser
 setmetatable(Laser, Weapon)
 
 function Laser.new(cooldown, d)
+  cooldown = cooldown or 2.5
+  d = d or 25
   local new = Weapon.new(cooldown)
   new["damage"] = d
   setmetatable(new, Laser)
