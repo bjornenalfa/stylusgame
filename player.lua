@@ -1,5 +1,4 @@
-require "Input"
-require "Projectile"
+require "input"
 
 Player = {}
 Player.__index = Player
@@ -22,7 +21,7 @@ function Player.new(name, x, y, color, joystick)
     vy=0,
     size=30,
     color=color,
-    velocity=600,
+    velocity=500,
     orientation=0
   }
   setmetatable(new, Player)
@@ -63,10 +62,6 @@ function Player:update(dt)
     self.x = self.x + self.vx * dt
     self.y = self.y + self.vy * dt
   end
-  
-  if Input.hasInput(Input.FIRE, self) then
-    Projectile.fromTemplate(self.x, self.y, self.orientation, Projectile.templates.bullet)
-  end
 end
 
 function Player.drawAll()
@@ -74,7 +69,7 @@ function Player.drawAll()
   for _,p in pairs(Player.list) do
     love.graphics.setColor(p.color)
     love.graphics.circle("fill", p.x, p.y, p.size)
-    love.graphics.setColor(0, 0, 0)
+    love.graphics.setColor(0,0,0,255)
     love.graphics.line(p.x, p.y, p.x + math.cos(p.orientation)*p.size, p.y + math.sin(p.orientation)*p.size)
   end
   love.graphics.setColor(prevR, prevG, prevB, prevA)
