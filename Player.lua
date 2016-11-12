@@ -72,7 +72,9 @@ function Player:update(dt)
   end
   
   local _, magX = Input.hasInput(Input.AIM_X, self)
+  magX = magX or 0
   local _, magY = Input.hasInput(Input.AIM_Y, self)
+  magY = magY or 0
   local aimSensitivity = 0.2
   if magX*magX + magY*magY >= aimSensitivity * aimSensitivity then
     magX = magX or 0
