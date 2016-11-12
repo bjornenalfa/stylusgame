@@ -25,6 +25,7 @@ function Player.new(name, x, y, color, joystick)
 
     --weapon=Laser.new()
     weapon=MachineGun.new(0.2, 10 , 10)
+
   }
   new["weapon"].player = new
   setmetatable(new, Player)

@@ -10,6 +10,8 @@ function Laser.new(cooldown, d)
   new["damage"] = d
   new.image = getImage("weapons/laser_gun")
   setmetatable(new, Laser)
+  
+  Laser.altFireDelay = 2
   return new
 end
 
@@ -20,6 +22,40 @@ function Laser:fire(fromX, fromY, orientation)
   end
 end
 
+function Laser:update(dt)
+  if self.altFireTimer == nil then
+    Weapon.update(self, dt)
+  else
+    self.altFireTimer = self.altFireTimer - dt
+    if self.altFireTimer <= 0 then
+      LaserProjectile.new(self.player.x, self.player.y, self.player.orientation, 300, 1)
+      self.player.movementImpair = false
+      self.altFireTimer = nil
+    end
+  end
+end
+
+function Laser:altFire(player)
+  if self.altFireTimer == nil then
+    self.altFireTimer = self.altFireDelay
+    self.player.movementImpair = true
+  end
+end
+
+function Laser:draw()
+  if self.altFireTimer == nil then
+    Weapon.draw(self)
+  else
+    Weapon.draw(self)
+    local lw = love.graphics.getLineWidth()
+    local r,g,b = love.graphics.getColor()
+    love.graphics.setLineWidth(1)
+    love.graphics.setColor(255, 0, 0, 255*(1 - (self.altFireTimer/self.altFireDelay)))
+    love.graphics.line(self.player.x, self.player.y, self.player.x + 2000*math.cos(self.player.orientation), self.player.y + 2000*math.sin(self.player.orientation))
+    love.graphics.setLineWidth(lw)
+    love.graphics.setColor(r,g,b)
+  end
+end
 
 
 LaserProjectile = {}
@@ -79,5 +115,4 @@ function LaserProjectile:draw()
   love.graphics.line(self.x, self.y, self.stopX, self.stopY)
   love.graphics.setLineWidth(1)
 end
-
   
