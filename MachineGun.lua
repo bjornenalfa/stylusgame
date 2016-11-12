@@ -120,5 +120,5 @@ end
 
 function MachineGunProjectile:draw()
   love.graphics.setColor(255, 255, 255)
-  love.graphics.draw(self.image, self.x, self.y, self.angle)--, self.image:getWidth()/2, self.image:getHeight()/2)
+  love.graphics.draw(self.image, self.x, self.y, self.angle, 1, 1, self.image:getWidth()/2, self.image:getHeight()/2)
 end
