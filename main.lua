@@ -38,6 +38,7 @@ function love.update(dt)
   Player.updateAll(dt)
   Monster.updateAll(dt)
   Camera.update(dt)
+  Projectile.updateAll(dt)
 end
 
 
@@ -49,6 +50,7 @@ function love.draw()
   Player.drawAll()
   Monster.drawAll()
   Explosions.draw()
+  Projectile.drawAll()
   
   
   love.graphics.origin() -- reset all shakes

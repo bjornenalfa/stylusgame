@@ -27,6 +27,19 @@ function Player.new(name, x, y, color, joystick)
   return new
 end
 
+function Player.getClosest(object)
+  local nearest = Player[1]
+  local dist = 10000000
+  for _,v in pairs(Player.list) do
+    local d = (v.x-object.x)*(v.x-object.x)+(v.y-object.y)*(v.y-object.y)
+    if d < dist then
+      dist = d
+      nearest = v
+    end
+  end
+  return nearest, dist
+end 
+
 function Player.updateAll(dt)
   for _,p in pairs(Player.list) do
     p:update(dt)
