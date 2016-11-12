@@ -7,6 +7,7 @@ function Projectile.new(x, y, angle, damage, speed)
   local new = {
     x=x,
     y=y,
+    angle = angle,
     vx=math.cos(angle)*speed,
     vy=math.sin(angle)*speed,
     dead=false
