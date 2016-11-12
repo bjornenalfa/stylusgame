@@ -71,9 +71,10 @@ function Player:update(dt)
     self.vy = 0
   end
   
-  aimingX, magX = Input.hasInput(Input.AIM_X, self)
-  aimingY, magY = Input.hasInput(Input.AIM_Y, self)
-  if aimingX or aimingY then
+  local _, magX = Input.hasInput(Input.AIM_X, self)
+  local _, magY = Input.hasInput(Input.AIM_Y, self)
+  local aimSensitivity = 0.2
+  if magX*magX + magY*magY >= aimSensitivity * aimSensitivity then
     magX = magX or 0
     magY = magY or 0
     self.orientation = math.atan2(magY, magX)

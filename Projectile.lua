@@ -4,7 +4,6 @@ Projectile.__index = Projectile
 Projectile.list = {}
 
 function Projectile.new(x, y, angle, damage, speed)
-  print(angle)
   local new = {
     x=x,
     y=y,

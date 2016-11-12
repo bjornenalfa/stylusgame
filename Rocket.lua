@@ -47,3 +47,9 @@ function RocketProjectile:onHit(target)
   end
   dead=true
 end
+
+function RocketProjectile:draw()
+  local tmp = love.graphics.getColor()
+  love.graphics.setColor(255,255,255,255)
+  love.graphics.draw(getImage("missile"), self.x, self.y, math.atan2(self.vy, self.vx))
+end
