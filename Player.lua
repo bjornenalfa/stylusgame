@@ -28,6 +28,14 @@ function Player.new(name, x, y, color, joystick)
   return new
 end
 
+local COLLISION_POINTS_AMOUNTS = 10
+local COLLISION_POINTS_OFFSETS = {}
+local PLAYER_RADIUS = 12
+
+for v = 0, math.pi*2, math.pi*2 /  COLLISION_POINTS_AMOUNTS do
+  table.insert(COLLISION_POINTS_OFFSETS, {x = math.cos(v) * PLAYER_RADIUS,
+                                          y = math.sin(v) * PLAYER_RADIUS})
+
 function Player.getClosest(object)
   local nearest = Player[1]
   local dist = 10000000
@@ -68,9 +76,20 @@ function Player:update(dt)
     magX = magX or 0
     magY = magY or 0
     self.orientation = math.atan2(magY, magX)
+  endy
+  
+  local x = self.x + self.vx * dt
+  local y = self.y + self.vy * dt
+  local isBlocked = false
+  
+  for k,v in pairs(COLLISION_POINTS_OFFSETS) do
+    if Land.isBlocked(x + v.x, y + v.y) then
+      isBlocked = true
+      break
+    end
   end
   
-  if not Land.isBlocked(self.x + self.vx * dt, self.y + self.vy * dt) then
+  if not isBlocked then
     self.x = self.x + self.vx * dt
     self.y = self.y + self.vy * dt
   end
