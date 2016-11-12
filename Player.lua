@@ -147,10 +147,10 @@ function Player.drawAll()
   local prevR, prevG, prevB, prevA = love.graphics.getColor()
   for _,p in pairs(Player.list) do
     love.graphics.setColor(255,255,255,255)
+    p.weapon:draw(p)
     love.graphics.draw(Image.hero, p.x, p.y, p.orientation, p.size/Image.hero:getWidth(), p.size/Image.hero:getHeight(), p.size, p.size)
     love.graphics.setColor(0, 0, 0)
     --love.graphics.line(p.x, p.y, p.x + math.cos(p.orientation)*p.size, p.y + math.sin(p.orientation)*p.size)
-    p.weapon:draw(p)
     love.graphics.setColor(255,0,0)
     for k,v in pairs(COLLISION_POINTS_OFFSETS) do
       love.graphics.points(p.x+v.x, p.y+v.y)

@@ -7,6 +7,7 @@ function MachineGun.new(cooldown, d, speed)
   d = d or 10
   speed = speed or 10
   local new = Weapon.new(cooldown)
+  new["image"] = getImage("weapons/machine_gun")
   new["damage"] = d
   new["velocity"] = speed
   new["firingTime"] = 0
@@ -105,6 +106,7 @@ end
 
 function MachineGun:draw(object)
   love.graphics.print("timeLeft: "..tostring(self.setupTimeLeft) .. " state: " ..tostring(self.setupState .. " moveme. " .. tostring(self.player.movementImpair)), object.x - 150, object.y - 20)
+  Weapon.draw(self)
 end
 
 MachineGunProjectile = {}
