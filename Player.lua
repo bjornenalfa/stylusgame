@@ -130,6 +130,8 @@ function Player:update(dt)
   self.weapon:update(dt)
   if Input.hasInput(Input.FIRE, self) then
     self.weapon:fire(self.x, self.y, self.orientation)
+  elseif Input.hasInput(Input.ALT_FIRE) then
+    if self.weapon.altFire then self.weapon:altFire(self.x, self.y, self.orientation) end
   end
 end
 
@@ -139,7 +141,8 @@ function Player.drawAll()
     love.graphics.setColor(255,255,255,255)
     love.graphics.draw(Image.hero, p.x, p.y, p.orientation, p.size/Image.hero:getWidth(), p.size/Image.hero:getHeight(), p.size, p.size)
     love.graphics.setColor(0, 0, 0)
-    love.graphics.line(p.x, p.y, p.x + math.cos(p.orientation)*p.size, p.y + math.sin(p.orientation)*p.size)
+    --love.graphics.line(p.x, p.y, p.x + math.cos(p.orientation)*p.size, p.y + math.sin(p.orientation)*p.size)
+    p.weapon:draw(p.x, p.y, p.orientation)
     love.graphics.setColor(255,0,0)
     for k,v in pairs(COLLISION_POINTS_OFFSETS) do
       love.graphics.points(p.x+v.x, p.y+v.y)
