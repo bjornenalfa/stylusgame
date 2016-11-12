@@ -1,6 +1,6 @@
 require("input")
-camera = {}
-local i = camera
+Camera = {}
+local i = Camera
 
 i.width = love.graphics.getWidth()
 i.height = love.graphics.getHeight()
@@ -25,19 +25,19 @@ function love.mousepressed(x, y, button)
   local logicalX = (x + i.posX)/i.mapScale
   local logicalY = (y + i.posY)/i.mapScale
   --print(logicalX, logicalY)
-  for _, ml in pairs(camera.mouseListeners) do
+  for _, ml in pairs(Camera.mouseListeners) do
     ml.onClick(logicalX, logicalY, button)
   end
 end
 
-function camera.listen(l)
+function Camera.listen(l)
   if l ~= nil then
-    table.insert(camera.mouseListeners, l)
+    table.insert(Camera.mouseListeners, l)
   end
 end
 
 
-function camera.update(dt)
+function Camera.update(dt)
   i.width = love.graphics.getWidth()
   i.height = love.graphics.getHeight()
   scaleNeed = i.mapScale - i.scale
@@ -97,12 +97,12 @@ function camera.update(dt)
 
 end
 
-function camera.trackEntity(target)
+function Camera.trackEntity(target)
   i.activeEntity = target
   i.currentlyFollowing = true
 end
 
-function camera.draw()
+function Camera.draw()
   i.dispX = i.dispX + (i.posX - i.dispX) * 0.1
   i.dispY = i.dispY + (i.posY - i.dispY) * 0.1
   local xCenter = i.dispX * i.scale 
@@ -111,13 +111,13 @@ function camera.draw()
   love.graphics.scale(i.scale)
 end
 
-function camera.drawOOB()
+function Camera.drawOOB()
   if i.currentlyFollowing and i.activeEntity then
     local x = math.min(math.max(0,i.activeEntity.x),Map.width)
     local y = math.min(math.max(0,i.activeEntity.y),Map.height)
     if i.activeEntity.x ~= x or i.activeEntity.y ~= y then
       love.graphics.setColor(255,255,255)
-      love.graphics.draw(image.arrow, x, y, math.atan2(i.activeEntity.y-y, i.activeEntity.x-x), 2, 2, image.arrow:getWidth()/2, image.arrow:getHeight()/2)
+      love.graphics.draw(Image.arrow, x, y, math.atan2(i.activeEntity.y-y, i.activeEntity.x-x), 2, 2, Image.arrow:getWidth()/2, Image.arrow:getHeight()/2)
       distance = math.sqrt((i.activeEntity.x-x)*(i.activeEntity.x-x)+(i.activeEntity.y-y)*(i.activeEntity.y-y))
       love.graphics.setColor(255,0,0)
       love.graphics.print(distance, x, y)
