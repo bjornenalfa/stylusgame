@@ -35,6 +35,7 @@ function love.update(dt)
   Land.update(dt)
   Player.updateAll(dt)
   Camera.update(dt)
+  Projectile.updateAll(dt)
 end
 
 
@@ -45,6 +46,7 @@ function love.draw()
   Stylus.draw()
   Player.drawAll()
   Explosions.draw()
+  Projectile.drawAll()
   
   
   love.graphics.origin() -- reset all shakes
