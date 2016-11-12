@@ -28,8 +28,8 @@ RocketProjectile.__index = RocketProjectile
 setmetatable(RocketProjectile, Projectile)
 
 function RocketProjectile.new(x, y, angle, damage, speed)
-  damage = damage or 70
-  speed = speed or 200
+  damage = damage or 0
+  speed = speed or 100
   local new = Projectile.new(x, y, angle, damage, speed)
   
   setmetatable(new, RocketProjectile)
@@ -51,8 +51,13 @@ function RocketProjectile:update(dt)
   elseif self.explosionState < 6 then
     for _,monster in pairs(Monster.list) do
       if not self.explodedEnemies[monster] then
-        monster:damage(self.explosionDamage)
-        self.explodedEnemies[monster] = true
+        local x = self.x - monster.x
+        local y = self.y - monster.y
+        local r = self.explosionSize + monster.r
+        if x*x + y*y <= r*r then
+          monster:damage(self.explosionDamage)
+          self.explodedEnemies[monster] = true
+        end
       end
     end
     self.explosionState = self.explosionState + 1
@@ -71,6 +76,6 @@ function RocketProjectile:draw()
   else
     print("exploding, please wait")
     local img = getImage("planetexplosion"..self.explosionState)
-    love.graphics.draw(img, self.x, self.y, 0, self.explosionSize/img:getWidth(), self.explosionSize/img:getHeight(), self.explosionSize/2, self.explosionSize/2)
+    love.graphics.draw(img, self.x, self.y, 0, 2*self.explosionSize/img:getWidth(), 2*self.explosionSize/img:getHeight(), self.explosionSize, self.explosionSize)
   end
 end
