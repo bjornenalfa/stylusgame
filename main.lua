@@ -56,6 +56,7 @@ function love.update(dt)
   Camera.update(dt)
   Monster.updateAll(dt)
   Projectile.updateAll(dt)
+  Explosions.update(dt)
 end
 
 
