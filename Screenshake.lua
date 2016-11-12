@@ -14,7 +14,7 @@ function s.update(dt)
   kill = {}
   for _,v in pairs(s.list) do
     v.timer = v.timer + dt
-    if timer >= time then
+    if v.timer >= v.time then
       table.insert(kill, _)
     end
   end
