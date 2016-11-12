@@ -7,6 +7,7 @@ function MachineGun.new(cooldown, d, speed)
   d = d or 10
   speed = speed or 10
   local new = Weapon.new(cooldown)
+  new["image"] = getImage("weapons/machine_gun")
   new["damage"] = d
   new["velocity"] = speed
   new["firingTime"] = 0
@@ -114,7 +115,6 @@ function MachineGun:draw(object)
   local x = self.player.x + math.cos(self.lockedAngle) * offset
   local y = self.player.y + math.sin(self.lockedAngle) * offset
   
-  
   local img = getImage("weapons/sandbags")
   local alpha = 255
   if state == IS_SETTING_UP then
@@ -126,6 +126,8 @@ function MachineGun:draw(object)
   end
   love.graphics.setColor(255, 255, 255, alpha)
   love.graphics.draw(img, x, y, self.lockedAngle, 0.8, 1, img:getWidth()/2, img:getHeight()/2)
+  
+  Weapon.draw(self)
 end
 
 MachineGunProjectile = {}
@@ -139,10 +141,12 @@ function MachineGunProjectile.new(fromX, fromY, orientation, damage, vel)
   return new
 end
 
-function MachineGunProjectile:update(dt)
+function MachineGunProjectile:move(dt)
   local dx = self.vx--math.cos(self.angle) * self.vel
   local dy = self.vy--math.sin(self.angle) * self.vel
-  local steps = 5
+  self.x = self.x + dx
+  self.y = self.y + dy
+  --[[local steps = 5
   for i = 0, steps, 1 do
     self.x = self.x + dx / steps
     self.y = self.y + dy / steps
@@ -150,7 +154,7 @@ function MachineGunProjectile:update(dt)
       self.dead = true
       break
     end
-  end
+  end]]
 end
 
 function MachineGunProjectile:draw()

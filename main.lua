@@ -29,7 +29,7 @@ function love.load()
   local pl = Player.new("p1", 300, 300, {255, 0, 0}, 1)
   --Camera.trackEntity(pl)
   local mon = Zombieduck.new(150, 150)
-  local mon2 = Duckcrab.new(200, 200)
+  local mon2 = Duckcrab.new(150, 200)
   local mon3 = Crabduck.new(400, 200)
   local mon4 = Crabduck.new(200, 500)
 end
