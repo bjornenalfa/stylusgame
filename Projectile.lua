@@ -3,14 +3,6 @@ Projectile.__index = Projectile
 
 Projectile.list = {}
 
-Projectile.templates = {}
-Projectile.templates.bullet={200,
-                              (function(this) print(this.x, this.y) end),
-                              (function(this) end),
-                              (function(this, target) this.dead=true end),
-                              getImage("planetexplosion1")
-                              }
-
 function Projectile.fromTemplate(x, y, angle, template)
   local new = {
     x=x,
@@ -50,6 +42,15 @@ function Projectile:update(dt)
   
   if Land.isBlocked(self.x, self.y) then
     self:onHit(nil)
+  end
+  
+  for _,monster in pairs(Monster.list) do
+    if (monster.x - this.x)*(monster.x - this.x)
+      +(monster.y - this.y)*(monster.y - this.y)
+      <(monster.r * monster.r) then
+        self:onHit(monster)
+        break
+    end
   end
 end
 
