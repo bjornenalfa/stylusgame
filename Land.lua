@@ -53,16 +53,14 @@ function Land.update(dt)
 end
 
 function Land.makeHole(x, y, r)
+  love.graphics.origin()
+  love.graphics.setBlendMode("replace")
+  love.graphics.setColor(0,0,0,0)
   Land.drawBreakable(function ()
-    love.graphics.origin()
-    love.graphics.setBlendMode("replace")
-    love.graphics.setColor(0,0,0,170)
-    love.graphics.circle("fill",x,y,r+2)
-    love.graphics.setColor(0,0,0,0)
     love.graphics.circle("fill",x,y,r)
-    
-    love.graphics.setBlendMode("alpha")
   end)
+  Stylus.makeHole(x, y, r)
+  love.graphics.setBlendMode("alpha")
 end
 
 function Land.drawBreakable(func)
@@ -77,6 +75,6 @@ end
 
 function Land.draw()
   love.graphics.setColor(255,255,255)
-  love.graphics.draw(l.breakableCanvas, 0, 0)
-  love.graphics.draw(l.solidCanvas, 0, 0)
+  love.graphics.draw(l.breakableCanvas)
+  love.graphics.draw(l.solidCanvas)
 end

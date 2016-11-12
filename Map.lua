@@ -23,7 +23,7 @@ end
 
 function Map.draw()
   love.graphics.setColor(255,255,255)
-  love.graphics.draw(m.image, 0, 0)
+  love.graphics.draw(m.image)
 end
 
 function Map.drawShadow()
