@@ -10,11 +10,13 @@ function Projectile.new(x, y, angle, damage, speed)
     y=y,
     angle = angle,
     vx=math.cos(angle)*speed,
-    vy=math.cos(angle)*speed,
+    vy=math.sin(angle)*speed,
     dead=false
   }
   setmetatable(new, Projectile)
   table.insert(Projectile.list, new)
+  
+  if new.vx == 0 then print(new.vy) end
   
   return new
 end
@@ -80,7 +82,7 @@ end
 
 function Projectile:draw()
   love.graphics.setColor(0,0,0)
-  love.graphics.circle("fill", p.x, p.y, 3)
+  love.graphics.circle("fill", self.x, self.y, 3)
 end
 
 function Projectile:onHit(target)
