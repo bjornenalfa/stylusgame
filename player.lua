@@ -1,4 +1,3 @@
-
 Player = {}
 Player.__index = Player
 
