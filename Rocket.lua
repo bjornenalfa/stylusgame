@@ -5,6 +5,7 @@ setmetatable(Rocket, Weapon)
 
 function Rocket.new(firingCooldown, dmg)
   firingCooldown = firingCooldown or 2
+  print("cd: "..firingCooldown)
   dmg = dmg or 70
   local new = Weapon.new(firingCooldown, dmg)
   setmetatable(new, Rocket)
@@ -13,7 +14,14 @@ function Rocket.new(firingCooldown, dmg)
 end
 
 function Rocket:fire(fromX, fromY, orientation)
-  RocketProjectile.new(fromX, fromY, orientation)
+  print("trying to fire...")
+  if self.cdLeft <= 0 then
+    print("firing (cd: "..self.cdLeft..")")
+    RocketProjectile.new(fromX, fromY, orientation)
+    self.cdLeft = self.firingCooldown
+  else
+    print("on CD (cd: "..self.cdLeft..")")
+  end
 end
 
 function Rocket:update(dt) Weapon.update(self, dt) end
