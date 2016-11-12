@@ -80,6 +80,10 @@ function MachineGun:update(dt)
   end
 end
 
+function MachineGun:draw()
+  love.graphics.print("firing time: "..tostring(self.firingTime), self.x - 20, self.y - 20)
+end
+
 MachineGunProjectile = {}
 MachineGunProjectile.__index = MachineGunProjectile
 setmetatable(MachineGunProjectile, Projectile)
@@ -108,5 +112,4 @@ end
 function MachineGunProjectile:draw()
   love.graphics.setColor(255, 255, 255)
   love.graphics.draw(self.image, self.x, self.y, self.orientation)--, self.image:getWidth()/2, self.image:getHeight()/2)
-  love.graphics.print("firing time: "..self.firingTime, self.x - 20, self.y - 20)
 end
