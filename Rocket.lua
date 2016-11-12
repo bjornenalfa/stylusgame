@@ -41,9 +41,8 @@ function RocketProjectile.new(x, y, angle, damage, speed)
 end
 
 function RocketProjectile:onHit(target)
-  assert(self.explosionState ~= nil)
-  print("hello there")
   self.explosionState = 1
+  Land.makeHole(self.x, self.y, self.explosionSize)
 end
 
 function RocketProjectile:update(dt)
