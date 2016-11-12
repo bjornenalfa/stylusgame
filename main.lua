@@ -9,6 +9,8 @@ require "Projectile"
 require "Player"
 require "Stylus"
 require "Monster"
+require "Zombieduck"
+require "Duckcrab"
 require "Weapon"
 require "Rocket"
 require "Screenshake"
@@ -25,7 +27,8 @@ function love.load()
   love.mouse.setCursor(love.mouse.newCursor(getImage("mouse"):getData(), 10, 10))
   local pl = Player.new("p1", 300, 300, {255, 0, 0}, 1)
   --Camera.trackEntity(pl)
-  local mon = Monster.new(150, 150, 10, getImage("hero"))
+  local mon = Zombieduck.new(150, 150, 10, getImage("hero"))
+  local mon2 = Duckcrab.new(200, 200, 10, getImage("hero"))
 end
 
 function love.keypressed(key)
@@ -40,7 +43,9 @@ function love.mousereleased(x, y, button)
   Stylus.mousereleased(x, y, button)
 end
 
+time = 0
 function love.update(dt)
+  time = time + dt
   Screenshake.update(dt)
   Stylus.update(dt)
   Land.update(dt)
@@ -67,6 +72,8 @@ function love.draw()
   
   love.graphics.origin() -- reset all shakes
   Camera.draw()
+  
+  Stylus.draw()
   
   --Camera.drawOOB()
   

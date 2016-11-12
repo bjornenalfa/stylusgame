@@ -19,12 +19,22 @@ function Monster.new(x, y, r, image)
          image = image,
          hp = 100,
          maxhp = 100,
+         distanceMoved = 0,
          dead = false,
          moved = false -- might not be needed
   }
   setmetatable(new, Monster)
   table.insert(m.list, new)
   return new
+end
+
+function Monster.pointInMonster(x, y)
+  for _,v in pairs(Monster.list) do
+    if (v.x-x)*(v.x-x)+(v.y-y)*(v.y-y) < v.r*v.r then
+      return v
+    end
+  end
+  return false
 end
 
 function Monster.updateAll(dt)
@@ -50,8 +60,11 @@ function Monster:update(dt)
     --perhaps do stuff with animation
     --also rotation 'mon.r'
   end
-  self.x = self.x + self.vx * dt
-  self.y = self.y + self.vy * dt
+  dx = self.vx * dt
+  dy = self.vy * dt
+  self.distanceMoved = self.distanceMoved + math.sqrt(dx^2+dy^2)
+  self.x = self.x + dx
+  self.y = self.y + dy
 end
   
 function Monster:dirToClosestPlayer()

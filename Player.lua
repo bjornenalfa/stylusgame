@@ -21,7 +21,8 @@ function Player.new(name, x, y, color, joystick)
     color=color,
     velocity=120,
     orientation=0,
-    weapon=MachineGun.new(0.1, 10, 5)
+
+    weapon=Rocket.new()
   }
   setmetatable(new, Player)
   Player.list[name] = new
@@ -101,8 +102,6 @@ function Player:update(dt)
   self.weapon:update(dt)
   if Input.hasInput(Input.FIRE, self) then
     self.weapon:fire(self.x, self.y, self.orientation)
-    print(self.orientation)
-    --Projectile.fromTemplate(self.x, self.y, self.orientation, Projectile.templates.bullet)
   end
 end
 
