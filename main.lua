@@ -73,6 +73,8 @@ function love.draw()
   love.graphics.origin() -- reset all shakes
   Camera.draw()
   
+  Stylus.draw()
+  
   --Camera.drawOOB()
   
   

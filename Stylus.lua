@@ -139,6 +139,22 @@ function s.drawBackground()
   end
 end
 
+function s.draw()
+  if s.slashing then
+    local points = {}
+    for _,v in pairs(s.slashlist) do
+      table.insert(points, v.x)
+      table.insert(points, v.y)
+    end
+    love.graphics.setLineWidth(4)
+    love.graphics.setColor(255,0,0, 128)
+    if #points > 3 then
+      love.graphics.line(points)
+    end
+    love.graphics.setLineWidth(1)
+  end
+end
+
 function s.drawUI()
   love.graphics.setColor(128,128,128)
   love.graphics.rectangle("line", love.graphics.getWidth()-5, 40, -20, 102)
