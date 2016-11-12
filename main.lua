@@ -8,6 +8,7 @@ require "Explosions"
 require "Projectile"
 require "Player"
 require "Stylus"
+require "Weapon"
 
 function love.load()
   Map.load("map01")

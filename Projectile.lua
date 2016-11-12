@@ -3,14 +3,6 @@ Projectile.__index = Projectile
 
 Projectile.list = {}
 
-Projectile.templates = {}
-Projectile.templates.bullet={200,
-                              (function(this) print(this.x, this.y) end),
-                              (function(this) end),
-                              (function(this, target) this.dead=true end),
-                              getImage("planetexplosion1")
-                              }
-
 function Projectile.fromTemplate(x, y, angle, template)
   local new = {
     x=x,
