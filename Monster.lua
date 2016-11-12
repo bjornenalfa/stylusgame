@@ -5,6 +5,8 @@ m.list = {}
 
 --The class for the monsters running around, possibly abstract
 
+
+
 function Monster.new(x, y, r, image)
   new = {x = x,
          y = y,
@@ -25,6 +27,15 @@ function Monster.new(x, y, r, image)
   }
   setmetatable(new, Monster)
   table.insert(m.list, new)
+  
+  local COLLISION_POINTS_AMOUNTS = r
+  new.COLLISION_POINTS_OFFSETS = {}
+
+  for v = 0, math.pi*2, math.pi*2 /  COLLISION_POINTS_AMOUNTS do
+    table.insert(new.COLLISION_POINTS_OFFSETS, {x = math.cos(v) * r,
+                                            y = math.sin(v) * r})
+  end
+  
   return new
 end
 
@@ -63,8 +74,8 @@ function Monster:update(dt)
   dx = self.vx * dt
   dy = self.vy * dt
   self.distanceMoved = self.distanceMoved + math.sqrt(dx^2+dy^2)
-  self.x = self.x + dx
-  self.y = self.y + dy
+  --self.x = self.x + dx
+  --self.y = self.y + dy
 end
   
 function Monster:dirToClosestPlayer()
@@ -92,11 +103,26 @@ function Monster:turnToGoal(dt)
 end
 
 function Monster:move(dt)
+  
   self.vx = math.cos(self.direction) * self.baseSpeed * dt
   self.vy = math.sin(self.direction) * self.baseSpeed * dt
-  self.x = self.x + self.vx
-  self.y = self.y + self.vy
-  self.moved = true 
+  
+  local x = self.x + self.vx
+  local y = self.y + self.vy
+  local isBlocked = false
+  
+  for k,v in pairs(self.COLLISION_POINTS_OFFSETS) do
+    if Land.isBlocked(x + v.x, y + v.y) then
+      isBlocked = true
+      break
+    end
+  end
+  
+  if not isBlocked then
+    self.x = x
+    self.y = y
+    self.moved = true
+  end
 end
 
 function Monster:damage(damage)
@@ -120,16 +146,22 @@ function Monster.drawAll()
 end
     
 function Monster:draw()
-  love.graphics.setColor(255, 255, 255)
+  --[[love.graphics.setColor(255, 255, 255)
   love.graphics.draw(self.image, self.x, self.y, self.direction, 1, 1, 
     self.image:getWidth()/2, self.image:getHeight()/2)
   local dir = self:dirToClosestPlayer()
-  love.graphics.line(self.x, self.y, self.x + math.cos(dir)*5, self.y + math.sin(dir)*5)
+  love.graphics.line(self.x, self.y, self.x + math.cos(dir)*5, self.y + math.sin(dir)*5)]]
   --[[ draw out health if wanted
   love.graphics.setColor(255, 0, 0, 100)
   love.graphics.rectangle("fill", mon.x - 20, mon.y - 40, 40, 10)
   love.graphics.rectange("fill", mon.x - 20, mon.y - 40 , 40*(mon.hp/mon.maxhp), 10)
   --]]
+  love.graphics.setColor(0,0,0,100)
+  love.graphics.circle("fill", self.x, self.y, self.r)
+  love.graphics.setColor(255,0,0)
+  for k,v in pairs(self.COLLISION_POINTS_OFFSETS) do
+    love.graphics.points(self.x+v.x, self.y+v.y)
+  end
 end
     
     

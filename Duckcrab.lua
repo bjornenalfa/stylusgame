@@ -9,8 +9,8 @@ local angry = getImage("duckcrab_angry")
 local angle = math.rad(38)
 local dist = 35
 
-function d.new(x, y, r)
-  new = Monster.new(x, y, r, getImage("duckcrab") )
+function d.new(x, y)
+  new = Monster.new(x, y, 17, getImage("duckcrab") )
   setmetatable(new, d)
   return new
 end
@@ -20,11 +20,11 @@ function d:draw()
   love.graphics.setColor(255, 255, 255)
   
   if self.hp < self.maxhp * 0.4 then
-    self.baseSpeed = self.baseSpeed * 2
+    self.baseSpeed = 100
     love.graphics.draw(angry, self.x, self.y, self.direction, 1, 1, 
       angry:getWidth()/2, angry:getHeight()/2)
     local dir = self:dirToClosestPlayer()
-    love.graphics.line(self.x, self.y, self.x + math.cos(dir)*5, self.y + math.sin(dir)*5)
+    --love.graphics.line(self.x, self.y, self.x + math.cos(dir)*5, self.y + math.sin(dir)*5)
     local claw1x = self.x+math.cos(self.direction+angle)*dist
     local claw1y = self.y+math.sin(self.direction+angle)*dist
     local claw2x = self.x+math.cos(self.direction-angle)*dist
@@ -36,7 +36,7 @@ function d:draw()
     love.graphics.draw(self.image, self.x, self.y, self.direction, 1, 1, 
       self.image:getWidth()/2, self.image:getHeight()/2)
     local dir = self:dirToClosestPlayer()
-    love.graphics.line(self.x, self.y, self.x + math.cos(dir)*5, self.y + math.sin(dir)*5)
+    --love.graphics.line(self.x, self.y, self.x + math.cos(dir)*5, self.y + math.sin(dir)*5)
     local claw1x = self.x+math.cos(self.direction+angle)*dist
     local claw1y = self.y+math.sin(self.direction+angle)*dist
     local claw2x = self.x+math.cos(self.direction-angle)*dist
@@ -45,4 +45,7 @@ function d:draw()
     love.graphics.draw(claw, claw1x, claw1y, Monster.dirToClosestPlayer({x=claw1x, y=claw1y}), 1, 1, 9, 9)
     love.graphics.draw(claw, claw2x, claw2y, Monster.dirToClosestPlayer({x=claw2x, y=claw2y}), 1, 1, 9, 9)
   end
+
+  
+  Monster.draw(self)
 end
