@@ -10,6 +10,12 @@ s.contTimer = 0
 s.lastx = 0
 s.lasty = 0
 
+s.slashing = true
+s.slashlist = {}
+s.slashPoints = 4
+s.combo = 0
+s.comboTimer = 0
+
 function s.newMap()
   for i = 1,3 do
     s["canvas"..i] = love.graphics.newCanvas(Map.width, Map.height)
@@ -24,47 +30,73 @@ end
 
 function s.update(dt)
   s.currentInk = math.min(s.currentInk + dt * 5, s.maxInk)
-  if love.mouse.isDown(1) and not s.ranOut then
-    local x, y = Camera.windowToWorld(love.mouse.getPosition())
-    if not s.cont then
-      s.cont = true
-      s.lastx = x
-      s.lasty = y
-    else
-      local diff = math.max(5, math.sqrt((s.lastx-x)*(s.lastx-x)+(s.lasty-y)*(s.lasty-y)))
-      if diff > s.currentInk then
-        s.cont = false
-        s.ranOut = true
-        return
+  local x, y = Camera.windowToWorld(love.mouse.getPosition())
+  if s.slashing then
+    s.comboTimer = s.comboTimer + dt
+    if s.comboTimer > 0.3 then
+      s.combo = 0
+    end
+    table.insert(s.slashlist, {x=x, y=y})
+    if #s.slashlist > s.slashPoints then
+      table.remove(s.slashlist, 1)
+    end
+    hits = {[1]=Monster.pointInMonster(s.slashlist[1].x, s.slashlist[1].y)}
+    good = {}
+    for i = 2, #s.slashlist do
+      hits[i] = Monster.pointInMonster(s.slashlist[i].x, s.slashlist[i].y)
+      if hits[i] ~= hits[i-1] then
+        table.insert(good, hits[i])
       end
-      s.drawn = true
-      s.currentInk = s.currentInk - diff
-      Land.drawBreakable(function ()
-        love.graphics.setColor(140,140,140)
-        love.graphics.setLineWidth(10)
-        love.graphics.circle("fill", s.lastx, s.lasty, 5)
-        love.graphics.line(s.lastx, s.lasty, x, y)
-        love.graphics.circle("fill", x, y, 5)
-        love.graphics.setLineWidth(1)
-      end)
-      s.backStroke(s.lastx, s.lasty, x, y)
-      s.lastx = x
-      s.lasty = y
+    end
+    for i = 1, #good-1 do
+      if good[i] then
+        print(good[i])
+        good[i]:damage(1)
+        Sound.play("hit4")
+        s.combo = s.combo + 1
+        s.comboTimer = 0
+      end
+    end
+  else
+    if love.mouse.isDown(1) and not s.ranOut then
+      if not s.cont then
+        s.cont = true
+        s.lastx = x
+        s.lasty = y
+      else
+        local diff = math.max(5, math.sqrt((s.lastx-x)*(s.lastx-x)+(s.lasty-y)*(s.lasty-y)))
+        if diff > s.currentInk then
+          s.cont = false
+          s.ranOut = true
+          return
+        end
+        s.drawn = true
+        s.currentInk = s.currentInk - diff
+        Land.drawBreakable(function ()
+          love.graphics.setColor(140,140,140)
+          love.graphics.setLineWidth(10)
+          love.graphics.circle("fill", s.lastx, s.lasty, 5)
+          love.graphics.line(s.lastx, s.lasty, x, y)
+          love.graphics.circle("fill", x, y, 5)
+          love.graphics.setLineWidth(1)
+        end)
+        s.backStroke(s.lastx, s.lasty, x, y)
+        s.lastx = x
+        s.lasty = y
+      end
+    else
+      if s.cont then
+        s.contTimer = s.contTimer + dt
+        if s.contTimer > 0.1 then
+          s.cont = false
+          s.contTimer = 0
+        end
+      end
     end
     
-  else
-    if s.cont then
-      s.contTimer = s.contTimer + dt
-      if s.contTimer > 0.1 then
-        s.cont = false
-        s.contTimer = 0
-      end
+    if love.mouse.isDown(2) then
+      Land.makeHole(x, y, 15)
     end
-  end
-  
-  if love.mouse.isDown(2) then
-    local x, y = Camera.windowToWorld(love.mouse.getPosition())
-    Land.makeHole(x, y, 15)
   end
 end
 
@@ -113,7 +145,9 @@ function s.drawUI()
   love.graphics.setColor(0,0,0)
   love.graphics.rectangle("fill", love.graphics.getWidth()-6, 41+100, -18, -100*(s.currentInk/s.maxInk)) 
   
-  --love.graphics.setColor(0,0,255)
-  --love.graphics.circle("fill",love.mouse.getX(), love.mouse.getY(), 1)
-  --love.graphics.circle("line",love.mouse.getX(), love.mouse.getY(), 4)
+  if s.slashing then
+    love.graphics.setColor(255,0,0)
+    --love.graphics.circle("fill",love.mouse.getX(), love.mouse.getY(), 1)
+    love.graphics.print(tostring(s.combo), 0, 0)
+  end
 end

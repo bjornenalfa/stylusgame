@@ -28,6 +28,15 @@ function Monster.new(x, y, r, image)
   return new
 end
 
+function Monster.pointInMonster(x, y)
+  for _,v in pairs(Monster.list) do
+    if (v.x-x)*(v.x-x)+(v.y-y)*(v.y-y) < v.r*v.r then
+      return v
+    end
+  end
+  return false
+end
+
 function Monster.updateAll(dt)
   dead = {}
   for i,mon in pairs(m.list) do
