@@ -43,6 +43,15 @@ function Projectile:update(dt)
   if Land.isBlocked(self.x, self.y) then
     self:onHit(nil)
   end
+  
+  for _,monster in pairs(Monster.list) do
+    if (monster.x - this.x)*(monster.x - this.x)
+      +(monster.y - this.y)*(monster.y - this.y)
+      <(monster.r * monster.r) then
+        self:onHit(monster)
+        break
+    end
+  end
 end
 
 function Projectile.drawAll()
