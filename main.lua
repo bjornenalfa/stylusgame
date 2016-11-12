@@ -1,7 +1,7 @@
 require "Sound"
 require "Image"
 require "Input"
-require "Camera"
+require "camera2"
 require "Land"
 require "Map"
 require "Explosions"
@@ -12,12 +12,13 @@ require "Monster"
 require "Weapon"
 
 function love.load()
+  love.graphics.setDefaultFilter("linear", "nearest", 2)
   Map.load("map01")
-  Stylus.newMap()
+  Land.newMap()
   love.graphics.setBackgroundColor(255,255,255)
   love.mouse.setVisible(false)
   local pl = Player.new("p1", 300, 300, {255, 0, 0}, 1)
-  Camera.trackEntity(pl)
+  --Camera.trackEntity(pl)
   local mon = Monster.new(150, 150, 10, getImage("hero"))
 end
 
@@ -37,27 +38,28 @@ function love.update(dt)
   Stylus.update(dt)
   Land.update(dt)
   Player.updateAll(dt)
+  camera.update(dt)
   Monster.updateAll(dt)
-  Camera.update(dt)
   Projectile.updateAll(dt)
 end
 
 
 function love.draw()
-  Camera.draw()
+  camera.draw()
   Map.draw()
   Explosions.drawShake()
-  Stylus.drawLand()
+  Projectile.drawAll()
   Player.drawAll()
+  Land.draw()
+  Map.drawShadow()
   Monster.drawAll()
   Explosions.draw()
-  Projectile.drawAll()
   
   
   love.graphics.origin() -- reset all shakes
-  Camera.draw()
+  camera.draw()
   
-  Camera.drawOOB()
+  --Camera.drawOOB()
   
   
   love.graphics.origin() -- reset to screen drawing (UI)

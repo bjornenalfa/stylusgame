@@ -17,15 +17,24 @@ function Player.new(name, x, y, color, joystick)
     y=y,
     vx=0,
     vy=0,
-    size=30,
+    size=15,
     color=color,
-    velocity=450,
-    orientation=0,
+    velocity=120,
+    orientation=0
     weapon=Weapon.laser
   }
   setmetatable(new, Player)
   Player.list[name] = new
   return new
+end
+
+local COLLISION_POINTS_AMOUNTS = 10
+local COLLISION_POINTS_OFFSETS = {}
+local PLAYER_RADIUS = 12
+
+for v = 0, math.pi*2, math.pi*2 /  COLLISION_POINTS_AMOUNTS do
+  table.insert(COLLISION_POINTS_OFFSETS, {x = math.cos(v) * PLAYER_RADIUS,
+                                          y = math.sin(v) * PLAYER_RADIUS})
 end
 
 function Player.getClosest(object)
@@ -70,7 +79,18 @@ function Player:update(dt)
     self.orientation = math.atan2(magY, magX)
   end
   
-  if not Land.isBlocked(self.x + self.vx * dt, self.y + self.vy * dt) then
+  local x = self.x + self.vx * dt
+  local y = self.y + self.vy * dt
+  local isBlocked = false
+  
+  for k,v in pairs(COLLISION_POINTS_OFFSETS) do
+    if Land.isBlocked(x + v.x, y + v.y) then
+      isBlocked = true
+      break
+    end
+  end
+  
+  if not isBlocked then
     self.x = self.x + self.vx * dt
     self.y = self.y + self.vy * dt
   end
@@ -86,7 +106,7 @@ function Player.drawAll()
   local prevR, prevG, prevB, prevA = love.graphics.getColor()
   for _,p in pairs(Player.list) do
     love.graphics.setColor(255,255,255,255)
-    love.graphics.draw(Image.hero, p.x, p.y, p.orientation, 1, 1, p.size/2, p.size/2)
+    love.graphics.draw(Image.hero, p.x, p.y, p.orientation, p.size/Image.hero:getWidth(), p.size/Image.hero:getHeight(), p.size, p.size)
     love.graphics.setColor(0, 0, 0)
     love.graphics.line(p.x, p.y, p.x + math.cos(p.orientation)*p.size, p.y + math.sin(p.orientation)*p.size)
   end
