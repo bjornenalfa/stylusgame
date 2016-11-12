@@ -58,17 +58,15 @@ function Player.updateAll(dt)
 end
 
 function Player:update(dt)
-  chkx, dx = Input.hasInput(Input.MOVE_X, self)
-  if chkx then
-    self.vx = dx * self.velocity * dt
+  local _, dx = Input.hasInput(Input.MOVE_X, self)
+  dx = dx or 0
+  local _, dy = Input.hasInput(Input.MOVE_Y, self)
+  dy = dy or 0
+  if dx*dx + dy*dy >= Input.MOVEMENT_SENSITIVITY * Input.MOVEMENT_SENSITIVITY then
+    self.vx = dx * self.velocity
+    self.vy = dy * self.velocity
   else 
     self.vx = 0
-  end
-  
-  chky, dy = Input.hasInput(Input.MOVE_Y, self)
-  if chky then
-    self.vy = dy * self.velocity * dt
-  else 
     self.vy = 0
   end
   
@@ -77,7 +75,7 @@ function Player:update(dt)
   local _, magY = Input.hasInput(Input.AIM_Y, self)
   magY = magY or 0
   local aimSensitivity = 0.2
-  if magX*magX + magY*magY >= aimSensitivity * aimSensitivity then
+  if magX*magX + magY*magY >= Input.AIM_SENSITIVITY * Input.AIM_SENSITIVITY then
     magX = magX or 0
     magY = magY or 0
     self.orientation = math.atan2(magY, magX)
