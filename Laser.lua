@@ -6,6 +6,7 @@ function Laser.new(cooldown, d)
   cooldown = cooldown or 2.5
   d = d or 25
   local new = Weapon.new(cooldown)
+  new["image"] = getImage("weapons/laser_gun")
   new["damage"] = d
   setmetatable(new, Laser)
   return new
