@@ -52,3 +52,8 @@ function Weapon:update(dt)
     self.cdLeft = self.cdLeft - dt
   end
 end
+
+function Weapon:draw()
+  
+end
+
