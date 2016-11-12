@@ -105,29 +105,42 @@ function MachineGun:update(dt)
 end
 
 function MachineGun:draw(object)
-  love.graphics.print("timeLeft: "..tostring(self.setupTimeLeft) .. " state: " ..tostring(self.setupState .. " moveme. " .. tostring(self.player.movementImpair)), object.x - 150, object.y - 20)
+  --love.graphics.print("timeLeft: "..tostring(self.setupTimeLeft) .. " state: " ..tostring(self.setupState .. " moveme. " .. tostring(self.player.movementImpair)), object.x - 150, object.y - 20)
   local state = self.setupState
+  local weaponScale = 0.5
+  local timeScale = 0
   if state == IS_NOT_SETUP then
-    return
+    timeScale = 0
+  else
+    -- draw a sandobstacle to tell the player he/she is in machinegun mode
+    local offset = 20
+    local x = self.player.x + math.cos(self.lockedAngle) * offset
+    local y = self.player.y + math.sin(self.lockedAngle) * offset
+    
+    local img = getImage("weapons/sandbags")
+    local alpha = 255
+    if state == IS_SETTING_UP then
+      timeScale = (self.setupTime - self.setupTimeLeft) / self.setupTime
+      alpha = 255 * timeScale
+    elseif state == IS_SETUP then
+      alpha = 255
+      timeScale = 1
+    elseif state == IS_TEARING_DOWN then
+      timeScale = 1 - (self.setupTime - self.setupTimeLeft) / self.setupTime
+      alpha = 255 - 255 * (1 - timeScale)
+    end
+    love.graphics.setColor(255, 255, 255, alpha)
+    love.graphics.draw(img, x, y, self.lockedAngle, 0.8, 1, img:getWidth()/2, img:getHeight()/2)
+    
+    love.graphics.setColor(255, 255, 255)
   end
-  -- draw a sandobstacle to tell the player he/she is in machinegun mode
-  local offset = 20
-  local x = self.player.x + math.cos(self.lockedAngle) * offset
-  local y = self.player.y + math.sin(self.lockedAngle) * offset
-  
-  local img = getImage("weapons/sandbags")
-  local alpha = 255
-  if state == IS_SETTING_UP then
-    alpha = 255 * (self.setupTime - self.setupTimeLeft)
-  elseif state == IS_SETUP then
-    alpha = 255
-  elseif state == IS_TEARING_DOWN then
-    alpha = 255 - 255 * (self.setupTime - self.setupTimeLeft)
-  end
-  love.graphics.setColor(255, 255, 255, alpha)
-  love.graphics.draw(img, x, y, self.lockedAngle, 0.8, 1, img:getWidth()/2, img:getHeight()/2)
-  
-  Weapon.draw(self)
+  --draw weapon
+  local p = self.player
+  local imgW = self.image:getWidth()
+  local imgH = self.image:getHeight()
+  local scaleX = 2 * self.player.size/imgW + weaponScale * timeScale
+  local scaleY = 2 * self.player.size/imgH + weaponScale * timeScale
+  love.graphics.draw(self.image, p.x, p.y, p.orientation, scaleX, scaleY, imgW/2, imgH/2)
 end
 
 MachineGunProjectile = {}
