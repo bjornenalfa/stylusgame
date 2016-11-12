@@ -14,7 +14,8 @@ function love.load()
   Stylus.newMap()
   love.graphics.setBackgroundColor(255,255,255)
   love.mouse.setVisible(false)
-  Player.new("p1", 300, 300, {255, 0, 0}, 1)
+  local pl = Player.new("p1", 300, 300, {255, 0, 0}, 1)
+  Camera.trackEntity(pl)
 end
 
 function love.keypressed(key)

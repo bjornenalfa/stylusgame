@@ -69,7 +69,8 @@ end
 function Player.drawAll()
   local prevR, prevG, prevB, prevA = love.graphics.getColor()
   for _,p in pairs(Player.list) do
-    love.graphics.draw(getImage("hero"), p.x, p.y, p.orientation)
+    love.graphics.setColor(255,255,255,255)
+    love.graphics.draw(Image.hero, p.x, p.y, p.orientation, 1, 1, p.size/2, p.size/2)
     love.graphics.setColor(0, 0, 0)
     love.graphics.line(p.x, p.y, p.x + math.cos(p.orientation)*p.size, p.y + math.sin(p.orientation)*p.size)
   end

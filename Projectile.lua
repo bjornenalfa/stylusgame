@@ -9,7 +9,8 @@ Projectile.templates.bullet={200,
                               (function(this) print("fire!!!") end),
                               (function(this) end),
                               (function(this, target) this.dead=true end),
-                              (function(this) end)
+                              (function(this) end),
+                              --Image.getImage("planetexplosion1")
                               }
 
 function Projectile.fromTemplate(x, y, angle, template)
@@ -22,7 +23,8 @@ function Projectile.fromTemplate(x, y, angle, template)
     onDestroy=template[4],
     onHit=template[5],
     onTimeout=template[6],
-    dead=false
+    dead=false,
+    image=template[7]
   }
   setmetatable(new, Projectile)
   table.insert(Projectile.list, new)
@@ -59,5 +61,11 @@ function Projectile:update(dt)
   
   if Land.isBlocked(self.x, self.y) then
     self.onHit(nil)
+  end
+end
+
+function Projectile.drawAll()
+  for _,p in Projectile.list do
+    -- love.graphics.draw(p.image, p.x, p.y, 
   end
 end
