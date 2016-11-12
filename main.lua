@@ -11,6 +11,8 @@ require "Stylus"
 require "Monster"
 require "Weapon"
 require "Rocket"
+require "Laser"
+require "MachineGun"
 
 function love.load()
   love.graphics.setDefaultFilter("linear", "nearest", 2)

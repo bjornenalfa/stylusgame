@@ -21,7 +21,7 @@ function Player.new(name, x, y, color, joystick)
     color=color,
     velocity=120,
     orientation=0,
-    weapon=Rocket.new()
+    weapon=Laser.new()
   }
   setmetatable(new, Player)
   Player.list[name] = new
