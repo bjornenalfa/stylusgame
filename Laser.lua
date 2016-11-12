@@ -28,7 +28,7 @@ function Laser:update(dt)
   else
     self.altFireTimer = self.altFireTimer - dt
     if self.altFireTimer <= 0 then
-      LaserProjectile.new(self.player.x, self.player.y, self.player.orientation, 300, 1)
+      LaserProjectile.new(self.player.x, self.player.y, self.player.orientation, 300, 1, true)
       self.player.movementImpair = false
       self.altFireTimer = nil
     end
@@ -43,15 +43,23 @@ function Laser:altFire(player)
 end
 
 function Laser:draw()
-  if self.altFireTimer == nil then
-    Weapon.draw(self)
-  else
-    Weapon.draw(self)
+  Weapon.draw(self)
+  if self.altFireTimer ~= nil then
     local lw = love.graphics.getLineWidth()
     local r,g,b = love.graphics.getColor()
     love.graphics.setLineWidth(1)
     love.graphics.setColor(255, 0, 0, 255*(1 - (self.altFireTimer/self.altFireDelay)))
-    love.graphics.line(self.player.x, self.player.y, self.player.x + 2000*math.cos(self.player.orientation), self.player.y + 2000*math.sin(self.player.orientation))
+    
+    local dx = 10*math.cos(self.player.orientation)
+    local dy = 10*math.sin(self.player.orientation)
+    local tx = self.player.x
+    local ty = self.player.y
+    for _ = 0, 200, 1 do
+      tx = tx + dx
+      ty = ty + dy
+      if Land.isBlocked(tx, ty) then break end
+    end
+    love.graphics.line(self.player.x, self.player.y, tx, ty)
     love.graphics.setLineWidth(lw)
     love.graphics.setColor(r,g,b)
   end
@@ -64,12 +72,13 @@ setmetatable(LaserProjectile, Projectile)
 
 local LIFETIME = 1
 
-function LaserProjectile.new(fromX, fromY, orientation, damage, vel)
+function LaserProjectile.new(fromX, fromY, orientation, damage, vel, isPiercing)
   local new = Projectile.new(fromX, fromY,orientation, damage, vel)
   setmetatable(new, LaserProjectile)
   new["timeout"] = LIFETIME
   new["stopX"] = 0
   new["stopY"] = 0
+  new.isPiercing = isPiercing or nil
   new:fire()
   return new
 end
@@ -87,8 +96,10 @@ function LaserProjectile:fire()
     local hitMonster = Monster.pointInMonster(x, y)
     if hitMonster then
       hitMonster:damage(self.damage)
-      isHit = true
-      break
+      if not self.isPiercing then
+        isHit = true
+        break
+      end
     end
     if Land.isBlocked(x, y) then
       isHit = true
