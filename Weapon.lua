@@ -48,7 +48,6 @@ function Weapon:fire(fromX, fromY, orientation)
 end
 
 function Weapon:update(dt)
-  --print("hjsadh")
   if self.cdLeft > 0 then
     self.cdLeft = self.cdLeft - dt
   end

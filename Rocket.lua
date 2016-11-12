@@ -5,7 +5,6 @@ setmetatable(Rocket, Weapon)
 
 function Rocket.new(firingCooldown, dmg)
   firingCooldown = firingCooldown or 2
-  print("cd: "..firingCooldown)
   dmg = dmg or 70
   local new = Weapon.new(firingCooldown, dmg)
   setmetatable(new, Rocket)
@@ -14,13 +13,9 @@ function Rocket.new(firingCooldown, dmg)
 end
 
 function Rocket:fire(fromX, fromY, orientation)
-  print("trying to fire...")
   if self.cdLeft <= 0 then
-    print("firing (cd: "..self.cdLeft..")")
     RocketProjectile.new(fromX, fromY, orientation)
     self.cdLeft = self.firingCooldown
-  else
-    print("on CD (cd: "..self.cdLeft..")")
   end
 end
 
@@ -38,18 +33,45 @@ function RocketProjectile.new(x, y, angle, damage, speed)
   local new = Projectile.new(x, y, angle, damage, speed)
   
   setmetatable(new, RocketProjectile)
+  
+  new.explosionState = 0
+  new.explodedEnemies = {}
+  new.explosionDamage = 50
+  new.explosionSize = 50
 end
 
 function RocketProjectile:onHit(target)
-  -- TODO: replace with splash damage
-  if target ~= nil then
-    target:damage(self.damage)
+  assert(self.explosionState ~= nil)
+  print("hello there")
+  self.explosionState = 1
+end
+
+function RocketProjectile:update(dt)
+  if self.explosionState == 0 then
+    Projectile.update(self, dt)
+  elseif self.explosionState < 6 then
+    for _,monster in pairs(Monster.list) do
+      if not self.explodedEnemies[monster] then
+        monster:damage(self.explosionDamage)
+        self.explodedEnemies[monster] = true
+      end
+    end
+    self.explosionState = self.explosionState + 1
+  else
+    self.dead = true
   end
-  dead=true
 end
 
 function RocketProjectile:draw()
-  local tmp = love.graphics.getColor()
-  love.graphics.setColor(255,255,255,255)
-  love.graphics.draw(getImage("missile"), self.x, self.y, math.atan2(self.vy, self.vx))
+  if self.explosionState == 0 then
+    print(self.explosionState)
+    local tmp = love.graphics.getColor()
+    love.graphics.setColor(255,255,255,255)
+    local img = getImage("missile")
+    love.graphics.draw(img, self.x, self.y, math.atan2(self.vy, self.vx), 1, 1, img:getWidth()/2, img:getHeight()/2)
+  else
+    print("exploding, please wait")
+    local img = getImage("planetexplosion"..self.explosionState)
+    love.graphics.draw(img, self.x, self.y, 0, self.explosionSize/img:getWidth(), self.explosionSize/img:getHeight(), self.explosionSize/2, self.explosionSize/2)
+  end
 end

@@ -41,7 +41,6 @@ end
 function Projectile:checkCollisions(dt)
   if Land.isBlocked(self.x, self.y) then
     self:onHit(nil)
-    self.dead=true
   end
   
   for _,mon in pairs(Monster.list) do
@@ -63,7 +62,6 @@ function Projectile:checkCollisions(dt)
     if (0 < t1  and t1 < 1) or (0 < t2 and t2 < 1) then
       -- We hit the monster, I think...
       mon:damage(10)
-      self.dead=true
     end
   end
 end
