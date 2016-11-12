@@ -20,7 +20,7 @@ function Player.new(name, x, y, color, joystick)
     size=15,
     color=color,
     velocity=120,
-    orientation=0
+    orientation=0,
     weapon=Weapon.laser
   }
   setmetatable(new, Player)
