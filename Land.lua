@@ -52,6 +52,19 @@ function Land.update(dt)
   end
 end
 
+function Land.makeHole(x, y, r)
+  Land.drawBreakable(function ()
+    love.graphics.origin()
+    love.graphics.setBlendMode("replace")
+    love.graphics.setColor(0,0,0,170)
+    love.graphics.circle("fill",x,y,r+2)
+    love.graphics.setColor(0,0,0,0)
+    love.graphics.circle("fill",x,y,r)
+    
+    love.graphics.setBlendMode("alpha")
+  end)
+end
+
 function Land.drawBreakable(func)
   l.drawn = true
   l.breakableCanvas:renderTo(func)

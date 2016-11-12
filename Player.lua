@@ -30,7 +30,7 @@ end
 
 local COLLISION_POINTS_AMOUNTS = 10
 local COLLISION_POINTS_OFFSETS = {}
-local PLAYER_RADIUS = 12
+local PLAYER_RADIUS = 6
 
 for v = 0, math.pi*2, math.pi*2 /  COLLISION_POINTS_AMOUNTS do
   table.insert(COLLISION_POINTS_OFFSETS, {x = math.cos(v) * PLAYER_RADIUS,
@@ -109,6 +109,10 @@ function Player.drawAll()
     love.graphics.draw(Image.hero, p.x, p.y, p.orientation, p.size/Image.hero:getWidth(), p.size/Image.hero:getHeight(), p.size, p.size)
     love.graphics.setColor(0, 0, 0)
     love.graphics.line(p.x, p.y, p.x + math.cos(p.orientation)*p.size, p.y + math.sin(p.orientation)*p.size)
+    love.graphics.setColor(255,0,0)
+    for k,v in pairs(COLLISION_POINTS_OFFSETS) do
+      love.graphics.points(p.x+v.x, p.y+v.y)
+    end
   end
   love.graphics.setColor(prevR, prevG, prevB, prevA)
 end
