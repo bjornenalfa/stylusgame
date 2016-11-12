@@ -73,10 +73,13 @@ end
 
 function Projectile.drawAll()
   for _,p in pairs(Projectile.list) do
-    --love.graphics.draw(p.image, p.x, p.y, math.atan2(p.vy, p.vx), 1, 1)
-    love.graphics.setColor(0,0,0)
-    love.graphics.circle("fill", p.x, p.y, 3)
+    p:draw()
   end
+end
+
+function Projectile:draw()
+  love.graphics.setColor(0,0,0)
+  love.graphics.circle("fill", p.x, p.y, 3)
 end
 
 function Projectile:onHit(target)
