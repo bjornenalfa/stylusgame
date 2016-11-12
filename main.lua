@@ -43,7 +43,9 @@ function love.mousereleased(x, y, button)
   Stylus.mousereleased(x, y, button)
 end
 
+time = 0
 function love.update(dt)
+  time = time + dt
   Screenshake.update(dt)
   Stylus.update(dt)
   Land.update(dt)
