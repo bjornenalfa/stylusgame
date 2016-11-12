@@ -2,15 +2,27 @@ MachineGun = {}
 MachineGun.__index = MachineGun
 setmetatable(MachineGun, Weapon)
 
-function MachineGun.new(cooldown, d)
+function MachineGun.new(cooldown, d, speed)
   local new = Weapon.new(cooldown)
   new["damage"] = d
+  new["velocity"] = speed
+  new["firingTime"] = 0
+  new["fireSpread"] = 0
+  new["maxSpread"] = 20
+  new["setupTime"] = 3
+  new["setupTimeLeft"] = new.setupTime
   setmetatable(new, MachineGun)
   return new
 end
 
 function MachineGun:fire(fromX, fromY, orientation)
-  --spread
+  if self.cdLeft <= 0 then
+    self.firingTime = math.max(self.firingTime + 1, self.maxSpread)
+    local angleOffset = (math.random(-self.firingTime, self.firingTime) / self.maxSpread) * math.pi/18
+    
+    MachineGunProjectile.new(fromX, fromY, orientation+angleOffset, self.damage, speed)
+    self.cdLeft = self.firingCooldown
+  end    
 end
 
 

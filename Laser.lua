@@ -52,6 +52,7 @@ function LaserProjectile:fire()
     -- aslo need a check over all monsters
   end
   Sound.play("laser_shoot")
+  Screenshake.new(2, 5)
 end
 
 function LaserProjectile:update(dt)
