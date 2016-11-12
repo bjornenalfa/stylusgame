@@ -16,6 +16,9 @@ function Explosions.new(x, y, time, radius, playSound)
     frame = 1
   }
   table.insert(e.explosions, newEx)
+  
+  Land.makeHole(x, y, radius)
+  
   return newEx
 end
 
@@ -38,7 +41,7 @@ end
 function Explosions.drawShake()
   love.graphics.setColor(255,255,255)
   for _,v in pairs(e.explosions) do
-    love.graphics.translate(math.random(-5,5), math.random(-5,5))
+    love.graphics.translate(math.random(-2,2), math.random(-2,2))
   end
 end
 
