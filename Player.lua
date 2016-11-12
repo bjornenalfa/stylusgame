@@ -21,6 +21,7 @@ function Player.new(name, x, y, color, joystick)
     color=color,
     velocity=120,
     orientation=0,
+    machineGunState = false, --only specific to the machinegun weapon, to hinder movement
 
     weapon=Rocket.new()
   }
@@ -58,18 +59,20 @@ function Player.updateAll(dt)
 end
 
 function Player:update(dt)
-  chkx, dx = Input.hasInput(Input.MOVE_X, self)
-  if chkx then
-    self.vx = dx * self.velocity
-  else 
-    self.vx = 0
-  end
-  
-  chky, dy = Input.hasInput(Input.MOVE_Y, self)
-  if chky then
-    self.vy = dy * self.velocity
-  else 
-    self.vy = 0
+  if not machineGunState then
+    chkx, dx = Input.hasInput(Input.MOVE_X, self)
+    if chkx then
+      self.vx = dx * self.velocity
+    else 
+      self.vx = 0
+    end
+    
+    chky, dy = Input.hasInput(Input.MOVE_Y, self)
+    if chky then
+      self.vy = dy * self.velocity
+    else 
+      self.vy = 0
+    end
   end
   
   local _, magX = Input.hasInput(Input.AIM_X, self)

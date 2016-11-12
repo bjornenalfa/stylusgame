@@ -44,7 +44,6 @@ function Weapon:fire(fromX, fromY, orientation)
     Projectile.fromTemplate(fromX, fromY, orientation, self.projectileTemplate)
     self.cdLeft = self.firingCooldown
   end
-  
 end
 
 function Weapon:update(dt)
