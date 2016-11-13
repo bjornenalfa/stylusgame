@@ -95,5 +95,8 @@ function love.draw()
   
   love.graphics.origin() -- reset to screen drawing (UI)
   
+  love.graphics.setColor(0,0,0)
+  love.graphics.print(love.timer.getFPS(), 0, 0)
+  
   Stylus.drawUI() -- should be last
 end

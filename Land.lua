@@ -38,7 +38,7 @@ l.gct = 0 -- garbage collect counter
 
 function Land.update(dt)
   l.nt = l.nt + dt
-  if l.nt > 0.2 then
+  if l.nt > 0.1 then
     l.nt = 0
     if l.drawn then
       l.drawn = false
