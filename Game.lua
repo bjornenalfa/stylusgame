@@ -112,7 +112,7 @@ function Game.stop()
   Game.over = true
   Game.running = false
   love.audio.stop(Sound["battle1"])
-  Sound.play("
+  
 end
 
 function Game.drawOver()
