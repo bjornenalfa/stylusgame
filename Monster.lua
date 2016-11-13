@@ -75,6 +75,16 @@ function Monster.updateAll(dt)
   end
 end
 
+function Monster:attackPlayer()
+  local x = self.x + math.cos(self.direction) * self.r
+  local y = self.y + math.sin(self.direction) * self.r
+  
+  local hit, player = Player.pointInPlayer(x, y)
+  if hit then
+    player:damage(self.damage)
+  end
+end
+
 function Monster:update(dt)
   self.moved = false
   self:turnToGoal(dt)
@@ -188,6 +198,9 @@ end
 function Monster.drawAll()
   for i,mon in pairs(m.list) do
     mon:draw()
+  end
+  for i,mon in pairs(m.list) do
+    Game.drawHealthbar(mon)
   end
 end
     

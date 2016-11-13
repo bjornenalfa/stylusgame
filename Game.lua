@@ -118,3 +118,18 @@ function Game.drawNotRunning()
   
   love.graphics.setFont(Font.normal)
 end
+
+
+function Game.drawHealthbar(object)
+  if not (object.hp == object.maxhp) then
+    local imageE = getImage("hp_empty")
+    local imageF = getImage("hp_filled")
+    local x = object.x-- - imageE:getWidth / 2
+    local y = object.y - 20-- imageE:getHeight / 2
+    
+    love.graphics.draw(imageE, x, y, 0, 0.5, 0.5, imageE:getWidth() / 2, imageE:getHeight() / 2)
+    love.graphics.draw(imageF, x, y, 0, 0.5*(object.hp / object.maxhp), 0.5, imageF:getWidth() / 2, imageF:getHeight() / 2)
+  end
+end
+  
+
