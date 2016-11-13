@@ -84,6 +84,10 @@ function Monster:update(dt)
     dy = self.vy * dt
     self.distanceMoved = self.distanceMoved + math.sqrt(dx^2+dy^2)
   end
+  
+  if Land.isAcid(self.x, self.y) then
+    self:damage(20*dt)
+  end
   --self.x = self.x + dx
   --self.y = self.y + dy
 end
