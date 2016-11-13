@@ -16,8 +16,6 @@ function Projectile.new(x, y, angle, damage, speed)
   setmetatable(new, Projectile)
   table.insert(Projectile.list, new)
   
-  --if new.vx == 0 then print(new.vy) end
-  
   return new
 end
 
