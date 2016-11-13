@@ -89,6 +89,7 @@ function love.draw()
     Projectile.drawAll()
     Player.drawAll()
     Monster.drawAll()
+    Game.drawHealthbars()
     Explosions.draw()
 
 

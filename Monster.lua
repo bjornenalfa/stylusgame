@@ -117,7 +117,7 @@ function Monster:update(dt)
   end
   
   if Land.isAcid(self.x, self.y) then
-    self:damage(20*dt)
+    self:damage(100*dt)
   end
   --self.x = self.x + dx
   --self.y = self.y + dy
@@ -125,7 +125,10 @@ end
   
 function Monster:dirToClosestPlayer()
   local closest = Player.getClosest(self)
-  return math.atan2(closest.y - self.y, closest.x - self.x)
+  if closest then
+    return math.atan2(closest.y - self.y, closest.x - self.x)
+  end
+  return 0
 end
 
 function Monster:turnToGoal(dt)
@@ -216,9 +219,6 @@ end
 function Monster.drawAll()
   for i,mon in pairs(m.list) do
     mon:draw()
-  end
-  for i,mon in pairs(m.list) do
-    Game.drawHealthbar(mon)
   end
 end
     

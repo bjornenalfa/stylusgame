@@ -130,10 +130,17 @@ function Game.drawNotRunning()
     
     love.graphics.setFont(Font.normal)
   end
-  
-  love.graphics.setFont(Font.normal)
 end
 
+function Game.drawHealthbars()
+  for _,v in pairs(Monster.list) do
+    Game.drawHealthbar(v)
+  end
+  
+  for _,v in pairs(Player.list) do
+    Game.drawHealthbar(v)
+  end
+end
 
 function Game.drawHealthbar(object)
   if not (object.hp == object.maxhp) then
@@ -143,7 +150,9 @@ function Game.drawHealthbar(object)
     local y = object.y - 20-- imageE:getHeight / 2
     
     love.graphics.draw(imageE, x, y, 0, 0.5, 0.5, imageE:getWidth() / 2, imageE:getHeight() / 2)
-    love.graphics.draw(imageF, x, y, 0, 0.5*(object.hp / object.maxhp), 0.5, imageF:getWidth() / 2, imageF:getHeight() / 2)
+    if (object.hp / object.maxhp) > 0 then
+      love.graphics.draw(imageF, x, y, 0, 0.5*(object.hp / object.maxhp), 0.5, imageF:getWidth() / 2, imageF:getHeight() / 2)
+    end
   end
 end
 
