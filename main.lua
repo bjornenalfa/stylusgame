@@ -40,8 +40,11 @@ end
 function love.keypressed(key)
   if key == "escape" then
     love.event.quit()
-  elseif key == "k" then
-    Stylus.startSlash(10)
+  elseif key == "o" then
+    local _ = Kingdab.new(Map.width / 2, Map.height / 2)
+    local x, y, width, height = Camera.getBounds()
+    Floattext.new("Boss battle!", x+width/2, y+height/2, {255,255,255}, Font.base)
+    Screenshake.new(1, 5)
   elseif key == "space" and not Game.running then
     Game.start("map02")
     Sound.play("battle1")
