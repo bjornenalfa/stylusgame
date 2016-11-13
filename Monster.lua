@@ -23,7 +23,8 @@ function Monster.new(x, y, r, image)
          maxhp = 100,
          distanceMoved = 0,
          dead = false,
-         moved = false -- might not be needed
+         moved = false, -- might not be needed
+         deathSound = "quack"
   }
   setmetatable(new, Monster)
   table.insert(m.list, new)
@@ -177,7 +178,7 @@ function Monster:damage(damage)
 end
 
 function Monster:die()
-  -- perhaps reward the player or something
+  Sound.play(self.deathSound)
 end
 
 function Monster.drawAll()
