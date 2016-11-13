@@ -10,7 +10,6 @@ function Weapon.new(firingSpeed, projectileTemplate)
     projectileTemplate=projectileTemplate,
     cdLeft = 0
   }
-  print("test  "..new.firingCooldown)
   setmetatable(new, Weapon)
   table.insert(Weapon.list, new)
   

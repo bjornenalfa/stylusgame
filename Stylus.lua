@@ -194,6 +194,5 @@ function s.drawUI()
   if s.slashing then
     love.graphics.setColor(255,0,0)
     --love.graphics.circle("fill",love.mouse.getX(), love.mouse.getY(), 1)
-    love.graphics.print(tostring(s.combo), 0, 0)
   end
 end
