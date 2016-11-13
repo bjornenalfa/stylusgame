@@ -50,7 +50,7 @@ s.addStaticSound("laser2", ".ogg")
 s.addStaticSound("laser1", ".wav")
 s.addStaticSound("planet_explode", ".wav")
 s.addStaticSound("quack", ".mp3")
-s.addStaticSound("wing", ".wav")
+s.addStaticSound("wing2", ".wav")
 
 s.addStaticSound("mine_activate", ".wav")
 s.addStaticSound("missile_shoot", ".wav")

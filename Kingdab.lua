@@ -68,6 +68,7 @@ function d:update(dt)
     self.baseSpeed = 140
     self.angryDuration = 5
     self.angryCooldown = 20
+    Sound.play("wing2")
   end
   if self.state == "angry" then
     self.angryDuration = self.angryDuration - dt
