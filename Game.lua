@@ -12,6 +12,14 @@ function Game.start(map)
   Land.newMap()
   Stylus.newMap()
   Blood.newMap()
+  
+  Projectile.list = {}
+  Pickup.list = {}
+  Explosions.explosions = {}
+  Screenshake.list = {}
+  Floattext.list = {}
+  Player.list = {}
+  Monster.list = {}
   Game.timer = 0
   local x, y
   if map == "map01" then
