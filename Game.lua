@@ -4,6 +4,7 @@ Game.__index = Game
 Game.running = false
 Game.over = false
 Game.timer = 0
+Game.bossTime = 0
 
 function Game.start(map)
   love.audio.stop(Sound["menu1"])
@@ -22,6 +23,7 @@ function Game.start(map)
   Player.list = {}
   Monster.list = {}
   Game.timer = 0
+  Game.bossTime = 0
   local x, y
   if map == "map01" then
     x = 200
@@ -110,15 +112,30 @@ function Game.update(dt)
     end
   else
     Game.timer = Game.timer + dt
+    Game.bossTime = Game.bossTime + dt
     if Game.timer > 2  and #Monster.list < 30 then
       if math.random(1, 10) == 1 then
         Game.spawn(1, 4) -- duckcrab
       end
-      if math.random(1, 15) == 1 then
-        Game.pickupSpawn()
+    else
+      Game.timer = Game.timer + dt
+      if Game.timer > 2  and #Monster.list < 30 then
+        if math.random(1, 10) == 1 then
+          Game.spawn(1, 4) -- duckcrab
+        end
+        if math.random(1, 15) == 1 then
+          Game.pickupSpawn()
+        end
+        Game.spawn(1)
+        Game.timer = 0
       end
-      Game.spawn(1)
-      Game.timer = 0
+    end
+    if Game.bossTime > 120 then
+      Game.bossTime = 0
+      local _ = Kingdab.new(Map.width / 2, Map.height / 2)
+      local x, y, width, height = Camera.getBounds()
+      Floattext.new("Boss battle!", x+width/2, y+height/2, {255,255,255}, Font.base)
+      Screenshake.new(1, 5)
     end
   end
 end

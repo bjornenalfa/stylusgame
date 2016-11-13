@@ -32,10 +32,12 @@ s.addSound("battle_nomercy1", ".ogg")
 s.battle_nomercy1:setVolume(1)
 s.addSound("battle_nomercy2", ".ogg")
 s.battle_nomercy2:setVolume(1)
+
 s.addSound("menu1", ".mp3")
 s["menu1"]:setLooping(true)
 s.menu1:setVolume(1)
-s.addSound("gameover", ".mp3")
+
+s.addSound("gameover", ".ogg")
 s["gameover"]:setLooping(true)
 s.menu1:setVolume(1)
 

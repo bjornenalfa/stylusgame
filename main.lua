@@ -44,9 +44,6 @@ function love.keypressed(key)
   elseif key == "space" and not Game.running then
     Game.start("map02")
     Sound.play("battle1")
-    
-    --test
-    mon1 = Kingdab.new(1000, 1000)
   end
 end
 
