@@ -138,8 +138,8 @@ function MachineGun:draw(object)
   local p = self.player
   local imgW = self.image:getWidth()
   local imgH = self.image:getHeight()
-  local scaleX = 2 * self.player.size/imgW + weaponScale * timeScale
-  local scaleY = 2 * self.player.size/imgH + weaponScale * timeScale
+  local scaleX = 4 * self.player.size/imgW + weaponScale * timeScale
+  local scaleY = 4 * self.player.size/imgH + weaponScale * timeScale
   love.graphics.draw(self.image, p.x, p.y, p.orientation, scaleX, scaleY, imgW/2, imgH/2)
 end
 
