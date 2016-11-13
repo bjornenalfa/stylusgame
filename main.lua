@@ -44,7 +44,7 @@ function love.keypressed(key)
     Sound.play("battle1")
     
     --test
-    mon1 = Kingdab.new(300, 300)
+    mon1 = Kingdab.new(1000, 1000)
   end
 end
 
