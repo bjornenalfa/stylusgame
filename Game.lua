@@ -39,7 +39,13 @@ function Game.start(map)
 end
 
 function Game.pickupSpawn()
-  PickupWeapon.new(math.random(0, Map.width), math.random(0, Map.height))
+  local x = math.random(0, Map.width)
+  local y = math.random(0, Map.height)
+  if math.random(0, 1) == 1 then
+    PickupWeapon.new(x, y)
+  else
+    PickupStylus.new(x, y)
+  end
 end
 
 -- spawns a random amount of random type (not boss) if you do not specify the second parameter

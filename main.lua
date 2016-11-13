@@ -23,6 +23,7 @@ require "Laser"
 require "MachineGun"
 require "Pickup"
 require "PickupWeapon"
+require "PickupStylus"
 require "Game"
 
 function love.load()
