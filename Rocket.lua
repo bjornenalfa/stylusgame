@@ -5,7 +5,7 @@ setmetatable(Rocket, Weapon)
 
 function Rocket.new(firingCooldown, dmg)
   firingCooldown = firingCooldown or 0.5
-  dmg = dmg or 30
+  dmg = dmg or 50
   local new = Weapon.new(firingCooldown, dmg)
   new["image"] = getImage("weapons/bazooka")
   setmetatable(new, Rocket)

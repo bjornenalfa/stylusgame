@@ -90,7 +90,7 @@ function s.update(dt)
     end
     for i = 1, #good-1 do
       if good[i] then
-        good[i]:damage(3+2*math.sqrt(s.combo))
+        good[i]:damage(3+3*math.sqrt(s.combo))
         Sound.play("hit4")
         s.combo = s.combo + 1
         s.comboTimer = 0

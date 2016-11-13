@@ -105,19 +105,14 @@ function Game.update(dt)
   if Game.over then
     Game.timer = Game.timer + dt
     if Game.timer > 60 then
-      game.over = false
+      Game.over = false
       time = 0
       love.audio.stop(Sound["gameover"])
       Sound.play("menu1")
+      Game.timer = 0
     end
   else
-    Game.timer = Game.timer + dt
     Game.bossTime = Game.bossTime + dt
-    if Game.timer > 2  and #Monster.list < 30 then
-      if math.random(1, 10) == 1 then
-        Game.spawn(1, 4) -- duckcrab
-      end
-    else
       Game.timer = Game.timer + dt
       if Game.timer > 2  and #Monster.list < 30 then
         if math.random(1, 10) == 1 then
@@ -129,7 +124,7 @@ function Game.update(dt)
         Game.spawn(1)
         Game.timer = 0
       end
-    end
+    
     if Game.bossTime > 120 then
       Game.bossTime = 0
       local _ = Kingdab.new(Map.width / 2, Map.height / 2)
