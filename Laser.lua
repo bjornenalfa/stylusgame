@@ -103,7 +103,7 @@ function LaserProjectile:fire()
         break
       end
     end
-    if Land.isBlocked(x, y) then
+    if Land.isBlocked(x, y, true) then
       isHit = true
       break
     end
