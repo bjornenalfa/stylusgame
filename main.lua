@@ -25,8 +25,10 @@ require "Pickup"
 require "PickupWeapon"
 require "PickupStylus"
 require "Game"
+require "Blood"
 
 function love.load()
+  math.randomseed(os.time())
   love.graphics.setDefaultFilter("linear", "nearest", 2)
   love.graphics.setBackgroundColor(255,255,255)
   Sound.play("menu1")
@@ -84,6 +86,7 @@ function love.draw()
     Explosions.drawShake()
     Screenshake.draw()
     Map.draw()
+    Blood.draw()
     Map.drawShadow()
     Pickup.drawAll()
     Stylus.drawBackground()

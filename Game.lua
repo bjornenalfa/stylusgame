@@ -11,6 +11,7 @@ function Game.start(map)
   Map.load(map)
   Land.newMap()
   Stylus.newMap()
+  Blood.newMap()
   Game.timer = 0
   local x, y
   if map == "map01" then

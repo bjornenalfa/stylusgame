@@ -69,8 +69,8 @@ function s.update(dt)
     end
     s.comboTimer = s.comboTimer + dt
     if s.comboTimer > 0.4 then
-      if s.combo > 0 then
-        Floattext.new("+"..s.combo, x, y)
+      if s.combo > 9 then
+        Floattext.new(""..s.combo.." hit combo!", x, y)
       end
       s.combo = 0
     end
@@ -90,7 +90,7 @@ function s.update(dt)
     end
     for i = 1, #good-1 do
       if good[i] then
-        good[i]:damage(3+math.sqrt(s.combo))
+        good[i]:damage(3+2*math.sqrt(s.combo))
         Sound.play("hit4")
         s.combo = s.combo + 1
         s.comboTimer = 0

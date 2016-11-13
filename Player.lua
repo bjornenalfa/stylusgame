@@ -164,6 +164,9 @@ end
 
 function Player:damage(damage)
   self.hp = self.hp - damage
+  if self.hp < 0 then
+    Game.stop()
+  end
 end
 
 function Player.drawAll()
