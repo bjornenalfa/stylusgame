@@ -25,8 +25,10 @@ require "Pickup"
 require "PickupWeapon"
 require "PickupStylus"
 require "Game"
+require "Blood"
 
 function love.load()
+  math.randomseed(os.time())
   love.graphics.setDefaultFilter("linear", "nearest", 2)
   love.graphics.setBackgroundColor(255,255,255)
   Sound.play("menu1")
@@ -72,6 +74,8 @@ function love.update(dt)
     Projectile.updateAll(dt)
     Explosions.update(dt)
     Floattext.update(dt)
+  elseif Game.over then
+    -- do nothing
   end
 end
 
@@ -82,6 +86,7 @@ function love.draw()
     Explosions.drawShake()
     Screenshake.draw()
     Map.draw()
+    Blood.draw()
     Map.drawShadow()
     Pickup.drawAll()
     Stylus.drawBackground()
@@ -107,6 +112,8 @@ function love.draw()
     love.graphics.print(love.timer.getFPS(), 0, 0)
     
     Stylus.drawUI() -- should be last
+  elseif Game.over then
+    Game.drawOver()
   else
     Game.drawNotRunning()
   end

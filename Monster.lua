@@ -214,6 +214,7 @@ end
 
 function Monster:die()
   Sound.play(self.deathSound)
+  Blood.new(self.x, self.y, self.r)
 end
 
 function Monster.drawAll()

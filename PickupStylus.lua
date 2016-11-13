@@ -13,5 +13,5 @@ end
 
 function PickupStylus:pickup(player)
   Pickup.pickup(self)
-  Stylus.startSlash(5)
+  Stylus.startSlash(10)
 end

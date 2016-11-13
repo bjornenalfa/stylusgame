@@ -18,6 +18,7 @@ function Explosions.new(x, y, time, radius, playSound)
   table.insert(e.explosions, newEx)
   
   Land.makeHole(x, y, radius)
+  Blood.dust(x, y, radius)
   
   return newEx
 end
