@@ -3,6 +3,15 @@ Player.__index = Player
 
 Player.list = {}
 
+local COLLISION_POINTS_AMOUNTS = 10
+local COLLISION_POINTS_OFFSETS = {}
+local PLAYER_RADIUS = 6
+
+for v = 0, math.pi*2, math.pi*2 /  COLLISION_POINTS_AMOUNTS do
+  table.insert(COLLISION_POINTS_OFFSETS, {x = math.cos(v) * PLAYER_RADIUS,
+                                          y = math.sin(v) * PLAYER_RADIUS})
+end
+
 function Player.new(name, x, y, color, joystick)
   if love.joystick.getJoystickCount() > 0 then
     joysticks = love.joystick.getJoysticks()
@@ -17,7 +26,7 @@ function Player.new(name, x, y, color, joystick)
     y=y,
     vx=0,
     vy=0,
-    size=15,
+    size=PLAYER_RADIUS*1.25,
     color=color,
     velocity=120,
     orientation=0,
@@ -33,15 +42,6 @@ function Player.new(name, x, y, color, joystick)
   setmetatable(new, Player)
   Player.list[name] = new
   return new
-end
-
-local COLLISION_POINTS_AMOUNTS = 10
-local COLLISION_POINTS_OFFSETS = {}
-local PLAYER_RADIUS = 6
-
-for v = 0, math.pi*2, math.pi*2 /  COLLISION_POINTS_AMOUNTS do
-  table.insert(COLLISION_POINTS_OFFSETS, {x = math.cos(v) * PLAYER_RADIUS,
-                                          y = math.sin(v) * PLAYER_RADIUS})
 end
 
 function Player.getClosest(object)
@@ -165,7 +165,7 @@ function Player.drawAll()
   for _,p in pairs(Player.list) do
     love.graphics.setColor(255,255,255,255)
     p.weapon:draw(p)
-    love.graphics.draw(Image.hero, p.x, p.y, p.orientation, p.size/Image.hero:getWidth(), p.size/Image.hero:getHeight(), p.size, p.size)
+    love.graphics.draw(Image.hero, p.x, p.y, p.orientation, 2*p.size/Image.hero:getWidth(), 2*p.size/Image.hero:getHeight(), Image.hero:getWidth()*0.5, Image.hero:getHeight()*0.5)
     love.graphics.setColor(0, 0, 0)
     --love.graphics.line(p.x, p.y, p.x + math.cos(p.orientation)*p.size, p.y + math.sin(p.orientation)*p.size)
     love.graphics.setColor(255,0,0)

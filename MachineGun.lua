@@ -50,7 +50,6 @@ end
 function MachineGun:altFire(fromX, fromY, orientation)
   -- depending on state, we transition and let update(dt) do the work
   -- the states pretty much only changes how the gun is shot, perhaps
-  print("hejsan hoppsan    " .. tostring(self.setupState))
   if self.setupState == IS_NOT_SETUP then
     self.setupState = IS_SETTING_UP
     self.lockedAngle = self.player.orientation
@@ -107,6 +106,7 @@ end
 function MachineGun:draw(object)
   --love.graphics.print("timeLeft: "..tostring(self.setupTimeLeft) .. " state: " ..tostring(self.setupState .. " moveme. " .. tostring(self.player.movementImpair)), object.x - 150, object.y - 20)
   local state = self.setupState
+  -- scaling so we can draw the gun bigger when in mounter mode
   local weaponScale = 0.5
   local timeScale = 0
   if state == IS_NOT_SETUP then
@@ -138,8 +138,8 @@ function MachineGun:draw(object)
   local p = self.player
   local imgW = self.image:getWidth()
   local imgH = self.image:getHeight()
-  local scaleX = 2 * self.player.size/imgW + weaponScale * timeScale
-  local scaleY = 2 * self.player.size/imgH + weaponScale * timeScale
+  local scaleX = 4 * self.player.size/imgW + weaponScale * timeScale
+  local scaleY = 4 * self.player.size/imgH + weaponScale * timeScale
   love.graphics.draw(self.image, p.x, p.y, p.orientation, scaleX, scaleY, imgW/2, imgH/2)
 end
 

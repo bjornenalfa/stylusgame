@@ -1,3 +1,5 @@
+require "Font"
+require "Floattext"
 require "Sound"
 require "Image"
 require "Input"
@@ -71,6 +73,7 @@ function love.update(dt)
   Monster.updateAll(dt)
   Projectile.updateAll(dt)
   Explosions.update(dt)
+  Floattext.update(dt)
 end
 
 
@@ -93,6 +96,7 @@ function love.draw()
   Camera.draw()
   
   Stylus.draw()
+  Floattext.draw()
   
   --Camera.drawOOB()
   
