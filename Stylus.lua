@@ -1,7 +1,7 @@
 Stylus = {}
 local s = Stylus
 
-s.maxInk = 1000
+s.maxInk = 100000
 s.currentInk = s.maxInk
 s.ranOut = false
 
@@ -29,6 +29,8 @@ function s.startSlash(time)
   s.combo = 0
   s.comboTimer = 0
   s.slashTime = time
+  local x, y, width, height = Camera.getBounds()
+  Floattext.new("Time to slash!", x+width/2, y+height/2, {255,255,255}, Font.base)
   love.mouse.setCursor(love.mouse.newCursor(getImage("mouse_death"):getData(), 10, 10))
 end
 
@@ -53,6 +55,9 @@ function s.update(dt)
     end
     s.comboTimer = s.comboTimer + dt
     if s.comboTimer > 0.3 then
+      if s.combo > 0 then
+        Floattext.new("+"..s.combo, x, y)
+      end
       s.combo = 0
     end
     if love.mouse.isDown(1) then return end
@@ -71,7 +76,6 @@ function s.update(dt)
     end
     for i = 1, #good-1 do
       if good[i] then
-        print(good[i])
         good[i]:damage(1)
         Sound.play("hit4")
         s.combo = s.combo + 1
@@ -79,7 +83,16 @@ function s.update(dt)
       end
     end
   else
-    if love.mouse.isDown(1) and not s.ranOut then
+    if love.mouse.isDown(1) then
+      if love.mouse.isDown(2) then
+        Land.makeHole(x, y, 15)
+        return
+      end
+      if s.ranOut then return end
+      if Player.pointInPlayer(x, y) or Monster.pointInMonster(x, y) then
+        s.cont = false
+        return 
+      end
       if not s.cont then
         s.cont = true
         s.lastx = x
@@ -113,10 +126,6 @@ function s.update(dt)
           s.contTimer = 0
         end
       end
-    end
-    
-    if love.mouse.isDown(2) then
-      Land.makeHole(x, y, 15)
     end
   end
 end

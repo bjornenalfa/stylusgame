@@ -79,12 +79,10 @@ function Monster:update(dt)
   self:turnToGoal(dt)
   self:move(dt)
   if self.moved then
-    --perhaps do stuff with animation
-    --also rotation 'mon.r'
+    dx = self.vx * dt
+    dy = self.vy * dt
+    self.distanceMoved = self.distanceMoved + math.sqrt(dx^2+dy^2)
   end
-  dx = self.vx * dt
-  dy = self.vy * dt
-  self.distanceMoved = self.distanceMoved + math.sqrt(dx^2+dy^2)
   --self.x = self.x + dx
   --self.y = self.y + dy
 end

@@ -22,11 +22,11 @@ function Land.newMap()
   end)
 end
 
-function Land.isBlocked(x, y)
+function Land.isBlocked(x, y, default)
   x = math.floor(x)
   y = math.floor(y)
   if x < 0 or x >= Map.width or y < 0 or y >= Map.height then
-    return true
+    return default or false
   end
   r,g,b,a = l.breakableImage:getPixel(x, y)
   r,g,b,a2 = l.solidImage:getPixel(x,y)

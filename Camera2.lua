@@ -10,6 +10,12 @@ function Camera.windowToWorld(x, y)
   return (x)/c.xscale + c.x, (y)/c.yscale + c.y
 end
 
+function Camera.getBounds()
+  width = love.graphics.getWidth() / c.xscale
+  height = love.graphics.getHeight() / c.yscale
+  return c.x, c.y, width, height
+end
+
 function Camera.update(dt)
   local player = Player.list["p1"]
   width = love.graphics.getWidth() / c.xscale
