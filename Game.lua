@@ -5,6 +5,8 @@ Game.running = false
 Game.timer = 0
 
 function Game.start(map)
+  love.audio.stop(Sound["menu1"])
+  Sound.play("battle1")
   Map.load(map)
   Land.newMap()
   Stylus.newMap()
