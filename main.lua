@@ -72,6 +72,8 @@ function love.update(dt)
     Projectile.updateAll(dt)
     Explosions.update(dt)
     Floattext.update(dt)
+  elseif Game.over then
+    -- do nothing
   end
 end
 
@@ -106,6 +108,8 @@ function love.draw()
     love.graphics.print(love.timer.getFPS(), 0, 0)
     
     Stylus.drawUI() -- should be last
+  elseif Game.over then
+    Game.drawOver()
   else
     Game.drawNotRunning()
   end

@@ -2,6 +2,7 @@ Game = {}
 Game.__index = Game
 
 Game.running = false
+Game.over = false
 Game.timer = 0
 
 function Game.start(map)
@@ -102,6 +103,23 @@ function Game.update(dt)
   end
 end
 
+function Game.reset()
+  Game.stop()
+  Game.start()
+end
+
+function Game.stop()
+  Game.over = true
+  Game.running = false
+  love.audio.stop(Sound["battle1"])
+  Sound.play("
+end
+
+function Game.drawOver()
+  love.graphics.setColor(255,255,255)
+  local img = getImage("menu_game_over")
+  love.graphics.draw(img, 0, 0, 0, love.graphics.getWidth() / img:getWidth(), love.graphics.getHeight() / img:getHeight())
+end
 
 function Game.drawNotRunning()
   love.graphics.setColor(255,255,255)
