@@ -177,10 +177,10 @@ function Player.drawAll()
     love.graphics.draw(Image.hero, p.x, p.y, p.orientation, 2*p.size/Image.hero:getWidth(), 2*p.size/Image.hero:getHeight(), Image.hero:getWidth()*0.5, Image.hero:getHeight()*0.5)
     love.graphics.setColor(0, 0, 0)
     --love.graphics.line(p.x, p.y, p.x + math.cos(p.orientation)*p.size, p.y + math.sin(p.orientation)*p.size)
-    love.graphics.setColor(255,0,0)
+    --[[ove.graphics.setColor(255,0,0)
     for k,v in pairs(COLLISION_POINTS_OFFSETS) do
       love.graphics.points(p.x+v.x, p.y+v.y)
-    end
+    end]]
   end
   love.graphics.setColor(prevR, prevG, prevB, prevA)
 end

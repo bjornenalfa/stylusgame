@@ -234,12 +234,12 @@ function Monster:draw()
   love.graphics.rectangle("fill", mon.x - 20, mon.y - 40, 40, 10)
   love.graphics.rectange("fill", mon.x - 20, mon.y - 40 , 40*(mon.hp/mon.maxhp), 10)
   --]]
-  love.graphics.setColor(0,0,0,100)
+  --[[love.graphics.setColor(0,0,0,100)
   love.graphics.circle("fill", self.x, self.y, self.r)
   love.graphics.setColor(255,0,0)
   for k,v in pairs(self.COLLISION_POINTS_OFFSETS) do
     love.graphics.points(self.x+v.x, self.y+v.y)
-  end
+  end]]
 end
     
     
