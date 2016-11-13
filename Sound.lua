@@ -20,7 +20,8 @@ function s.play(so)
 end
 
 s.addSound("battle1", ".ogg")
-s.battle1:setVolume(0.6)
+s.battle1:setVolume(1)
+s["battle1"]:setLooping(true)
 s.addSound("battle2", ".ogg")
 s.battle2:setVolume(0.8)
 s.addSound("battle3", ".ogg")
@@ -32,6 +33,7 @@ s.battle_nomercy1:setVolume(1)
 s.addSound("battle_nomercy2", ".ogg")
 s.battle_nomercy2:setVolume(1)
 s.addSound("menu1", ".mp3")
+s["menu1"]:setLooping(true)
 s.menu1:setVolume(1)
 
 

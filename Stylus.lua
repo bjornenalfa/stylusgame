@@ -10,7 +10,7 @@ s.contTimer = 0
 s.lastx = 0
 s.lasty = 0
 
-s.mode = "acid"
+s.mode = "wall"
 
 s.slashing = false
 s.slashlist = {}
@@ -52,13 +52,15 @@ function s.mousepressed(x, y, button)
     if s.mode == "wall" then
       s.mode = "acid"
     elseif s.mode == "acid" then
+      s.mode = "ice"
+    elseif s.mode == "ice" then
       s.mode = "wall"
     end
   end
 end
 
 function s.update(dt)
-  s.currentInk = math.min(s.currentInk + dt * 40, s.maxInk)
+  s.currentInk = math.min(s.currentInk + dt * 50, s.maxInk)
   local x, y = Camera.windowToWorld(love.mouse.getPosition())
   if s.slashing then
     s.slashTime = s.slashTime - dt
@@ -112,7 +114,7 @@ function s.update(dt)
       else
         local diff = math.max(5, math.sqrt((s.lastx-x)*(s.lastx-x)+(s.lasty-y)*(s.lasty-y)))
         if s.mode == "acid" then
-          diff = diff * 5
+          diff = diff * 3
         end
         if diff > s.currentInk then
           s.cont = false
@@ -122,6 +124,7 @@ function s.update(dt)
         s.drawn = true
         s.currentInk = s.currentInk - diff
         Land.drawBreakable(function ()
+            love.graphics.setLineStyle("rough")
             if s.mode == "wall" then
               love.graphics.setColor(140,140,140)
               love.graphics.setLineWidth(10)
@@ -133,12 +136,24 @@ function s.update(dt)
               
               love.graphics.setColor(51,244,13, 254)
               love.graphics.setLineWidth(20)
+              
               love.graphics.circle("fill", s.lastx, s.lasty, 10)
-              --love.graphics.line(s.lastx, s.lasty, x, y)
+              love.graphics.line(s.lastx, s.lasty, x, y)
+              love.graphics.circle("fill", x, y, 10)
+              
+              love.graphics.setBlendMode("alpha")
+            elseif s.mode == "ice" then
+              love.graphics.setBlendMode("replace")
+              
+              love.graphics.setColor(0,180,255, 253)
+              love.graphics.setLineWidth(20)
+              love.graphics.circle("fill", s.lastx, s.lasty, 10)
+              love.graphics.line(s.lastx, s.lasty, x, y)
               love.graphics.circle("fill", x, y, 10)
               
               love.graphics.setBlendMode("alpha")
             end
+            love.graphics.setLineStyle("smooth")
           
           love.graphics.setLineWidth(1)
         end)
@@ -175,12 +190,11 @@ function s.backStroke(x, y, x2, y2)
     s["canvas"..i]:renderTo(function ()
       love.graphics.circle("fill", x, y, r/2)
       love.graphics.setLineWidth(r)
-      if s.mode == "wall" then
-        love.graphics.line(x, y, x2, y2)
-      end
+      love.graphics.line(x, y, x2, y2)
       love.graphics.circle("fill", x2, y2, r/2)
     end)
   end
+  love.graphics.setLineStyle("rough")
   if s.mode == "wall" then
     love.graphics.setColor(0,0,0)
     draw(1,16)
@@ -195,9 +209,17 @@ function s.backStroke(x, y, x2, y2)
     draw(2,28)
     love.graphics.setColor(54,222,21)
     draw(3,24)
+  elseif s.mode == "ice" then
+    love.graphics.setColor(13,82,95)
+    draw(1,35)
+    love.graphics.setColor(23,124,166)
+    draw(2,28)
+    love.graphics.setColor(0,147,208)
+    draw(3,24)
   end
   --love.graphics.setColor(140,140,140)
   --draw(4,10)
+  love.graphics.setLineStyle("smooth")
   love.graphics.setLineWidth(1)
 end
 
@@ -234,6 +256,9 @@ function s.drawUI()
   elseif s.mode == "acid" then
     love.graphics.setColor(255,255,255)
     love.graphics.draw(getImage("stylebar_acid"), width-40, 140, 0, 1, -(s.currentInk/s.maxInk))
+  elseif s.mode == "ice" then
+    love.graphics.setColor(255,255,255)
+    love.graphics.draw(getImage("stylebar_ice"), width-40, 140, 0, 1, -(s.currentInk/s.maxInk))
   end
   love.graphics.setColor(255,255,255)
   love.graphics.draw(getImage("stylebar_empty"), width-40, 40)
