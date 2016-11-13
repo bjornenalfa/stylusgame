@@ -16,6 +16,9 @@ local cannon2 = getImage("crabduck_cannon2")
 local cannon3 = getImage("crabduck_cannon3")
 local cannon4 = getImage("crabduck_cannon4")
 
+local cannonWidth = cannon1:getWidth()/2
+local cannonHeight = cannon1:getHeight()/2
+
 local speed = 70
 
 function d.new(x, y)
@@ -76,6 +79,9 @@ function d:draw()
     local claw = time % 0.20 < 0.10 and claw1 or claw2
     love.graphics.draw(claw, claw1x, claw1y, Monster.dirToClosestPlayer({x=claw1x, y=claw1y}), 1, 1, 9, 9)
     love.graphics.draw(claw, claw2x, claw2y, Monster.dirToClosestPlayer({x=claw2x, y=claw2y}), 1, 1, 9, 9)
+    local wing = time % 0.5 < 0.25 and wing1 or wing2
+    love.graphics.draw(wing, self.x, self.y, self.direction, 1, 1, 
+      wing:getWidth()/2, wing:getHeight()/2)
   else
     love.graphics.draw(self.image, self.x, self.y, self.direction, 1, 1, 
       self.image:getWidth()/2, self.image:getHeight()/2)
@@ -92,6 +98,16 @@ function d:draw()
       wing1:getWidth()/2, wing1:getHeight()/2)
   end
 
+  love.graphics.draw(cannon1, self.x, self.y, self.direction-math.rad(30), 1, 1, 
+    cannonWidth, cannonHeight)
+  love.graphics.draw(cannon1, self.x, self.y, self.direction+math.rad(30), 1, 1, 
+    cannonWidth, cannonHeight)
+  love.graphics.draw(cannon1, self.x, self.y, self.direction-math.rad(15), 1, 1, 
+    cannonWidth, cannonHeight)
+  love.graphics.draw(cannon1, self.x, self.y, self.direction+math.rad(15), 1, 1, 
+    cannonWidth, cannonHeight)
+  love.graphics.draw(cannon1, self.x, self.y, self.direction, 1, 1, 
+    cannonWidth, cannonHeight)
   
   Monster.draw(self)
 end
