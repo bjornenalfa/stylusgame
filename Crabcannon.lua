@@ -19,6 +19,7 @@ function c.new(x, y)
   new.counter = 0
   new.state = "waiting"
   new.baseSpeed = speed
+  new.range = 200
   setmetatable(new, c)
   return new
 end
@@ -35,10 +36,17 @@ function c:update(dt)
   elseif self.state == "charging" then
     if self.counter > 1 then
       self.counter = 0
-      --CannonProjectile.new()
+      CrabcannonProjectile.new(self.x, self.y, self.direction, 25, 100)
       self.state = "waiting"
       self.baseSpeed = speed
     end
+  end
+end
+
+function Crabcannon:move(dt)
+  local player, dist = Player.getClosest(self)
+  if dist > self.range then
+    --Monster.move(self, dt)
   end
 end
   
@@ -75,4 +83,72 @@ function c:draw()
   local dir = self:dirToClosestPlayer()
   love.graphics.line(self.x, self.y, self.x + math.cos(dir)*5, self.y + math.sin(dir)*5)
   Monster.draw(self)
+end
+
+
+-------------------------------------
+-- Crabcannon projectiĺe
+-------------------------------------
+CrabcannonProjectile = {}
+CrabcannonProjectile.__index = CrabcannonProjectile
+setmetatable(CrabcannonProjectile, Projectile)
+
+function CrabcannonProjectile.new(fromX, fromY, orientation, damage, vel)
+  local new = Projectile.new(fromX, fromY, orientation, damage, vel)
+  new["image"] = getImage("wall") --placeholder
+  setmetatable(new, CrabcannonProjectile )
+  return new
+end
+--[[
+function CrabcannonProjectile:update(dt)
+  self:move(dt)
+  hit, playerHit = self:checkCollisions(dt)
+  if hit then
+    self:onHit(target)
+  end
+end
+--]]
+function CrabcannonProjectile:checkCollisions(dt)
+  for _,player in pairs(Player.list) do
+    local x1 = self.x - self.vx*dt
+    local x2 = self.x
+    local y1 = self.y - self.vy*dt
+    local y2 = self.y
+    x1 = x1 - player.x
+    x2 = x2 - player.x
+    y1 = y1 - player.y
+    y2 = y2 - player.y
+    local a = x2*x2 + y2*y2
+    local b = 2*(x1*x2+y1*y2)
+    local c = (x1*x1)+(y1*y1)-(player.size*player.size)
+    
+    local t1 = (math.sqrt(b*b - (4*a*c)) - b)/(2*a)
+    local t2 = -(math.sqrt(b*b - (4*a*c)) + b)/(2*a)
+    
+    if (0 < t1  and t1 < 1) or (0 < t2 and t2 < 1) then
+      -- We hit the player, I think...
+      return true, player
+    end
+  end
+  
+  if Land.isBlocked(self.x, self.y) then
+    return true, nil
+  end
+  
+  return false
+end
+
+function CrabcannonProjectile:onHit(target)
+  if target then
+    target:damage(self.damage)
+  else
+    Land.makeHole(self.x, self.y, 10)
+  end
+  self.dead = true
+end
+
+
+function CrabcannonProjectile:draw()
+  love.graphics.setColor(255, 255, 255)
+  love.graphics.draw(self.image, self.x, self.y, self.angle, 1, 1, self.image:getWidth()/2, self.image:getHeight()/2)
 end

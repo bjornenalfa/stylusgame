@@ -107,6 +107,7 @@ end
 function MachineGun:draw(object)
   --love.graphics.print("timeLeft: "..tostring(self.setupTimeLeft) .. " state: " ..tostring(self.setupState .. " moveme. " .. tostring(self.player.movementImpair)), object.x - 150, object.y - 20)
   local state = self.setupState
+  -- scaling so we can draw the gun bigger when in mounter mode
   local weaponScale = 0.5
   local timeScale = 0
   if state == IS_NOT_SETUP then
