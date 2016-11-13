@@ -125,7 +125,10 @@ end
   
 function Monster:dirToClosestPlayer()
   local closest = Player.getClosest(self)
-  return math.atan2(closest.y - self.y, closest.x - self.x)
+  if closest then
+    return math.atan2(closest.y - self.y, closest.x - self.x)
+  end
+  return 0
 end
 
 function Monster:turnToGoal(dt)
