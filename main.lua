@@ -15,6 +15,7 @@ require "Zombieduck"
 require "Duckcrab"
 require "Crabduck"
 require "Crabcannon"
+require "Kingdab"
 require "Weapon"
 require "Rocket"
 require "Screenshake"
@@ -40,6 +41,9 @@ function love.keypressed(key)
   elseif key == "space" and not Game.running then
     Game.start("map02")
     Sound.play("battle1")
+    
+    --test
+    mon1 = Kingdab.new(300, 300)
   end
 end
 
