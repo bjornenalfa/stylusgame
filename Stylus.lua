@@ -29,6 +29,8 @@ function s.startSlash(time)
   s.combo = 0
   s.comboTimer = 0
   s.slashTime = time
+  local x, y, width, height = Camera.getBounds()
+  Floattext.new("Time to slash!", x+width/2, y+height/2, {255,255,255}, Font.base)
   love.mouse.setCursor(love.mouse.newCursor(getImage("mouse_death"):getData(), 10, 10))
 end
 

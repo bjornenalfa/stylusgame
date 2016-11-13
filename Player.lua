@@ -115,7 +115,7 @@ function Player:update(dt)
     local isBlocked = false
     
     for k,v in pairs(COLLISION_POINTS_OFFSETS) do
-      if Land.isBlocked(x + v.x, y + v.y) then
+      if Land.isBlocked(x + v.x, y + v.y, true) then
         isBlocked = true
         break
       end
@@ -135,7 +135,7 @@ function Player:update(dt)
     local isBlocked = false
     
     for k,v in pairs(COLLISION_POINTS_OFFSETS) do
-      if Land.isBlocked(x + v.x, y + v.y) then
+      if Land.isBlocked(x + v.x, y + v.y, true) then
         isBlocked = true
         break
       end
