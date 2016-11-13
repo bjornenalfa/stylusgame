@@ -35,7 +35,7 @@ function MachineGun:fire(fromX, fromY, orientation)
       self.firingTime = math.min(self.firingTime + 0.2, self.maxSpread/2)
       local angleOffset = (math.random(-self.firingTime, self.firingTime)/self.maxSpread)*math.pi/18
       MachineGunProjectile.new(fromX, fromY, orientation+angleOffset, self.damage, self.velocity)
-      self.cdLeft = self.firingCooldown / 10000
+      self.cdLeft = self.firingCooldown / 5000
       self.fireTime = 0
     elseif self.setupState == IS_NOT_SETUP then
       self.firingTime = math.min(self.firingTime + 0.5, self.maxSpread)
@@ -150,6 +150,7 @@ setmetatable(MachineGunProjectile, Projectile)
 function MachineGunProjectile.new(fromX, fromY, orientation, damage, vel)
   local new = Projectile.new(fromX, fromY, orientation, damage, vel)
   new["image"] = getImage("shot")
+  Sound.play("hit3")
   setmetatable(new, MachineGunProjectile)
   return new
 end

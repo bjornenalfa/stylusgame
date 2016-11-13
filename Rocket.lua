@@ -4,8 +4,8 @@ Rocket.__index = Rocket
 setmetatable(Rocket, Weapon)
 
 function Rocket.new(firingCooldown, dmg)
-  firingCooldown = firingCooldown or 2
-  dmg = dmg or 70
+  firingCooldown = firingCooldown or 0.5
+  dmg = dmg or 30
   local new = Weapon.new(firingCooldown, dmg)
   new["image"] = getImage("weapons/bazooka")
   setmetatable(new, Rocket)
@@ -15,6 +15,7 @@ end
 
 function Rocket:fire(fromX, fromY, orientation)
   if self.cdLeft <= 0 then
+    Sound.play("missile_shoot")
     RocketProjectile.new(fromX, fromY, orientation)
     self.cdLeft = self.firingCooldown
   end
@@ -30,7 +31,7 @@ setmetatable(RocketProjectile, Projectile)
 
 function RocketProjectile.new(x, y, angle, damage, speed)
   damage = damage or 0
-  speed = speed or 100
+  speed = speed or 200
   local new = Projectile.new(x, y, angle, damage, speed)
   
   setmetatable(new, RocketProjectile)
