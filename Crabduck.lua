@@ -11,8 +11,10 @@ local head = getImage("crabduck_head")
 
 function c.new(x, y)
   new = Monster.new(x, y, 9, getImage("crabduck1"))
+  new.hp = 50
+  new.maxhp = 50
   setmetatable(new, c)
-  new.baseSpeed = new.baseSpeed * 2
+  new.baseSpeed = new.baseSpeed * 2.5
   return new
 end
 

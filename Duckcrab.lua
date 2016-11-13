@@ -11,6 +11,8 @@ local dist = 35
 
 function d.new(x, y)
   new = Monster.new(x, y, 17, getImage("duckcrab") )
+  new.hp = 600
+  new.maxhp = 600
   setmetatable(new, d)
   return new
 end
@@ -19,8 +21,8 @@ end
 function d:draw()
   love.graphics.setColor(255, 255, 255)
   
-  if self.hp < self.maxhp * 0.4 then
-    self.baseSpeed = 100
+  if self.hp < self.maxhp * 0.5 then
+    self.baseSpeed = 140
     love.graphics.draw(angry, self.x, self.y, self.direction, 1, 1, 
       angry:getWidth()/2, angry:getHeight()/2)
     local dir = self:dirToClosestPlayer()

@@ -9,6 +9,8 @@ local moving = false
 
 function z.new(x, y)
   new = Monster.new(x, y, 12, getImage("zombieduck") )
+  new.hp = 400
+  new.maxhp = 400
   setmetatable(new, z)
   return new
 end

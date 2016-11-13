@@ -27,6 +27,7 @@ require "Game"
 function love.load()
   love.graphics.setDefaultFilter("linear", "nearest", 2)
   love.graphics.setBackgroundColor(255,255,255)
+  Sound.play("menu1")
   --love.mouse.setVisible(false)
   love.mouse.setCursor(love.mouse.newCursor(getImage("mouse"):getData(), 10, 10))
 end
@@ -38,6 +39,7 @@ function love.keypressed(key)
     Stylus.startSlash(10)
   elseif key == "space" and not Game.running then
     Game.start("map02")
+    Sound.play("battle1")
   end
 end
 

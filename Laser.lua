@@ -3,11 +3,12 @@ Laser.__index = Laser
 setmetatable(Laser, Weapon)
 
 function Laser.new(cooldown, d)
-  cooldown = cooldown or 1
-  d = d or 25
+  cooldown = cooldown or 0.7
+  d = d or 200
   local new = Weapon.new(cooldown)
   new["image"] = getImage("weapons/laser_gun")
   new["damage"] = d
+  new.altFireDamage = 50
   new.image = getImage("weapons/laser_gun")
   setmetatable(new, Laser)
   
@@ -17,7 +18,7 @@ end
 
 function Laser:fire(fromX, fromY, orientation)
   if self.cdLeft <= 0 then
-    LaserProjectile.new(fromX, fromY, orientation, 10, 0)
+    LaserProjectile.new(fromX, fromY, orientation, self.damage, 0)
     self.cdLeft = self.firingCooldown
   end
 end
@@ -28,7 +29,7 @@ function Laser:update(dt)
   else
     self.altFireTimer = self.altFireTimer - dt
     if self.altFireTimer <= 0 then
-      LaserProjectile.new(self.player.x, self.player.y, self.player.orientation, 300, 1, true)
+      LaserProjectile.new(self.player.x, self.player.y, self.player.orientation, self.altFireDamage, 1, true)
       Sound.play("laser3")
       self.player.movementImpair = false
       self.altFireTimer = nil

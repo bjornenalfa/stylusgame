@@ -3,8 +3,8 @@ MachineGun.__index = MachineGun
 setmetatable(MachineGun, Weapon)
 
 function MachineGun.new(cooldown, d, speed)
-  cooldown = cooldown or 1
-  d = d or 10
+  cooldown = cooldown or 0.1
+  d = d or 25
   speed = speed or 10
   local new = Weapon.new(cooldown)
   new["image"] = getImage("weapons/machine_gun")
@@ -14,7 +14,7 @@ function MachineGun.new(cooldown, d, speed)
   --new["fireSpread"] = 0
   new["maxSpread"] = 5
   new["fireTime"] = 0
-  new["setupTime"] = 3
+  new["setupTime"] = 1
   new["setupTimeLeft"] = new.setupTime
   new["setupState"] = 0
   new["lockedAngle"] = nil
@@ -35,7 +35,7 @@ function MachineGun:fire(fromX, fromY, orientation)
       self.firingTime = math.min(self.firingTime + 0.2, self.maxSpread/2)
       local angleOffset = (math.random(-self.firingTime, self.firingTime)/self.maxSpread)*math.pi/18
       MachineGunProjectile.new(fromX, fromY, orientation+angleOffset, self.damage, self.velocity)
-      self.cdLeft = self.firingCooldown / 5000
+      self.cdLeft = self.firingCooldown / 2500
       self.fireTime = 0
     elseif self.setupState == IS_NOT_SETUP then
       self.firingTime = math.min(self.firingTime + 0.5, self.maxSpread)
