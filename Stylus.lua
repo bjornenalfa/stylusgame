@@ -146,10 +146,10 @@ function s.update(dt)
               love.graphics.setBlendMode("replace")
               
               love.graphics.setColor(0,180,255, 253)
-              love.graphics.setLineWidth(20)
-              love.graphics.circle("fill", s.lastx, s.lasty, 10)
+              love.graphics.setLineWidth(30)
+              love.graphics.circle("fill", s.lastx, s.lasty, 15)
               love.graphics.line(s.lastx, s.lasty, x, y)
-              love.graphics.circle("fill", x, y, 10)
+              love.graphics.circle("fill", x, y, 15)
               
               love.graphics.setBlendMode("alpha")
             end
@@ -211,11 +211,11 @@ function s.backStroke(x, y, x2, y2)
     draw(3,24)
   elseif s.mode == "ice" then
     love.graphics.setColor(13,82,95)
-    draw(1,35)
+    draw(1,42)
     love.graphics.setColor(23,124,166)
-    draw(2,28)
+    draw(2,38)
     love.graphics.setColor(0,147,208)
-    draw(3,24)
+    draw(3,33)
   end
   --love.graphics.setColor(140,140,140)
   --draw(4,10)
