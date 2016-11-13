@@ -22,26 +22,13 @@ require "Laser"
 require "MachineGun"
 require "Pickup"
 require "PickupWeapon"
+require "Game"
 
 function love.load()
   love.graphics.setDefaultFilter("linear", "nearest", 2)
-  Map.load("map02")
-  Land.newMap()
-  Stylus.newMap()
   love.graphics.setBackgroundColor(255,255,255)
   --love.mouse.setVisible(false)
   love.mouse.setCursor(love.mouse.newCursor(getImage("mouse"):getData(), 10, 10))
-  local pl = Player.new("p1", 300, 300, {255, 0, 0}, 1)
-  --Camera.trackEntity(pl)
-  local mon = Zombieduck.new(150, 150)
-  local mon2 = Duckcrab.new(150, 200)
-  local mon3 = Crabduck.new(400, 200)
-  local mon4 = Crabduck.new(200, 500)
-  local mon5 = Crabcannon.new(400, 400)
-  
-  for i = 1, 20 do
-    local pic1 = PickupWeapon.new(math.random(0, Map.width), math.random(0, Map.height))
-  end
 end
 
 function love.keypressed(key)
@@ -49,6 +36,8 @@ function love.keypressed(key)
     love.event.quit()
   elseif key == "k" then
     Stylus.startSlash(10)
+  elseif key == "space" and not Game.running then
+    Game.start("map02")
   end
 end
 
@@ -62,47 +51,53 @@ end
 
 time = 0
 function love.update(dt)
-  time = time + dt
-  Screenshake.update(dt)
-  Explosions.update(dt)
-  Stylus.update(dt)
-  Land.update(dt)
-  Player.updateAll(dt)
-  Pickup.updateAll(dt)
-  Camera.update(dt)
-  Monster.updateAll(dt)
-  Projectile.updateAll(dt)
-  Explosions.update(dt)
+  if(Game.running) then
+    time = time + dt
+    Game.update(dt)
+    Screenshake.update(dt)
+    Explosions.update(dt)
+    Stylus.update(dt)
+    Land.update(dt)
+    Player.updateAll(dt)
+    Pickup.updateAll(dt)
+    Camera.update(dt)
+    Monster.updateAll(dt)
+    Projectile.updateAll(dt)
+    Explosions.update(dt)
+  end
+  
 end
 
 
 function love.draw()
-  Camera.draw()
-  Explosions.drawShake()
-  Screenshake.draw()
-  Map.draw()
-  Pickup.drawAll()
-  Projectile.drawAll()
-  Player.drawAll()
-  Monster.drawAll()
-  Map.drawShadow()
-  Stylus.drawBackground()
-  Land.draw()
-  Explosions.draw()
-  
-  
-  love.graphics.origin() -- reset all shakes
-  Camera.draw()
-  
-  Stylus.draw()
-  
-  --Camera.drawOOB()
-  
-  
-  love.graphics.origin() -- reset to screen drawing (UI)
-  
-  love.graphics.setColor(0,0,0)
-  love.graphics.print(love.timer.getFPS(), 0, 0)
-  
-  Stylus.drawUI() -- should be last
+  if Game.running then
+    Camera.draw()
+    Explosions.drawShake()
+    Screenshake.draw()
+    Map.draw()
+    Pickup.drawAll()
+    Projectile.drawAll()
+    Player.drawAll()
+    Monster.drawAll()
+    Map.drawShadow()
+    Stylus.drawBackground()
+    Land.draw()
+    Explosions.draw()
+
+
+    love.graphics.origin() -- reset all shakes
+    Camera.draw()
+    
+    Stylus.draw()
+    
+    --Camera.drawOOB()
+    
+
+    love.graphics.origin() -- reset to screen drawing (UI)
+    
+    love.graphics.setColor(0,0,0)
+    love.graphics.print(love.timer.getFPS(), 0, 0)
+    
+    Stylus.drawUI() -- should be last
+  end
 end
