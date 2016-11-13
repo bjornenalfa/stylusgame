@@ -30,7 +30,17 @@ function Land.isBlocked(x, y, default)
   end
   r,g,b,a = l.breakableImage:getPixel(x, y)
   r,g,b,a2 = l.solidImage:getPixel(x,y)
-  return a2 ~= 0 or a ~= 0
+  return a2 ~= 0 or a == 255
+end
+
+function Land.isAcid(x, y)
+  x = math.floor(x)
+  y = math.floor(y)
+  if x < 0 or x >= Map.width or y < 0 or y >= Map.height then
+    return false
+  end
+  r,g,b,a = l.breakableImage:getPixel(x, y)
+  return a == 254
 end
 
 l.nt = 0 -- new image date grab timer

@@ -53,8 +53,8 @@ end
 
 time = 0
 function love.update(dt)
+  time = time + dt
   if(Game.running) then
-    time = time + dt
     Game.update(dt)
     Screenshake.update(dt)
     Explosions.update(dt)
@@ -78,12 +78,12 @@ function love.draw()
     Screenshake.draw()
     Map.draw()
     Pickup.drawAll()
+    Land.draw()
     Projectile.drawAll()
     Player.drawAll()
     Monster.drawAll()
     Map.drawShadow()
     Stylus.drawBackground()
-    Land.draw()
     Explosions.draw()
 
 
@@ -101,5 +101,7 @@ function love.draw()
     love.graphics.print(love.timer.getFPS(), 0, 0)
     
     Stylus.drawUI() -- should be last
+  else
+    Game.drawNotRunning()
   end
 end
