@@ -16,7 +16,7 @@ end
 function Rocket:fire(fromX, fromY, orientation)
   if self.cdLeft <= 0 then
     Sound.play("missile_shoot")
-    RocketProjectile.new(fromX, fromY, orientation)
+    RocketProjectile.new(fromX, fromY, orientation, nil, nil, self.player)
     self.cdLeft = self.firingCooldown
   end
 end
@@ -29,10 +29,10 @@ RocketProjectile = {}
 RocketProjectile.__index = RocketProjectile
 setmetatable(RocketProjectile, Projectile)
 
-function RocketProjectile.new(x, y, angle, damage, speed)
+function RocketProjectile.new(x, y, angle, damage, speed, player)
   damage = damage or 0
   speed = speed or 200
-  local new = Projectile.new(x, y, angle, damage, speed)
+  local new = Projectile.new(x, y, angle, damage, speed, player)
   
   setmetatable(new, RocketProjectile)
   
@@ -48,7 +48,7 @@ function RocketProjectile:onHit(target)
     local y = monster.y - self.y
     local r = monster.r + self.explosionSize
     if x*x + y*y <= r*r then
-      monster:damage(self.explosionDamage)
+      monster:damage(self.explosionDamage, self.player)
     end
   end
 end

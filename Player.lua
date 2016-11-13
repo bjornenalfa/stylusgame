@@ -35,7 +35,9 @@ function Player.new(name, x, y, color, joystick)
     movementImpair = false, --only specific to the machinegun weapon, to hinder movement
 
     --weapon=Laser.new()
-    weapon=MachineGun.new()
+    weapon=MachineGun.new(),
+    
+    score = 0
 
   }
   new["weapon"].player = new

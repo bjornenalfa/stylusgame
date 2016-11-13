@@ -9,8 +9,8 @@ local angry = getImage("duckcrab_angry")
 local angle = math.rad(38)
 local dist = 35
 
-function d.new(x, y)
-  new = Monster.new(x, y, 17, getImage("duckcrab") )
+function d.new(x, y, pointValue)
+  new = Monster.new(x, y, 17, getImage("duckcrab"), pointValue)
   new.hp = 600
   new.maxhp = 600
   setmetatable(new, d)

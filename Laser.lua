@@ -18,7 +18,7 @@ end
 
 function Laser:fire(fromX, fromY, orientation)
   if self.cdLeft <= 0 then
-    LaserProjectile.new(fromX, fromY, orientation, self.damage, 0)
+    LaserProjectile.new(fromX, fromY, orientation, self.damage, 0, false, self.player)
     self.cdLeft = self.firingCooldown
   end
 end
@@ -29,7 +29,7 @@ function Laser:update(dt)
   else
     self.altFireTimer = self.altFireTimer - dt
     if self.altFireTimer <= 0 then
-      LaserProjectile.new(self.player.x, self.player.y, self.player.orientation, self.altFireDamage, 1, true)
+      LaserProjectile.new(self.player.x, self.player.y, self.player.orientation, self.altFireDamage, 1, true, self.player)
       Sound.play("laser3")
       self.player.movementImpair = false
       self.altFireTimer = nil
@@ -75,8 +75,8 @@ setmetatable(LaserProjectile, Projectile)
 
 local LIFETIME = 1
 
-function LaserProjectile.new(fromX, fromY, orientation, damage, vel, isPiercing)
-  local new = Projectile.new(fromX, fromY,orientation, damage, vel)
+function LaserProjectile.new(fromX, fromY, orientation, damage, vel, isPiercing, player)
+  local new = Projectile.new(fromX, fromY,orientation, damage, vel, player)
   setmetatable(new, LaserProjectile)
   new["timeout"] = LIFETIME
   new["stopX"] = 0
@@ -98,7 +98,7 @@ function LaserProjectile:fire()
     y = y + dy
     local hitMonster = Monster.pointInMonster(x, y)
     if hitMonster then
-      hitMonster:damage(self.damage)
+      hitMonster:damage(self.damage, self.player)
       if not self.isPiercing then
         isHit = true
         break

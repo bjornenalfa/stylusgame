@@ -25,6 +25,7 @@ require "Pickup"
 require "PickupWeapon"
 require "PickupStylus"
 require "Game"
+require "Scoredisplay"
 
 function love.load()
   love.graphics.setDefaultFilter("linear", "nearest", 2)
@@ -105,6 +106,7 @@ function love.draw()
     love.graphics.setColor(0,0,0)
     love.graphics.print(love.timer.getFPS(), 0, 0)
     
+    ScoreDisplay.update() -- ignorera funktionsnamnet, den bara ritar
     Stylus.drawUI() -- should be last
   else
     Game.drawNotRunning()

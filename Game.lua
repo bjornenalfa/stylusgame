@@ -76,13 +76,13 @@ function Game.spawn(amount, forceSpawn)
       x = math.random(0, Map.width)
     end
     if monType == 1 then
-      Zombieduck.new(x, y)
+      Zombieduck.new(x, y, 50)
     elseif monType == 2 then
-      Crabduck.new(x, y)
+      Crabduck.new(x, y, 100)
     elseif monType == 3 then
-      Crabcannon.new(x, y)
+      Crabcannon.new(x, y, 150)
     elseif monType == 4 then
-      Duckcrab.new(x, y)
+      Duckcrab.new(x, y, 150)
     end
   end
 end

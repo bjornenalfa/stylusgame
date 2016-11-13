@@ -7,7 +7,7 @@ m.list = {}
 
 
 
-function Monster.new(x, y, r, image)
+function Monster.new(x, y, r, image, pv)
   new = {x = x,
          y = y,
          vx = 0,
@@ -25,7 +25,8 @@ function Monster.new(x, y, r, image)
          dead = false,
          moved = false, -- might not be needed
          stopTimer = 0,
-         deathSound = "quack"
+         deathSound = "quack",
+         pointValue = pv or 50
   }
   setmetatable(new, Monster)
   table.insert(m.list, new)
@@ -64,6 +65,7 @@ end
 function Monster.updateAll(dt)
   dead = {}
   for i,mon in pairs(m.list) do
+    assert(mon.pointValue)
     mon:update(dt)
     if mon.dead then
       table.insert(dead, i)
@@ -178,11 +180,14 @@ function Monster:checkCollision()
   end
 end
 
-function Monster:damage(damage)
+function Monster:damage(damage, damagedBy)
   damage = math.floor(damage+0.5)
   if damage > 0 then
     self.hp = self.hp - damage
     if self.hp <= 0 then
+      if damagedBy then
+        damagedBy.score = damagedBy.score + self.pointValue
+      end
       self.dead = true
     end
   end

@@ -14,8 +14,8 @@ local cannon4 = getImage("crabduck_cannon4")
 
 local speed = 100
 
-function c.new(x, y)
-  new = Monster.new(x, y, 19, getImage("crabduck1"))
+function c.new(x, y, pointValue)
+  new = Monster.new(x, y, 19, getImage("crabduck1"), pointValue)
   new.counter = 0
   new.state = "waiting"
   new.baseSpeed = speed

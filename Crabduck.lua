@@ -9,8 +9,8 @@ local img3 = getImage("crabduck3")
 
 local head = getImage("crabduck_head")
 
-function c.new(x, y)
-  new = Monster.new(x, y, 9, getImage("crabduck1"))
+function c.new(x, y, pointValue)
+  new = Monster.new(x, y, 9, getImage("crabduck1"), pointValue)
   new.hp = 50
   new.maxhp = 50
   setmetatable(new, c)

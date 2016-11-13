@@ -34,13 +34,13 @@ function MachineGun:fire(fromX, fromY, orientation)
     if self.setupState == IS_SETUP then
       self.firingTime = math.min(self.firingTime + 0.2, self.maxSpread/2)
       local angleOffset = (math.random(-self.firingTime, self.firingTime)/self.maxSpread)*math.pi/18
-      MachineGunProjectile.new(fromX, fromY, orientation+angleOffset, self.damage, self.velocity)
+      MachineGunProjectile.new(fromX, fromY, orientation+angleOffset, self.damage, self.velocity, self.player)
       self.cdLeft = self.firingCooldown / 2500
       self.fireTime = 0
     elseif self.setupState == IS_NOT_SETUP then
       self.firingTime = math.min(self.firingTime + 0.5, self.maxSpread)
       local angleOffset = (math.random(-self.firingTime, self.firingTime)/self.maxSpread)*math.pi/18
-      MachineGunProjectile.new(fromX, fromY, orientation+angleOffset, self.damage, self.velocity)
+      MachineGunProjectile.new(fromX, fromY, orientation+angleOffset, self.damage, self.velocity, self.player)
       self.cdLeft = self.firingCooldown
       self.fireTime = 0
     end
@@ -147,8 +147,8 @@ MachineGunProjectile = {}
 MachineGunProjectile.__index = MachineGunProjectile
 setmetatable(MachineGunProjectile, Projectile)
 
-function MachineGunProjectile.new(fromX, fromY, orientation, damage, vel)
-  local new = Projectile.new(fromX, fromY, orientation, damage, vel)
+function MachineGunProjectile.new(fromX, fromY, orientation, damage, vel, player)
+  local new = Projectile.new(fromX, fromY, orientation, damage, vel, player)
   new["image"] = getImage("shot")
   Sound.play("hit3")
   setmetatable(new, MachineGunProjectile)

@@ -28,5 +28,4 @@ function PickupWeapon:pickup(player)
   Pickup.pickup(self)
   self.weapon.player = player
   player.weapon = self.weapon
-  print("pickup weapon")
 end

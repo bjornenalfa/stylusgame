@@ -3,7 +3,7 @@ Projectile.__index = Projectile
 
 Projectile.list = {}
 
-function Projectile.new(x, y, angle, damage, speed)
+function Projectile.new(x, y, angle, damage, speed, player)
   local new = {
     x=x,
     y=y,
@@ -11,11 +11,11 @@ function Projectile.new(x, y, angle, damage, speed)
     damage = damage,
     vx=math.cos(angle)*speed,
     vy=math.sin(angle)*speed,
-    dead=false
+    dead=false,
+    player=player
   }
   setmetatable(new, Projectile)
   table.insert(Projectile.list, new)
-  
   return new
 end
 
@@ -90,7 +90,7 @@ end
 
 function Projectile:onHit(target)
   if target ~= nil then
-    target:damage(self.damage)
+    target:damage(self.damage, self.player)
   end
   self.dead=true
 end

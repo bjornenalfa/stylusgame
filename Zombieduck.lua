@@ -7,7 +7,7 @@ local foot = getImage("foot")
 local count = 0
 local moving = false
 
-function z.new(x, y)
+function z.new(x, y, pointValue)
   new = Monster.new(x, y, 12, getImage("zombieduck") )
   new.hp = 400
   new.maxhp = 400
