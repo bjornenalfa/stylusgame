@@ -7,6 +7,7 @@ Game.timer = 0
 
 function Game.start(map)
   love.audio.stop(Sound["menu1"])
+  love.audio.stop(Sound["gameover"])
   Sound.play("battle1")
   Map.load(map)
   Land.newMap()
@@ -99,16 +100,26 @@ end
       
 
 function Game.update(dt)
-  Game.timer = Game.timer + dt
-  if Game.timer > 2  and #Monster.list < 30 then
-    if math.random(1, 10) == 1 then
-      Game.spawn(1, 4) -- duckcrab
+  if Game.over then
+    Game.timer = Game.timer + dt
+    if Game.timer > 60 then
+      game.over = false
+      time = 0
+      love.audio.stop(Sound["gameover"])
+      Sound.play("menu1")
     end
-    if math.random(1, 15) == 1 then
-      Game.pickupSpawn()
+  else
+    Game.timer = Game.timer + dt
+    if Game.timer > 2  and #Monster.list < 30 then
+      if math.random(1, 10) == 1 then
+        Game.spawn(1, 4) -- duckcrab
+      end
+      if math.random(1, 15) == 1 then
+        Game.pickupSpawn()
+      end
+      Game.spawn(1)
+      Game.timer = 0
     end
-    Game.spawn(1)
-    Game.timer = 0
   end
 end
 
@@ -121,7 +132,8 @@ function Game.stop()
   Game.over = true
   Game.running = false
   love.audio.stop(Sound["battle1"])
-  
+  Sound.play("gameover")
+  Game.timer = 0
 end
 
 function Game.drawOver()

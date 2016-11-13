@@ -35,6 +35,9 @@ s.battle_nomercy2:setVolume(1)
 s.addSound("menu1", ".mp3")
 s["menu1"]:setLooping(true)
 s.menu1:setVolume(1)
+s.addSound("gameover", ".mp3")
+s["gameover"]:setLooping(true)
+s.menu1:setVolume(1)
 
 
 s.addStaticSound("missile_shoot", ".wav")

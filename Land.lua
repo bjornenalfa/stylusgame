@@ -20,6 +20,25 @@ function Land.newMap()
     love.graphics.setColor(255,255,255)
     love.graphics.draw(Map.solid,0,0)
   end)
+
+  local s = Stylus
+  s.maxInk = 1000
+  s.currentInk = s.maxInk
+  s.ranOut = false
+
+  s.cont = false
+  s.contTimer = 0
+  s.lastx = 0
+  s.lasty = 0
+
+  s.mode = "wall"
+
+  s.slashing = false
+  s.slashlist = {}
+  s.slashPoints = 4
+  s.combo = 0
+  s.comboTimer = 0
+  s.slashTime = 0
 end
 
 function Land.isBlocked(x, y, default)
