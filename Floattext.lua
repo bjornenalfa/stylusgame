@@ -4,7 +4,7 @@ local f = Floattext
 f.list = {}
 
 function Floattext.update(dt)
-  local f.killist = {]
+  f.killist = {}
   for _,v in pairs(f.list) do
     v.y = v.y - 30*dt
     v.life = v.life + dt
@@ -15,7 +15,6 @@ function Floattext.update(dt)
   for i = #f.killist,1,-1 do
     table.remove(f.list,f.killist[i])
   end
-  f.killist = {}
 end
 
 function Floattext.new(text,x,y,color,fon)
