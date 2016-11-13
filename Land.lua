@@ -43,6 +43,16 @@ function Land.isAcid(x, y)
   return a == 254
 end
 
+function Land.isIce(x, y)
+  x = math.floor(x)
+  y = math.floor(y)
+  if x < 0 or x >= Map.width or y < 0 or y >= Map.height then
+    return false
+  end
+  r,g,b,a = l.breakableImage:getPixel(x, y)
+  return a == 253
+end
+
 l.nt = 0 -- new image date grab timer
 l.gct = 0 -- garbage collect counter
 

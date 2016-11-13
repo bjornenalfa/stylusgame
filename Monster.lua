@@ -24,6 +24,7 @@ function Monster.new(x, y, r, image)
          distanceMoved = 0,
          dead = false,
          moved = false, -- might not be needed
+         stopTimer = 0,
          deathSound = "quack"
   }
   setmetatable(new, Monster)
@@ -87,12 +88,21 @@ end
 
 function Monster:update(dt)
   self.moved = false
-  self:turnToGoal(dt)
+  if not Land.isIce(self.x, self.y) then
+    self:turnToGoal(dt)
+  end
   self:move(dt)
   if self.moved then
+    self.stopTimer = 0
     dx = self.vx * dt
     dy = self.vy * dt
     self.distanceMoved = self.distanceMoved + math.sqrt(dx^2+dy^2)
+  else
+    self.stopTimer = self.stopTimer + dt
+    if self.stopTimer > 0.2 then
+      self.stopTimer = 0
+      Land.makeHole(self.x+self.vx*0.5, self.y+self.vy*0.5, self.r+3)
+    end
   end
   
   if Land.isAcid(self.x, self.y) then
@@ -153,9 +163,6 @@ function Monster:move(dt)
       break
     end
     
-  end
-  if not self.moved then
-    Land.makeHole(self.x+self.vx*0.5, self.y+self.vy*0.5, self.r+3)
   end
 end
 

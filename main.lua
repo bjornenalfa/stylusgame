@@ -44,7 +44,7 @@ function love.keypressed(key)
 end
 
 function love.mousepressed(x, y, button)
-  
+  Stylus.mousepressed(x,y, button)
 end
 
 function love.mousereleased(x, y, button)
@@ -77,13 +77,13 @@ function love.draw()
     Explosions.drawShake()
     Screenshake.draw()
     Map.draw()
+    Map.drawShadow()
     Pickup.drawAll()
+    Stylus.drawBackground()
     Land.draw()
     Projectile.drawAll()
     Player.drawAll()
     Monster.drawAll()
-    Map.drawShadow()
-    Stylus.drawBackground()
     Explosions.draw()
 
 
