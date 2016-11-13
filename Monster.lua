@@ -48,6 +48,17 @@ function Monster.pointInMonster(x, y)
   return false
 end
 
+function Monster.pointInMonster2(x, y)
+  for _,v in pairs(Monster.list) do
+    if not v.skip then
+      if (v.x-x)*(v.x-x)+(v.y-y)*(v.y-y) < v.r*v.r then
+        return v
+      end
+    end
+  end
+  return false
+end
+
 function Monster.updateAll(dt)
   dead = {}
   for i,mon in pairs(m.list) do
@@ -110,21 +121,11 @@ function Monster:move(dt)
     
     self.vx = math.cos(self.direction+i) * speed
     self.vy = math.sin(self.direction+i) * speed
+
     
-    local x = self.x + self.vx
-    local y = self.y + self.vy
-    local isBlocked = false
-    
-    for k,v in pairs(self.COLLISION_POINTS_OFFSETS) do
-      if Land.isBlocked(x + v.x, y + v.y) then
-        isBlocked = true
-        break
-      end
-    end
-    
-    if not isBlocked then
-      self.x = x
-      self.y = y
+    if not self:checkCollision() then
+      self.x = self.x + self.vx
+      self.y = self.y + self.vy
       self.moved = true
       break
     end
@@ -132,20 +133,9 @@ function Monster:move(dt)
     self.vx = math.cos(self.direction-i) * speed
     self.vy = math.sin(self.direction-i) * speed
     
-    local x = self.x + self.vx
-    local y = self.y + self.vy
-    local isBlocked = false
-    
-    for k,v in pairs(self.COLLISION_POINTS_OFFSETS) do
-      if Land.isBlocked(x + v.x, y + v.y) then
-        isBlocked = true
-        break
-      end
-    end
-    
-    if not isBlocked then
-      self.x = x
-      self.y = y
+    if not self:checkCollision() then
+      self.x = self.x + self.vx
+      self.y = self.y + self.vy
       self.moved = true
       break
     end
@@ -153,6 +143,28 @@ function Monster:move(dt)
   end
   if not self.moved then
     Land.makeHole(self.x+self.vx*0.5, self.y+self.vy*0.5, self.r+3)
+  end
+end
+
+function Monster:checkCollision()
+  local x = self.x + self.vx
+  local y = self.y + self.vy
+  local isBlocked = false
+  
+  self.skip = true
+  
+  for k,v in pairs(self.COLLISION_POINTS_OFFSETS) do
+    local x2, y2 = x+v.x, y+v.y
+    if Land.isBlocked(x2, y2) or Player.pointInPlayer(x2, y2) or Monster.pointInMonster2(x2, y2) then
+      isBlocked = true
+      break
+    end
+  end
+  
+  self.skip = false
+  
+  if isBlocked then
+    return true
   end
 end
 
