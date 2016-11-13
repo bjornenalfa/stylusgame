@@ -36,7 +36,20 @@ function d.new(x, y)
 end
 
 function d:update(dt)
-  Monster.update(self, dt)
+  if self.state == "angry" then
+    self.moved = false
+    self:turnToGoal(dt)
+    self.vx = math.cos(self.direction) * self.baseSpeed
+    self.vy = math.sin(self.direction) * self.baseSpeed
+    self.x = self.x + self.vx * dt
+    self.y = self.y + self.vy * dt
+    self.stopTimer = 0
+    dx = self.vx * dt
+    dy = self.vy * dt
+    self.distanceMoved = self.distanceMoved + math.sqrt(dx^2+dy^2)
+  else
+    Monster.update(self, dt)
+  end
   self.cannonCooldown = self.cannonCooldown - dt
   self.angryCooldown = self.angryCooldown - dt
   if self.cannonCooldown < 0 then

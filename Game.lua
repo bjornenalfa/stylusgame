@@ -98,25 +98,30 @@ end
 
 
 function Game.drawNotRunning()
-  local text = "Press space to start"
-  local width = love.graphics.getWidth()
-  local height = love.graphics.getHeight() - 4 * 20 * 8
-  local font = Font.h1
-  love.graphics.setColor(0,0,0)
-  love.graphics.setFont(font)
-  for i = 1, 20 do
-    if i == 15 then
-      local blink = math.max(0, math.sin(time*0.3))
-      love.graphics.setColor(255-25*blink,255-25*blink,120*blink, 255*(i/20))
-    else
-      love.graphics.setColor(255,255,0, 255*(i/20))
+  love.graphics.setColor(255,255,255)
+  local img = getImage("menu_start")
+  love.graphics.draw(img, 0, 0, 0, love.graphics.getWidth() / img:getWidth(), love.graphics.getHeight() / img:getHeight())
+  if time > 120 then
+    local text = "Press space to start"
+    local width = love.graphics.getWidth()
+    local height = love.graphics.getHeight() - 4 * 20 * 8
+    local font = Font.h1
+    love.graphics.setColor(0,0,0)
+    love.graphics.setFont(font)
+    for i = 1, 20 do
+      if i == 15 then
+        local blink = math.max(0, 0.3+math.sin(time*0.3))
+        love.graphics.setColor(255-70*blink,255-70*blink,120*blink, 255*(i/20))
+      else
+        love.graphics.setColor(255,255,0, 255*(i/20))
+      end
+      for s = 1, #text do
+        local text2 = string.sub(text, s, -1)
+        local text3 = string.sub(text2, 1, 1)
+        love.graphics.print(text3,width*0.75-font:getWidth(text2) + math.sin(time*2+i*math.pi*0.1)*10, height/2 + i*20 + math.sin(3*time+s+s*i) * 20)
+      end
     end
-    for s = 1, #text do
-      local text2 = string.sub(text, s, -1)
-      local text3 = string.sub(text2, 1, 1)
-      love.graphics.print(text3,width*0.9-font:getWidth(text2) + math.sin(time*2+i*math.pi*0.1)*10, height/2 + i*20 + math.sin(3*time+s+s*i) * 20)
-    end
+    
+    love.graphics.setFont(Font.normal)
   end
-  
-  love.graphics.setFont(Font.normal)
 end
