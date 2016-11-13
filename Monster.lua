@@ -103,25 +103,56 @@ function Monster:turnToGoal(dt)
 end
 
 function Monster:move(dt)
-  
-  self.vx = math.cos(self.direction) * self.baseSpeed * dt
-  self.vy = math.sin(self.direction) * self.baseSpeed * dt
-  
-  local x = self.x + self.vx
-  local y = self.y + self.vy
-  local isBlocked = false
-  
-  for k,v in pairs(self.COLLISION_POINTS_OFFSETS) do
-    if Land.isBlocked(x + v.x, y + v.y) then
-      isBlocked = true
+  self.moved = false
+  local speed = self.baseSpeed * dt
+  for i = 0, math.pi/2-math.pi/16, math.pi/16 do
+    local speed = math.cos(i)*speed
+    
+    self.vx = math.cos(self.direction+i) * speed
+    self.vy = math.sin(self.direction+i) * speed
+    
+    local x = self.x + self.vx
+    local y = self.y + self.vy
+    local isBlocked = false
+    
+    for k,v in pairs(self.COLLISION_POINTS_OFFSETS) do
+      if Land.isBlocked(x + v.x, y + v.y) then
+        isBlocked = true
+        break
+      end
+    end
+    
+    if not isBlocked then
+      self.x = x
+      self.y = y
+      self.moved = true
       break
     end
-  end
   
-  if not isBlocked then
-    self.x = x
-    self.y = y
-    self.moved = true
+    self.vx = math.cos(self.direction-i) * speed
+    self.vy = math.sin(self.direction-i) * speed
+    
+    local x = self.x + self.vx
+    local y = self.y + self.vy
+    local isBlocked = false
+    
+    for k,v in pairs(self.COLLISION_POINTS_OFFSETS) do
+      if Land.isBlocked(x + v.x, y + v.y) then
+        isBlocked = true
+        break
+      end
+    end
+    
+    if not isBlocked then
+      self.x = x
+      self.y = y
+      self.moved = true
+      break
+    end
+    
+  end
+  if not self.moved then
+    Land.makeHole(self.x+self.vx*0.5, self.y+self.vy*0.5, self.r+3)
   end
 end
 

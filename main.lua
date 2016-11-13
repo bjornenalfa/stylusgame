@@ -23,12 +23,12 @@ require "PickupWeapon"
 
 function love.load()
   love.graphics.setDefaultFilter("linear", "nearest", 2)
-  Map.load("map01")
+  Map.load("map02")
   Land.newMap()
   Stylus.newMap()
   love.graphics.setBackgroundColor(255,255,255)
   --love.mouse.setVisible(false)
-  love.mouse.setCursor(love.mouse.newCursor(getImage("mouse_death"):getData(), 10, 10))
+  love.mouse.setCursor(love.mouse.newCursor(getImage("mouse"):getData(), 10, 10))
   local pl = Player.new("p1", 300, 300, {255, 0, 0}, 1)
   --Camera.trackEntity(pl)
   local mon = Zombieduck.new(150, 150)
@@ -43,7 +43,11 @@ function love.load()
 end
 
 function love.keypressed(key)
-  
+  if key == "escape" then
+    love.event.quit()
+  elseif key == "k" then
+    Stylus.startSlash(10)
+  end
 end
 
 function love.mousepressed(x, y, button)
@@ -94,6 +98,9 @@ function love.draw()
   
   
   love.graphics.origin() -- reset to screen drawing (UI)
+  
+  love.graphics.setColor(0,0,0)
+  love.graphics.print(love.timer.getFPS(), 0, 0)
   
   Stylus.drawUI() -- should be last
 end

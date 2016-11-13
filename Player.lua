@@ -21,6 +21,8 @@ function Player.new(name, x, y, color, joystick)
     color=color,
     velocity=120,
     orientation=0,
+    maxhp = 100,
+    hp = 100,
     movementImpair = false, --only specific to the machinegun weapon, to hinder movement
 
     --weapon=Laser.new()
@@ -52,8 +54,17 @@ function Player.getClosest(object)
       nearest = v
     end
   end
-  return nearest, dist
+  return nearest, math.sqrt(dist)
 end 
+
+function Player.pointInPlayer(x, y)
+  for _,v in pairs(Player.list) do
+    if (v.x-x)*(v.x-x)+(v.y-y)*(v.y-y) < v.size*v.size then
+      return v
+    end
+  end
+  return false
+end
 
 function Player.updateAll(dt)
   for _,p in pairs(Player.list) do
@@ -143,6 +154,10 @@ function Player:update(dt)
   elseif Input.hasInput(Input.ALT_FIRE, self) then
     if self.weapon.altFire then self.weapon:altFire(self.x, self.y, self.orientation) end
   end
+end
+
+function Player:damage(damage)
+  self.hp = self.hp - damage
 end
 
 function Player.drawAll()
