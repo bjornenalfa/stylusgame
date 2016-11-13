@@ -50,7 +50,6 @@ end
 function MachineGun:altFire(fromX, fromY, orientation)
   -- depending on state, we transition and let update(dt) do the work
   -- the states pretty much only changes how the gun is shot, perhaps
-  print("hejsan hoppsan    " .. tostring(self.setupState))
   if self.setupState == IS_NOT_SETUP then
     self.setupState = IS_SETTING_UP
     self.lockedAngle = self.player.orientation

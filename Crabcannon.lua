@@ -36,7 +36,7 @@ function c:update(dt)
   elseif self.state == "charging" then
     if self.counter > 1 then
       self.counter = 0
-      CrabcannonProjectile.new(self.x, self.y, self.direction, 25, 100)
+      CrabcannonProjectile.new(self.x, self.y, self.direction, 25, 200)
       self.state = "waiting"
       self.baseSpeed = speed
     end
@@ -46,7 +46,7 @@ end
 function Crabcannon:move(dt)
   local player, dist = Player.getClosest(self)
   if dist > self.range then
-    --Monster.move(self, dt)
+    Monster.move(self, dt)
   end
 end
   
