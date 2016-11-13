@@ -10,9 +10,11 @@ local angle = math.rad(38)
 local dist = 35
 
 function d.new(x, y)
-  new = Monster.new(x, y, 17, getImage("duckcrab") )
+  new = Monster.new(x, y, 25, getImage("duckcrab") )
   new.hp = 600
   new.maxhp = 600
+  new.attack = 15
+  new.attackRange = 40
   setmetatable(new, d)
   return new
 end
