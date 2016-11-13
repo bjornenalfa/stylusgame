@@ -18,6 +18,10 @@ function Monster.new(x, y, r, image)
          gX = 0,
          gY = 0,
          r = r,
+         attackRange = r,
+         attack = 10,
+         attackTimer = 0,
+         attackCooldown = 1,
          image = image,
          hp = 100,
          maxhp = 100,
@@ -76,13 +80,15 @@ function Monster.updateAll(dt)
   end
 end
 
+-- can be enough to override self:attackRange()
 function Monster:attackPlayer()
-  local x = self.x + math.cos(self.direction) * self.r
-  local y = self.y + math.sin(self.direction) * self.r
+  local x = self.x + math.cos(self.direction) * self.attackRange
+  local y = self.y + math.sin(self.direction) * self.attackRange
   
-  local hit, player = Player.pointInPlayer(x, y)
-  if hit then
-    player:damage(self.damage)
+  local player = Player.pointInPlayer(x, y)
+  if player then
+    player:damage(self.attack)
+    self.attackTimer = self.attackCooldown
   end
 end
 
@@ -92,6 +98,11 @@ function Monster:update(dt)
     self:turnToGoal(dt)
   end
   self:move(dt)
+  if self.attackTimer < 0 then 
+    self:attackPlayer()
+  else
+    self.attackTimer = self.attackTimer - dt
+  end
   if self.moved then
     self.stopTimer = 0
     dx = self.vx * dt
