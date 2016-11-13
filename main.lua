@@ -1,3 +1,5 @@
+require "Font"
+require "Floattext"
 require "Sound"
 require "Image"
 require "Input"
