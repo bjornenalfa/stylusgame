@@ -1,7 +1,7 @@
 Stylus = {}
 local s = Stylus
 
-s.maxInk = 50000
+s.maxInk = 1000
 s.currentInk = s.maxInk
 s.ranOut = false
 
@@ -15,11 +15,26 @@ s.slashlist = {}
 s.slashPoints = 4
 s.combo = 0
 s.comboTimer = 0
+s.slashTime = 0
 
 function s.newMap()
   for i = 1,3 do
     s["canvas"..i] = love.graphics.newCanvas(Map.width, Map.height)
   end
+end
+
+function s.startSlash(time)
+  s.slashing = true
+  s.slashlist = {}
+  s.combo = 0
+  s.comboTimer = 0
+  s.slashTime = time
+  love.mouse.setCursor(love.mouse.newCursor(getImage("mouse_death"):getData(), 10, 10))
+end
+
+function s.endSlash()
+  s.slashing = false
+  love.mouse.setCursor(love.mouse.newCursor(getImage("mouse"):getData(), 10, 10))
 end
 
 function s.mousereleased(x, y, button)
@@ -29,13 +44,19 @@ function s.mousereleased(x, y, button)
 end
 
 function s.update(dt)
-  s.currentInk = math.min(s.currentInk + dt * 5, s.maxInk)
+  s.currentInk = math.min(s.currentInk + dt * 20, s.maxInk)
   local x, y = Camera.windowToWorld(love.mouse.getPosition())
   if s.slashing then
+    s.slashTime = s.slashTime - dt
+    if s.slashTime < 0 then
+      return s.endSlash()
+    end
     s.comboTimer = s.comboTimer + dt
     if s.comboTimer > 0.3 then
       s.combo = 0
     end
+    if love.mouse.isDown(1) then return end
+    
     table.insert(s.slashlist, {x=x, y=y})
     if #s.slashlist > s.slashPoints then
       table.remove(s.slashlist, 1)
