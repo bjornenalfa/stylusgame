@@ -48,7 +48,7 @@ function s.mousereleased(x, y, button)
 end
 
 function s.mousepressed(x, y, button)
-  if button == 2 then
+  if button == 3 then
     if s.mode == "wall" then
       s.mode = "acid"
     elseif s.mode == "acid" then
@@ -268,7 +268,9 @@ function s.drawUI()
   --love.graphics.rectangle("fill", love.graphics.getWidth()-6, 41+100, -18, -100*(s.currentInk/s.maxInk)) 
   
   if s.slashing then
-    love.graphics.setColor(255,0,0)
-    --love.graphics.circle("fill",love.mouse.getX(), love.mouse.getY(), 1)
+    if love.mouse.isDown(1) then
+      love.graphics.setColor(0,0,0)
+      love.graphics.print("Lift the pen!", love.mouse.getX(), love.mouse.getY())
+    end
   end
 end

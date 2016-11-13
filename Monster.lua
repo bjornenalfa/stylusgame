@@ -18,6 +18,10 @@ function Monster.new(x, y, r, image)
          gX = 0,
          gY = 0,
          r = r,
+         attackRange = r,
+         attack = 10,
+         attackTimer = 0,
+         attackCooldown = 1,
          image = image,
          hp = 100,
          maxhp = 100,
@@ -76,12 +80,29 @@ function Monster.updateAll(dt)
   end
 end
 
+-- can be enough to override self:attackRange()
+function Monster:attackPlayer()
+  local x = self.x + math.cos(self.direction) * self.attackRange
+  local y = self.y + math.sin(self.direction) * self.attackRange
+  
+  local player = Player.pointInPlayer(x, y)
+  if player then
+    player:damage(self.attack)
+    self.attackTimer = self.attackCooldown
+  end
+end
+
 function Monster:update(dt)
   self.moved = false
   if not Land.isIce(self.x, self.y) then
     self:turnToGoal(dt)
   end
   self:move(dt)
+  if self.attackTimer < 0 then 
+    self:attackPlayer()
+  else
+    self.attackTimer = self.attackTimer - dt
+  end
   if self.moved then
     self.stopTimer = 0
     dx = self.vx * dt
@@ -104,7 +125,10 @@ end
   
 function Monster:dirToClosestPlayer()
   local closest = Player.getClosest(self)
-  return math.atan2(closest.y - self.y, closest.x - self.x)
+  if closest then
+    return math.atan2(closest.y - self.y, closest.x - self.x)
+  end
+  return 0
 end
 
 function Monster:turnToGoal(dt)
@@ -195,6 +219,9 @@ end
 function Monster.drawAll()
   for i,mon in pairs(m.list) do
     mon:draw()
+  end
+  for i,mon in pairs(m.list) do
+    Game.drawHealthbar(mon)
   end
 end
     
