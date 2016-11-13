@@ -6,8 +6,8 @@ setmetatable(d, Monster)
 local claw1 = getImage("duckcrab_claw1")
 local claw2 = getImage("duckcrab_claw2")
 local angry = getImage("kingdab_angry")
-local angle = math.rad(38)
-local dist = 35
+local angle = math.rad(36)
+local dist = 46
 local wing1 = getImage("kingdab_wing1")
 local wing2 = getImage("kingdab_wing2")
 
@@ -22,7 +22,7 @@ local cannonHeight = cannon1:getHeight()/2
 local speed = 70
 
 function d.new(x, y)
-  new = Monster.new(x, y, 17, getImage("kingdab_base") )
+  new = Monster.new(x, y, 25, getImage("kingdab_base") )
   new.hp = 5000
   new.maxhp = 5000
   new.cannonCooldown = 4
