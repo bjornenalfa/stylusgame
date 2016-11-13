@@ -13,6 +13,8 @@ function d.new(x, y, pointValue)
   new = Monster.new(x, y, 17, getImage("duckcrab"), pointValue)
   new.hp = 600
   new.maxhp = 600
+  new.attack = 15
+  new.attackRange = 40
   setmetatable(new, d)
   return new
 end

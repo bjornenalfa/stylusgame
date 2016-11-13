@@ -34,8 +34,8 @@ function Weapon:draw()
   local p = self.player
   local imgW = self.image:getWidth()
   local imgH = self.image:getHeight()
-  local scaleX = 2 * self.player.size/imgW
-  local scaleY = 2 * self.player.size/imgH
+  local scaleX = 4 * self.player.size/imgW
+  local scaleY = 4 * self.player.size/imgH
   love.graphics.draw(self.image, p.x, p.y, p.orientation, scaleX, scaleY, imgW/2, imgH/2)
 end
 

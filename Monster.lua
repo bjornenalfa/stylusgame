@@ -18,6 +18,10 @@ function Monster.new(x, y, r, image, pv)
          gX = 0,
          gY = 0,
          r = r,
+         attackRange = r,
+         attack = 10,
+         attackTimer = 0,
+         attackCooldown = 1,
          image = image,
          hp = 100,
          maxhp = 100,
@@ -78,12 +82,29 @@ function Monster.updateAll(dt)
   end
 end
 
+-- can be enough to override self:attackRange()
+function Monster:attackPlayer()
+  local x = self.x + math.cos(self.direction) * self.attackRange
+  local y = self.y + math.sin(self.direction) * self.attackRange
+  
+  local player = Player.pointInPlayer(x, y)
+  if player then
+    player:damage(self.attack)
+    self.attackTimer = self.attackCooldown
+  end
+end
+
 function Monster:update(dt)
   self.moved = false
   if not Land.isIce(self.x, self.y) then
     self:turnToGoal(dt)
   end
   self:move(dt)
+  if self.attackTimer < 0 then 
+    self:attackPlayer()
+  else
+    self.attackTimer = self.attackTimer - dt
+  end
   if self.moved then
     self.stopTimer = 0
     dx = self.vx * dt
@@ -98,7 +119,7 @@ function Monster:update(dt)
   end
   
   if Land.isAcid(self.x, self.y) then
-    self:damage(20*dt)
+    self:damage(100*dt)
   end
   --self.x = self.x + dx
   --self.y = self.y + dy
@@ -106,7 +127,10 @@ end
   
 function Monster:dirToClosestPlayer()
   local closest = Player.getClosest(self)
-  return math.atan2(closest.y - self.y, closest.x - self.x)
+  if closest then
+    return math.atan2(closest.y - self.y, closest.x - self.x)
+  end
+  return 0
 end
 
 function Monster:turnToGoal(dt)
@@ -195,6 +219,7 @@ end
 
 function Monster:die()
   Sound.play(self.deathSound)
+  Blood.new(self.x, self.y, self.r)
 end
 
 function Monster.drawAll()
@@ -214,12 +239,12 @@ function Monster:draw()
   love.graphics.rectangle("fill", mon.x - 20, mon.y - 40, 40, 10)
   love.graphics.rectange("fill", mon.x - 20, mon.y - 40 , 40*(mon.hp/mon.maxhp), 10)
   --]]
-  love.graphics.setColor(0,0,0,100)
+  --[[love.graphics.setColor(0,0,0,100)
   love.graphics.circle("fill", self.x, self.y, self.r)
   love.graphics.setColor(255,0,0)
   for k,v in pairs(self.COLLISION_POINTS_OFFSETS) do
     love.graphics.points(self.x+v.x, self.y+v.y)
-  end
+  end]]
 end
     
     

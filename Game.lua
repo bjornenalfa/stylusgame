@@ -2,15 +2,28 @@ Game = {}
 Game.__index = Game
 
 Game.running = false
+Game.over = false
 Game.timer = 0
+Game.bossTime = 0
 
 function Game.start(map)
   love.audio.stop(Sound["menu1"])
+  love.audio.stop(Sound["gameover"])
   Sound.play("battle1")
   Map.load(map)
   Land.newMap()
   Stylus.newMap()
+  Blood.newMap()
+  
+  Projectile.list = {}
+  Pickup.list = {}
+  Explosions.explosions = {}
+  Screenshake.list = {}
+  Floattext.list = {}
+  Player.list = {}
+  Monster.list = {}
   Game.timer = 0
+  Game.bossTime = 0
   local x, y
   if map == "map01" then
     x = 200
@@ -89,19 +102,62 @@ end
       
 
 function Game.update(dt)
-  Game.timer = Game.timer + dt
-  if Game.timer > 2  and #Monster.list < 30 then
-    if math.random(1, 10) == 1 then
-      Game.spawn(1, 4) -- duckcrab
+  if Game.over then
+    Game.timer = Game.timer + dt
+    if Game.timer > 60 then
+      game.over = false
+      time = 0
+      love.audio.stop(Sound["gameover"])
+      Sound.play("menu1")
     end
-    if math.random(1, 15) == 1 then
-      Game.pickupSpawn()
+  else
+    Game.timer = Game.timer + dt
+    Game.bossTime = Game.bossTime + dt
+    if Game.timer > 2  and #Monster.list < 30 then
+      if math.random(1, 10) == 1 then
+        Game.spawn(1, 4) -- duckcrab
+      end
+    else
+      Game.timer = Game.timer + dt
+      if Game.timer > 2  and #Monster.list < 30 then
+        if math.random(1, 10) == 1 then
+          Game.spawn(1, 4) -- duckcrab
+        end
+        if math.random(1, 15) == 1 then
+          Game.pickupSpawn()
+        end
+        Game.spawn(1)
+        Game.timer = 0
+      end
     end
-    Game.spawn(1)
-    Game.timer = 0
+    if Game.bossTime > 120 then
+      Game.bossTime = 0
+      local _ = Kingdab.new(Map.width / 2, Map.height / 2)
+      local x, y, width, height = Camera.getBounds()
+      Floattext.new("Boss battle!", x+width/2, y+height/2, {255,255,255}, Font.base)
+      Screenshake.new(1, 5)
+    end
   end
 end
 
+function Game.reset()
+  Game.stop()
+  Game.start()
+end
+
+function Game.stop()
+  Game.over = true
+  Game.running = false
+  love.audio.stop(Sound["battle1"])
+  Sound.play("gameover")
+  Game.timer = 0
+end
+
+function Game.drawOver()
+  love.graphics.setColor(255,255,255)
+  local img = getImage("menu_game_over")
+  love.graphics.draw(img, 0, 0, 0, love.graphics.getWidth() / img:getWidth(), love.graphics.getHeight() / img:getHeight())
+end
 
 function Game.drawNotRunning()
   love.graphics.setColor(255,255,255)
@@ -131,3 +187,28 @@ function Game.drawNotRunning()
     love.graphics.setFont(Font.normal)
   end
 end
+
+function Game.drawHealthbars()
+  for _,v in pairs(Monster.list) do
+    Game.drawHealthbar(v)
+  end
+  
+  for _,v in pairs(Player.list) do
+    Game.drawHealthbar(v)
+  end
+end
+
+function Game.drawHealthbar(object)
+  if not (object.hp == object.maxhp) then
+    local imageE = getImage("hp_empty")
+    local imageF = getImage("hp_filled")
+    local x = object.x-- - imageE:getWidth / 2
+    local y = object.y - 20-- imageE:getHeight / 2
+    
+    love.graphics.draw(imageE, x, y, 0, 0.5, 0.5, imageE:getWidth() / 2, imageE:getHeight() / 2)
+    if (object.hp / object.maxhp) > 0 then
+      love.graphics.draw(imageF, x, y, 0, 0.5*(object.hp / object.maxhp), 0.5, imageF:getWidth() / 2, imageF:getHeight() / 2)
+    end
+  end
+end
+

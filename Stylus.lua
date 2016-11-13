@@ -32,7 +32,7 @@ function s.startSlash(time)
   s.comboTimer = 0
   s.slashTime = time
   local x, y, width, height = Camera.getBounds()
-  Floattext.new("Time to slash!", x+width/2, y+height/2, {255,255,255}, Font.base)
+  Floattext.new("Stylus slash!", x+width/2, y+height/2, {255,255,255}, Font.base)
   love.mouse.setCursor(love.mouse.newCursor(getImage("mouse_death"):getData(), 10, 10))
 end
 
@@ -48,7 +48,7 @@ function s.mousereleased(x, y, button)
 end
 
 function s.mousepressed(x, y, button)
-  if button == 2 then
+  if button == 3 then
     if s.mode == "wall" then
       s.mode = "acid"
     elseif s.mode == "acid" then
@@ -69,8 +69,8 @@ function s.update(dt)
     end
     s.comboTimer = s.comboTimer + dt
     if s.comboTimer > 0.4 then
-      if s.combo > 0 then
-        Floattext.new("+"..s.combo, x, y)
+      if s.combo > 9 then
+        Floattext.new(""..s.combo.." hit combo!", x, y)
       end
       s.combo = 0
     end
@@ -90,7 +90,7 @@ function s.update(dt)
     end
     for i = 1, #good-1 do
       if good[i] then
-        good[i]:damage(3+math.sqrt(s.combo))
+        good[i]:damage(3+2*math.sqrt(s.combo))
         Sound.play("hit4")
         s.combo = s.combo + 1
         s.comboTimer = 0
@@ -146,10 +146,10 @@ function s.update(dt)
               love.graphics.setBlendMode("replace")
               
               love.graphics.setColor(0,180,255, 253)
-              love.graphics.setLineWidth(20)
-              love.graphics.circle("fill", s.lastx, s.lasty, 10)
+              love.graphics.setLineWidth(30)
+              love.graphics.circle("fill", s.lastx, s.lasty, 15)
               love.graphics.line(s.lastx, s.lasty, x, y)
-              love.graphics.circle("fill", x, y, 10)
+              love.graphics.circle("fill", x, y, 15)
               
               love.graphics.setBlendMode("alpha")
             end
@@ -211,11 +211,11 @@ function s.backStroke(x, y, x2, y2)
     draw(3,24)
   elseif s.mode == "ice" then
     love.graphics.setColor(13,82,95)
-    draw(1,35)
+    draw(1,42)
     love.graphics.setColor(23,124,166)
-    draw(2,28)
+    draw(2,38)
     love.graphics.setColor(0,147,208)
-    draw(3,24)
+    draw(3,33)
   end
   --love.graphics.setColor(140,140,140)
   --draw(4,10)
@@ -268,7 +268,9 @@ function s.drawUI()
   --love.graphics.rectangle("fill", love.graphics.getWidth()-6, 41+100, -18, -100*(s.currentInk/s.maxInk)) 
   
   if s.slashing then
-    love.graphics.setColor(255,0,0)
-    --love.graphics.circle("fill",love.mouse.getX(), love.mouse.getY(), 1)
+    if love.mouse.isDown(1) then
+      love.graphics.setColor(0,0,0)
+      love.graphics.print("Lift the pen!", love.mouse.getX(), love.mouse.getY())
+    end
   end
 end

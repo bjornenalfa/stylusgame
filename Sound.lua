@@ -32,8 +32,13 @@ s.addSound("battle_nomercy1", ".ogg")
 s.battle_nomercy1:setVolume(1)
 s.addSound("battle_nomercy2", ".ogg")
 s.battle_nomercy2:setVolume(1)
+
 s.addSound("menu1", ".mp3")
 s["menu1"]:setLooping(true)
+s.menu1:setVolume(1)
+
+s.addSound("gameover", ".ogg")
+s["gameover"]:setLooping(true)
 s.menu1:setVolume(1)
 
 
@@ -45,6 +50,7 @@ s.addStaticSound("laser2", ".ogg")
 s.addStaticSound("laser1", ".wav")
 s.addStaticSound("planet_explode", ".wav")
 s.addStaticSound("quack", ".mp3")
+s.addStaticSound("wing", ".wav")
 
 s.addStaticSound("mine_activate", ".wav")
 s.addStaticSound("missile_shoot", ".wav")

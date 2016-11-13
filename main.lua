@@ -26,8 +26,10 @@ require "PickupWeapon"
 require "PickupStylus"
 require "Game"
 require "Scoredisplay"
+require "Blood"
 
 function love.load()
+  math.randomseed(os.time())
   love.graphics.setDefaultFilter("linear", "nearest", 2)
   love.graphics.setBackgroundColor(255,255,255)
   Sound.play("menu1")
@@ -43,9 +45,6 @@ function love.keypressed(key)
   elseif key == "space" and not Game.running then
     Game.start("map02")
     Sound.play("battle1")
-    
-    --test
-    mon1 = Kingdab.new(300, 300)
   end
 end
 
@@ -73,6 +72,8 @@ function love.update(dt)
     Projectile.updateAll(dt)
     Explosions.update(dt)
     Floattext.update(dt)
+  elseif Game.over then
+    -- do nothing
   end
 end
 
@@ -83,6 +84,7 @@ function love.draw()
     Explosions.drawShake()
     Screenshake.draw()
     Map.draw()
+    Blood.draw()
     Map.drawShadow()
     Pickup.drawAll()
     Stylus.drawBackground()
@@ -90,6 +92,7 @@ function love.draw()
     Projectile.drawAll()
     Player.drawAll()
     Monster.drawAll()
+    Game.drawHealthbars()
     Explosions.draw()
 
 
@@ -108,6 +111,8 @@ function love.draw()
     
     ScoreDisplay.update() -- ignorera funktionsnamnet, den bara ritar
     Stylus.drawUI() -- should be last
+  elseif Game.over then
+    Game.drawOver()
   else
     Game.drawNotRunning()
   end

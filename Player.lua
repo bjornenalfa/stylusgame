@@ -56,7 +56,11 @@ function Player.getClosest(object)
       nearest = v
     end
   end
-  return nearest, math.sqrt(dist)
+  if nearest then
+    return nearest, math.sqrt(dist)
+  else
+    return {x=0, y=0, size=1}, 1000
+  end
 end 
 
 function Player.pointInPlayer(x, y)
@@ -117,7 +121,8 @@ function Player:update(dt)
     local isBlocked = false
     
     for k,v in pairs(COLLISION_POINTS_OFFSETS) do
-      if Land.isBlocked(x + v.x, y + v.y, true) then
+      local x2, y2 = x + v.x, y + v.y
+      if Land.isBlocked(x2, y2, true) or Monster.pointInMonster(x2, y2) then
         isBlocked = true
         break
       end
@@ -137,7 +142,8 @@ function Player:update(dt)
     local isBlocked = false
     
     for k,v in pairs(COLLISION_POINTS_OFFSETS) do
-      if Land.isBlocked(x + v.x, y + v.y, true) then
+      local x2, y2 = x + v.x, y + v.y
+      if Land.isBlocked(x2, y2, true) or Monster.pointInMonster(x2, y2) then
         isBlocked = true
         break
       end
@@ -160,6 +166,9 @@ end
 
 function Player:damage(damage)
   self.hp = self.hp - damage
+  if self.hp < 0 then
+    Game.stop()
+  end
 end
 
 function Player.drawAll()
@@ -170,10 +179,10 @@ function Player.drawAll()
     love.graphics.draw(Image.hero, p.x, p.y, p.orientation, 2*p.size/Image.hero:getWidth(), 2*p.size/Image.hero:getHeight(), Image.hero:getWidth()*0.5, Image.hero:getHeight()*0.5)
     love.graphics.setColor(0, 0, 0)
     --love.graphics.line(p.x, p.y, p.x + math.cos(p.orientation)*p.size, p.y + math.sin(p.orientation)*p.size)
-    love.graphics.setColor(255,0,0)
+    --[[ove.graphics.setColor(255,0,0)
     for k,v in pairs(COLLISION_POINTS_OFFSETS) do
       love.graphics.points(p.x+v.x, p.y+v.y)
-    end
+    end]]
   end
   love.graphics.setColor(prevR, prevG, prevB, prevA)
 end
