@@ -175,7 +175,6 @@ function Player.drawAll()
     love.graphics.setColor(0, 0, 0)
     --love.graphics.line(p.x, p.y, p.x + math.cos(p.orientation)*p.size, p.y + math.sin(p.orientation)*p.size)
     love.graphics.setColor(255,0,0)
-    Game.drawHealthbar(p)
     for k,v in pairs(COLLISION_POINTS_OFFSETS) do
       love.graphics.points(p.x+v.x, p.y+v.y)
     end
